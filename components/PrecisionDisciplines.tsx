@@ -119,10 +119,10 @@ export default function PrecisionDisciplines({
   return (
     <section id="disciplines" className="py-32 bg-[#ffffff] relative border-t border-[#c3c5d9]/30">
       <div className="absolute inset-0 micro-grid opacity-[0.15] pointer-events-none" />
-      
+
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -186,7 +186,7 @@ export default function PrecisionDisciplines({
                     src={disciplinesData[0].image}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-[#05080c]/40 to-transparent" />
-                  
+
                   <div className="absolute top-6 right-6 bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-2 border border-white/10 shadow-lg">
                     <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-widest text-white/90 font-semibold">
@@ -210,7 +210,7 @@ export default function PrecisionDisciplines({
                     <p className="font-sans text-base text-white/60 max-w-2xl mb-8 font-light">
                       Designing high-precision mechanical components and turbine systems for industrial applications. Ultra-sharp detail, polished steel, and premium technical integration.
                     </p>
-                    
+
                     <div className="flex flex-wrap gap-4 items-center">
                       <div className="bg-white/5 backdrop-blur-xl px-5 py-3 rounded-xl border border-white/10 shadow-lg">
                         <div className="font-mono text-[9px] text-white/40 mb-1 uppercase tracking-widest">
@@ -262,7 +262,7 @@ export default function PrecisionDisciplines({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-[#05080c]/80 to-transparent" />
                 </div>
-                
+
                 <div className="relative z-10 p-8 flex flex-col justify-end h-full">
                   <div className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] mb-2 font-bold">
                     Control Systems
