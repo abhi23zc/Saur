@@ -68,7 +68,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             <img
               alt="Engineering Leadership"
               className="relative z-10 w-full h-auto rounded-2xl shadow-xl border border-white/40"
-              src="https://lh3.googleusercontent.com/aida/AP1WRLuKIfRnEzWclnsTFhAmd3wXnTXhkVbNpEjaLcEhiyhuoO_PdRkFO_sGQ_0PrgDUYYRHK333OwnDuOQkPzViVifJg-bWUYfp05tVNNNG98_v4ZaL0l1YPVjkt2JysBb0MvXM3XLiNgHSgtY84IEm8NL6fdQw2YjeHwgnWkyFG6bGFgYiC7PhS54_Atioq_A4Oh2oPreM46oTlCQGZ26H4FAMnpwgVMtMzabvyi-lyxIGXwhj42SE4P2HfQ"
+              src="https://mystartupnews.in/_next/image?url=https://res.cloudinary.com/dfycb17sf/image/upload/v1781250211/writerProfiles/abti1vwpsmc6slhztdp7.webp&w=1920&q=75"
             />
 
             {/* Floating Safety Card */}

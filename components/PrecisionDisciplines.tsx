@@ -112,8 +112,8 @@ export default function PrecisionDisciplines({
   const [activeId, setActiveId] = useState<string>(disciplinesData[0].id);
 
   return (
-    <section id="disciplines" className=" py-24 md:py-32 bg-[#05080c] relative border-t border-white/10 overflow-hidden">
-      <div className="absolute inset-0 blueprint-grid-dark opacity-30 pointer-events-none" />
+    <section id="disciplines" className="py-24 md:py-32 bg-[#f4f4f2] relative border-t border-[#c3c5d9]/30 overflow-hidden">
+      <div className="absolute inset-0 micro-grid opacity-50 pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
         {/* Section Header */}
@@ -127,10 +127,10 @@ export default function PrecisionDisciplines({
           <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-3">
             Capabilities Architecture
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-white uppercase">
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-[#1a1c1b] uppercase">
             Precision Disciplines
           </h2>
-          <p className="font-sans text-base text-white/60 mt-5 leading-relaxed font-light">
+          <p className="font-sans text-base text-[#565f70] mt-5 leading-relaxed font-light">
             Mastery across multiple engineering domains, delivering integrated solutions for the world&apos;s most demanding environments.
           </p>
         </motion.div>
