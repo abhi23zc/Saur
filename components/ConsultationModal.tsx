@@ -30,7 +30,7 @@ export default function ConsultationModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const generatedRef = "AXN-" + Math.floor(100000 + Math.random() * 900000);
+    const generatedRef = "SAUR-" + Math.floor(100000 + Math.random() * 900000);
     setRefId(generatedRef);
     setSubmitted(true);
   };
@@ -70,10 +70,10 @@ export default function ConsultationModal({
 
         {submitted ? (
           <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#1FA67A]/10 text-[#1FA67A] flex items-center justify-center mx-auto text-3xl font-bold">
+            <div className="w-16 h-16 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] flex items-center justify-center mx-auto text-3xl font-bold">
               ✓
             </div>
-            <span className="font-mono text-xs text-[#1FA67A] font-bold uppercase tracking-widest block">
+            <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block">
               Consultation Initialized
             </span>
             <h3 className="font-display text-2xl font-bold text-[#1a1c1b]">
@@ -82,13 +82,13 @@ export default function ConsultationModal({
             <p className="font-sans text-sm text-[#424656] max-w-md mx-auto leading-relaxed">
               Our Senior Principal Engineering Partner has been assigned to your profile. Reference Dispatch ID:
             </p>
-            <div className="font-mono text-base font-bold text-[#0049cc] bg-[#eeeeec] py-3 px-6 rounded-xl inline-block tracking-wider">
+            <div className="font-mono text-base font-bold text-[#FF8A00] bg-[#eeeeec] py-3 px-6 rounded-xl inline-block tracking-wider">
               {refId}
             </div>
             <div className="pt-4">
               <button
                 onClick={handleReset}
-                className="bg-[#0049cc] text-white px-8 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0b5fff] transition-colors"
+                className="bg-[#FF8A00] text-white px-8 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
               >
                 Done
               </button>
@@ -97,14 +97,14 @@ export default function ConsultationModal({
         ) : (
           <div>
             <div className="mb-6">
-              <span className="font-mono text-xs text-[#0049cc] font-bold uppercase tracking-widest block mb-1">
-                Axon Engagement Protocol
+              <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
+                Saur Engagement Protocol
               </span>
               <h3 className="font-display text-3xl font-bold text-[#1a1c1b]">
                 Initiate Technical Consultation
               </h3>
               <p className="font-sans text-xs text-[#424656] mt-1">
-                Direct engagement with Axon engineering leadership and feasibility specialists.
+                Direct engagement with Saur engineering leadership and feasibility specialists.
               </p>
             </div>
 
@@ -122,7 +122,7 @@ export default function ConsultationModal({
                       setFormData({ ...formData, name: e.target.value })
                     }
                     placeholder="e.g. Sarah Jenkins"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
                 <div>
@@ -137,7 +137,7 @@ export default function ConsultationModal({
                       setFormData({ ...formData, email: e.target.value })
                     }
                     placeholder="s.jenkins@enterprise.com"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
               </div>
@@ -155,7 +155,7 @@ export default function ConsultationModal({
                       setFormData({ ...formData, org: e.target.value })
                     }
                     placeholder="e.g. Vertex Dynamics"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
                 <div>
@@ -167,7 +167,7 @@ export default function ConsultationModal({
                     onChange={(e) =>
                       setFormData({ ...formData, discipline: e.target.value })
                     }
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   >
                     <option value="Mechanical Systems">Mechanical Systems</option>
                     <option value="Subsea Engineering">Subsea Engineering</option>
@@ -189,8 +189,8 @@ export default function ConsultationModal({
                       onClick={() => setFormData({ ...formData, budget: b })}
                       className={`py-2 rounded-xl text-xs font-sans font-semibold border transition-all ${
                         formData.budget === b
-                          ? "bg-[#0049cc] text-white border-[#0049cc]"
-                          : "bg-[#f9f9f7] text-[#424656] border-[#c3c5d9]/40 hover:border-[#0049cc]"
+                          ? "bg-[#FF8A00] text-white border-[#FF8A00]"
+                          : "bg-[#f9f9f7] text-[#424656] border-[#c3c5d9]/40 hover:border-[#FF8A00]"
                       }`}
                     >
                       {b}
@@ -210,13 +210,13 @@ export default function ConsultationModal({
                     setFormData({ ...formData, details: e.target.value })
                   }
                   placeholder="Outline key operational constraints, location, timeline target..."
-                  className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl p-3 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc]"
+                  className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl p-3 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#0b5fff] text-white py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0051e0] transition-colors shadow-lg mt-2"
+                className="w-full bg-[#FF8A00] text-white py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors shadow-lg mt-2"
               >
                 Submit Consultation Request
               </button>

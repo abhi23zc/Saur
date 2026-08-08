@@ -192,7 +192,7 @@ export default function LifecycleTimeline() {
                     className={cn(
                       "md:w-[45%]",
                       isEven ? "pl-16 md:pl-16" : "md:order-1 text-left md:text-right pr-0 md:pr-16 pl-16 md:pl-0",
-                      "opacity-70 font-mono text-xs text-white/50 pt-2 transition-opacity group-hover:opacity-100"
+                      "opacity-100 md:opacity-70 font-mono text-xs text-white/50 pt-2 transition-opacity group-hover:opacity-100 mt-4 md:mt-0"
                     )}
                   >
                     <div className="text-[#FF8A00] font-bold text-[10px] tracking-widest uppercase mb-1">

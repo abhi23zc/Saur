@@ -72,7 +72,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
         </a>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-8 bg-white/5 backdrop-blur-xl border border-white/10 px-8 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.05)]">
+        <nav className="hidden lg:flex items-center gap-8 bg-white/5 backdrop-blur-xl border border-white/10 px-8 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.05)]">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -105,7 +105,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
 
           <button
             onClick={onOpenConsultation}
-            className="hidden md:flex relative overflow-hidden group bg-[#FF8A00] text-white px-7 py-3 rounded-md font-sans text-sm font-bold transition-all duration-300 shadow-[0_4px_15px_rgba(255,138,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
+            className="hidden lg:flex relative overflow-hidden group bg-[#FF8A00] text-white px-7 py-3 rounded-md font-sans text-sm font-bold transition-all duration-300 shadow-[0_4px_15px_rgba(255,138,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
           >
             <span className="relative z-10">Get a Quote</span>
             <div className="absolute inset-0 bg-gradient-to-r from-[#FF9A20] to-[#FF8A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -116,7 +116,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
             className={cn(
-              "md:hidden p-2 rounded-full",
+              "lg:hidden p-2 rounded-full",
               scrolled ? "text-[#1a1c1b] dark:text-white" : "text-white"
             )}
           >
@@ -143,7 +143,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-[#05080c] border-b border-[#c3c5d9]/30 dark:border-white/10 px-6 py-6 space-y-4"
+            className="lg:hidden bg-white dark:bg-[#05080c] border-b border-[#c3c5d9]/30 dark:border-white/10 px-6 py-6 space-y-4"
           >
             <nav className="flex flex-col space-y-2">
               {navLinks.map((link) => (

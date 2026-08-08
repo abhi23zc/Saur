@@ -50,7 +50,7 @@ export default function SearchModal({
         {/* Header & Input */}
         <div className="flex items-center justify-between border-b border-[#eeeeec] pb-4 mb-4">
           <div className="flex items-center gap-3 flex-1 mr-4">
-            <span className="material-symbols-outlined text-2xl text-[#0049cc]">
+            <span className="material-symbols-outlined text-2xl text-[#FF8A00]">
               search
             </span>
             <input
@@ -75,14 +75,14 @@ export default function SearchModal({
         <div className="max-h-[60vh] overflow-y-auto space-y-6">
           {query.trim() === "" ? (
             <div className="text-center py-8 text-[#737687] font-sans text-xs">
-              Type keywords such as <span className="font-mono text-[#0049cc]">&quot;Turbine&quot;</span>, <span className="font-mono text-[#0049cc]">&quot;Subsea&quot;</span>, or <span className="font-mono text-[#0049cc]">&quot;AI&quot;</span> to search global telemetry.
+              Type keywords such as <span className="font-mono text-[#FF8A00]">&quot;Turbine&quot;</span>, <span className="font-mono text-[#FF8A00]">&quot;Subsea&quot;</span>, or <span className="font-mono text-[#FF8A00]">&quot;AI&quot;</span> to search global telemetry.
             </div>
           ) : (
             <>
               {/* Disciplines */}
               {matchedDisciplines.length > 0 && (
                 <div>
-                  <div className="font-mono text-xs text-[#0049cc] font-bold uppercase tracking-wider mb-2">
+                  <div className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-wider mb-2">
                     Disciplines ({matchedDisciplines.length})
                   </div>
                   <div className="space-y-2">
@@ -103,7 +103,7 @@ export default function SearchModal({
                             {d.description}
                           </div>
                         </div>
-                        <span className="material-symbols-outlined text-sm text-[#0049cc]">
+                        <span className="material-symbols-outlined text-sm text-[#FF8A00]">
                           east
                         </span>
                       </div>
@@ -115,7 +115,7 @@ export default function SearchModal({
               {/* Whitepapers */}
               {matchedPapers.length > 0 && (
                 <div>
-                  <div className="font-mono text-xs text-[#1FA67A] font-bold uppercase tracking-wider mb-2">
+                  <div className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-wider mb-2">
                     Whitepapers ({matchedPapers.length})
                   </div>
                   <div className="space-y-2">
@@ -136,7 +136,7 @@ export default function SearchModal({
                             {w.category} {"//"} {w.readTime}
                           </div>
                         </div>
-                        <span className="material-symbols-outlined text-sm text-[#1FA67A]">
+                        <span className="material-symbols-outlined text-sm text-[#FF8A00]">
                           download
                         </span>
                       </div>

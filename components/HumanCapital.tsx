@@ -72,7 +72,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             />
 
             {/* Floating Safety Card */}
-            <div className="absolute -bottom-6 -left-6 z-20 glass-panel-light p-6 rounded-xl border border-white/60 shadow-xl max-w-[320px]">
+            <div className="absolute -bottom-6 left-4 right-4 md:right-auto md:-left-6 z-20 glass-panel-light p-6 rounded-xl border border-white/60 shadow-xl md:max-w-[320px]">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-[#eeeeec] flex items-center justify-center border border-[#c3c5d9]">
                   <span className="material-symbols-outlined text-[#FF8A00]">

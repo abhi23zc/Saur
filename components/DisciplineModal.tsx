@@ -40,7 +40,7 @@ export default function DisciplineModal({
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <span className="px-3 py-1 rounded-full bg-[#1FA67A]/20 border border-[#1FA67A]/40 text-[#1FA67A] font-mono text-xs font-bold uppercase tracking-wider">
+          <span className="px-3 py-1 rounded-full bg-[#FF8A00]/20 border border-[#FF8A00]/40 text-[#FF8A00] font-mono text-xs font-bold uppercase tracking-wider">
             {discipline.badge}
           </span>
           <span className="font-mono text-xs text-white/50 uppercase">
@@ -86,7 +86,7 @@ export default function DisciplineModal({
             </div>
             <div>
               <span className="font-mono text-white/50 block mb-0.5">Benchmark Efficiency:</span>
-              <span className="text-[#1FA67A] font-bold">{discipline.detailedSpecs.efficiency}</span>
+              <span className="text-[#FF8A00] font-bold">{discipline.detailedSpecs.efficiency}</span>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function DisciplineModal({
                 key={idx}
                 className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-3 text-xs text-white/90"
               >
-                <span className="material-symbols-outlined text-[#1FA67A] text-lg">
+                <span className="material-symbols-outlined text-[#FF8A00] text-lg">
                   check_circle
                 </span>
                 <span>{item}</span>
@@ -124,7 +124,7 @@ export default function DisciplineModal({
               onClose();
               onOpenConsultation();
             }}
-            className="bg-[#0b5fff] text-white px-6 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0051e0] transition-colors"
+            className="bg-[#FF8A00] text-white px-6 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
           >
             Request Custom Spec Build
           </button>

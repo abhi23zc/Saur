@@ -109,234 +109,140 @@ interface PrecisionDisciplinesProps {
 export default function PrecisionDisciplines({
   onSelectDiscipline,
 }: PrecisionDisciplinesProps) {
-  const [activeFilter, setActiveFilter] = useState<string>("All");
-
-  const filteredDisciplines =
-    activeFilter === "All"
-      ? disciplinesData
-      : disciplinesData.filter((d) => d.category === activeFilter);
+  const [activeId, setActiveId] = useState<string>(disciplinesData[0].id);
 
   return (
-    <section id="disciplines" className="py-32 bg-[#ffffff] relative border-t border-[#c3c5d9]/30">
-      <div className="absolute inset-0 micro-grid opacity-[0.15] pointer-events-none" />
-
+    <section id="disciplines" className="py-24 md:py-32 bg-[#05080c] relative border-t border-white/10 overflow-hidden">
+      <div className="absolute inset-0 blueprint-grid-dark opacity-30 pointer-events-none" />
+      
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
         {/* Section Header */}
-        <motion.div
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
+          className="max-w-2xl mb-12"
         >
-          <div className="max-w-2xl">
-            <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-3">
-              Capabilities Architecture
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-[#1a1c1b] uppercase">
-              Precision Disciplines
-            </h2>
-            <p className="font-sans text-base text-[#565f70] mt-5 leading-relaxed font-light">
-              Mastery across multiple engineering domains, delivering integrated solutions for the world&apos;s most demanding environments.
-            </p>
-          </div>
+          <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-3">
+            Capabilities Architecture
+          </span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-white uppercase">
+            Precision Disciplines
+          </h2>
+          <p className="font-sans text-base text-white/60 mt-5 leading-relaxed font-light">
+            Mastery across multiple engineering domains, delivering integrated solutions for the world&apos;s most demanding environments.
+          </p>
+        </motion.div>
 
-          {/* Filter Pills */}
-          <div className="flex flex-wrap gap-3">
-            {["All", "Mechanical", "Electrical", "Process"].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveFilter(cat)}
+        {/* Hover Expand Pillars */}
+        <div className="flex flex-col md:flex-row w-full h-[90vh] md:h-[650px] min-h-[600px] gap-4">
+          {disciplinesData.map((discipline, index) => {
+            const isActive = activeId === discipline.id;
+            
+            return (
+              <motion.div
+                key={discipline.id}
+                layout
+                onMouseEnter={() => setActiveId(discipline.id)}
+                onClick={() => setActiveId(discipline.id)}
                 className={cn(
-                  "px-5 py-2.5 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300",
-                  activeFilter === cat
-                    ? "bg-[#FF8A00] text-white shadow-[0_4px_20px_rgba(255,138,0,0.3)]"
-                    : "bg-[#f4f4f2] text-[#424656] hover:bg-[#e2e3e1] hover:text-[#1a1c1b]"
+                  "relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl border border-white/10 group",
+                  isActive ? "md:flex-[3.5] flex-[4]" : "md:flex-[1] flex-[1]"
                 )}
               >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Bento Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-12 gap-6 min-h-[600px]">
-          <AnimatePresence mode="popLayout">
-            {/* Main 8-col card: Mechanical Systems */}
-            {filteredDisciplines.find((d) => d.id === "mechanical-systems") && (
-              <motion.div
-                key="mechanical-systems"
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5 }}
-                onClick={() =>
-                  onSelectDiscipline(
-                    disciplinesData.find((d) => d.id === "mechanical-systems")!
-                  )
-                }
-                className="md:col-span-8 md:row-span-2 group relative rounded-3xl overflow-hidden bg-[#05080c] shadow-xl flex flex-col cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
-              >
-                <div className="flex-1 relative overflow-hidden min-h-[420px]">
-                  <img
-                    alt="Mechanical Systems"
-                    className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 opacity-70 mix-blend-screen"
-                    src={disciplinesData[0].image}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-[#05080c]/40 to-transparent" />
-
-                  <div className="absolute top-6 right-6 bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-2 border border-white/10 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-white/90 font-semibold">
-                      Primary Domain
-                    </span>
-                  </div>
-
-                  {/* Tech Specs Overlay */}
-                  <div className="absolute top-6 left-6 font-mono text-[10px] text-white/50 space-y-1.5 hidden sm:block tracking-widest">
-                    <div className="bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">SYS_TOLERANCE: ±0.001mm</div>
-                    <div className="bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">YIELD_STRENGTH: 850 MPa</div>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full z-10">
-                    <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] mb-2 block">
-                      Core Specialization
-                    </span>
-                    <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#FF8A00] transition-all duration-500">
-                      Mechanical Systems
-                    </h3>
-                    <p className="font-sans text-base text-white/60 max-w-2xl mb-8 font-light">
-                      Designing high-precision mechanical components and turbine systems for industrial applications. Ultra-sharp detail, polished steel, and premium technical integration.
-                    </p>
-
-                    <div className="flex flex-wrap gap-4 items-center">
-                      <div className="bg-white/5 backdrop-blur-xl px-5 py-3 rounded-xl border border-white/10 shadow-lg">
-                        <div className="font-mono text-[9px] text-white/40 mb-1 uppercase tracking-widest">
-                          EFFICIENCY
-                        </div>
-                        <div className="font-display text-2xl font-bold text-[#FF8A00]">
-                          98.4%
-                        </div>
-                      </div>
-                      <div className="bg-white/5 backdrop-blur-xl px-5 py-3 rounded-xl border border-white/10 shadow-lg">
-                        <div className="font-mono text-[9px] text-white/40 mb-1 uppercase tracking-widest">
-                          UPTIME
-                        </div>
-                        <div className="font-display text-2xl font-bold text-white">
-                          24/7/365
-                        </div>
-                      </div>
-                      <div className="ml-auto inline-flex items-center gap-3 text-white font-sans text-[10px] uppercase tracking-widest font-bold group-hover:translate-x-2 transition-transform duration-300">
-                        Inspect Technical Specs
-                        <span className="material-symbols-outlined text-base p-2 bg-white/10 rounded-full backdrop-blur-md">east</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* 4-col card: Electrical & Instrumentation */}
-            {filteredDisciplines.find((d) => d.id === "electrical-instrumentation") && (
-              <motion.div
-                key="electrical-instrumentation"
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                onClick={() =>
-                  onSelectDiscipline(
-                    disciplinesData.find((d) => d.id === "electrical-instrumentation")!
-                  )
-                }
-                className="md:col-span-4 md:row-span-1 group relative rounded-3xl overflow-hidden bg-[#05080c] shadow-lg flex flex-col justify-end min-h-[300px] cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
-              >
+                {/* Background Image */}
                 <div className="absolute inset-0">
-                  <img
-                    alt="Electrical & Instrumentation"
-                    className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 opacity-50 mix-blend-luminosity"
-                    src={disciplinesData[1].image}
+                  <img 
+                    src={discipline.image} 
+                    alt={discipline.title}
+                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-[#05080c]/80 to-transparent" />
+                  <div className={cn(
+                    "absolute inset-0 transition-colors duration-[800ms]",
+                    isActive ? "bg-gradient-to-t from-[#05080c] via-[#05080c]/60 to-transparent" : "bg-[#05080c]/60 group-hover:bg-[#05080c]/40"
+                  )} />
                 </div>
-
-                <div className="relative z-10 p-8 flex flex-col justify-end h-full">
-                  <div className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] mb-2 font-bold">
-                    Control Systems
-                  </div>
-                  <h3 className="font-display text-3xl text-white font-bold mb-3 group-hover:text-[#FF8A00] transition-colors">
-                    E&I Engineering
-                  </h3>
-                  <p className="font-sans text-sm text-white/50 line-clamp-2 mb-6 font-light">
-                    Robust electrical networks and precise instrumentation. Turnkey E&I execution.
-                  </p>
-                  <div className="flex justify-between items-center pt-4 border-t border-white/10">
-                    <div className="font-mono text-[10px] text-[#FF8A00] tracking-widest uppercase">
-                      RELIABILITY: 99.9%
+                
+                {/* Content Container */}
+                <div className="relative z-10 w-full h-full flex flex-col justify-end">
+                  
+                  {/* Collapsed State Title */}
+                  <div 
+                    className={cn(
+                      "absolute inset-0 flex flex-col justify-end md:justify-center items-start md:items-center p-6 md:p-8 pointer-events-none transition-opacity duration-500",
+                      isActive ? "opacity-0" : "opacity-100 delay-200"
+                    )}
+                  >
+                    <div className="md:hidden flex items-center gap-3 w-full">
+                       <span className="font-mono text-[9px] text-[#FF8A00] font-bold">0{index + 1}</span>
+                       <h3 className="font-display text-2xl text-white font-bold tracking-wide uppercase">
+                         {discipline.category}
+                       </h3>
                     </div>
-                    <span className="material-symbols-outlined text-white bg-white/10 p-2 rounded-full backdrop-blur-md group-hover:bg-[#FF8A00] transition-colors duration-300 text-sm">
-                      east
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* 4-col card: Process Engineering */}
-            {filteredDisciplines.find((d) => d.id === "process-engineering") && (
-              <motion.div
-                key="process-engineering"
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                onClick={() =>
-                  onSelectDiscipline(
-                    disciplinesData.find((d) => d.id === "process-engineering")!
-                  )
-                }
-                className="md:col-span-4 md:row-span-1 group relative rounded-3xl overflow-hidden bg-[#f4f4f2] shadow-lg flex flex-col min-h-[300px] cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
-              >
-                <div className="h-[45%] overflow-hidden relative bg-[#05080c]">
-                  <img
-                    alt="Process Engineering"
-                    className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 opacity-80"
-                    src={disciplinesData[2].image}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
-                  <div className="absolute top-4 right-4 font-mono text-[9px] text-white/70 tracking-[0.2em] bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">
-                    SEQ_A01
-                  </div>
-                </div>
-                <div className="p-8 flex-1 flex flex-col justify-between bg-white relative">
-                  <div>
-                    <h3 className="font-display text-2xl text-[#1a1c1b] font-bold mb-2 group-hover:text-[#FF8A00] transition-colors">
-                      Process Engineering
-                    </h3>
-                    <p className="font-sans text-sm text-[#565f70] line-clamp-2 font-light">
-                      Optimizing complex chemical and physical processes with state-of-the-art simulation.
-                    </p>
-                  </div>
-                  <div className="mt-6 flex items-center justify-between pt-4 border-t border-[#eeeeec]">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse shadow-[0_0_8px_#FF8A00]" />
-                      <span className="font-mono text-[10px] text-[#424656] uppercase tracking-widest font-semibold">
-                        Active Monitoring
+                    
+                    <div className="hidden md:flex flex-col items-center gap-6">
+                      <span className="font-mono text-[10px] text-[#FF8A00] font-bold -rotate-90 tracking-widest">
+                        0{index + 1}
                       </span>
+                      <h3 
+                        className="font-display text-4xl text-white font-bold tracking-widest uppercase opacity-80"
+                        style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                      >
+                        {discipline.category}
+                      </h3>
                     </div>
-                    <span className="material-symbols-outlined text-[#FF8A00] bg-[#f4f4f2] p-2 rounded-full text-sm group-hover:translate-x-1 group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
-                      arrow_forward
-                    </span>
+                  </div>
+
+                  {/* Expanded Content State */}
+                  <div 
+                    className={cn(
+                      "flex flex-col justify-end overflow-hidden transition-all duration-700 h-full",
+                      isActive ? "opacity-100 delay-100" : "opacity-0 pointer-events-none"
+                    )}
+                  >
+                    <div className="w-full md:w-[600px] p-6 md:p-12 flex flex-col justify-end h-full">
+                       <div className="font-mono text-[9px] md:text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 font-bold flex items-center gap-2">
+                         <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
+                         {discipline.badge}
+                       </div>
+                       
+                       <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 uppercase tracking-tight leading-none">
+                         {discipline.title}
+                       </h3>
+                       
+                       <p className="font-sans text-sm md:text-base text-white/70 max-w-md mb-8 leading-relaxed font-light">
+                         {discipline.description}
+                       </p>
+                       
+                       {/* Metrics Cards */}
+                       <div className="flex gap-3 md:gap-4 mb-8 max-w-md">
+                          {discipline.metrics.map((m, i) => (
+                            <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 flex-1">
+                               <div className="font-mono text-[8px] md:text-[9px] text-white/40 mb-1 uppercase tracking-widest">{m.label}</div>
+                               <div className={cn("font-display text-xl md:text-2xl font-bold", m.color || "text-white")}>{m.value}</div>
+                            </div>
+                          ))}
+                       </div>
+
+                       {/* Call to Action */}
+                       <button 
+                         onClick={(e) => { 
+                           e.stopPropagation(); 
+                           onSelectDiscipline(discipline); 
+                         }} 
+                         className="inline-flex items-center justify-center gap-3 bg-[#FF8A00] text-white px-7 py-3.5 w-max rounded-full font-sans text-[10px] font-bold uppercase tracking-widest hover:bg-[#ffaa44] transition-all duration-300 shadow-[0_0_20px_rgba(255,138,0,0.25)] hover:shadow-[0_0_30px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
+                       >
+                         View Full Specs 
+                         <span className="material-symbols-outlined text-sm">east</span>
+                       </button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

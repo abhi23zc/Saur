@@ -62,8 +62,8 @@ export default function LeadershipModal({
         </button>
 
         <div className="mb-6">
-          <span className="font-mono text-xs text-[#0049cc] font-bold uppercase tracking-widest block mb-1">
-            Axon Global Council
+          <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
+            Saur Global Council
           </span>
           <h2 className="font-display text-3xl font-bold text-[#1a1c1b]">
             Engineering Leadership Team
@@ -81,7 +81,7 @@ export default function LeadershipModal({
             >
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full bg-[#0049cc]/10 text-[#0049cc] font-bold flex items-center justify-center font-display text-sm">
+                  <div className="w-10 h-10 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] font-bold flex items-center justify-center font-display text-sm">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
@@ -91,7 +91,7 @@ export default function LeadershipModal({
                     <h4 className="font-sans text-sm font-bold text-[#1a1c1b]">
                       {member.name}
                     </h4>
-                    <span className="font-mono text-[10px] text-[#0049cc] font-semibold block">
+                    <span className="font-mono text-[10px] text-[#FF8A00] font-semibold block">
                       {member.role}
                     </span>
                   </div>
@@ -100,7 +100,7 @@ export default function LeadershipModal({
                   {member.bio}
                 </p>
               </div>
-              <div className="pt-2 border-t border-[#eeeeec] font-mono text-[10px] text-[#1FA67A] font-bold">
+              <div className="pt-2 border-t border-[#eeeeec] font-mono text-[10px] text-[#FF8A00] font-bold">
                 Domain: {member.specialty}
               </div>
             </div>
@@ -110,7 +110,7 @@ export default function LeadershipModal({
         <div className="flex justify-end border-t border-[#eeeeec] pt-4">
           <button
             onClick={onClose}
-            className="bg-[#0049cc] text-white px-6 py-2.5 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0b5fff] transition-colors"
+            className="bg-[#FF8A00] text-white px-6 py-2.5 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
           >
             Close Profile View
           </button>

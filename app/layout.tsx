@@ -15,9 +15,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Axon Engineering | Global Infrastructure & Precision Platform",
+  title: "Saur Engineering | Global Infrastructure & Precision Platform",
   description: "Architecting and executing hyper-scale global infrastructure with technical mastery, precision engineering, and unwavering reliability.",
-  keywords: ["Engineering", "Global Infrastructure", "Mechanical Systems", "Subsea Engineering", "Process Engineering", "Axon Engineering"],
+  keywords: ["Engineering", "Global Infrastructure", "Mechanical Systems", "Subsea Engineering", "Process Engineering", "Saur Engineering"],
 };
 
 export default function RootLayout({

@@ -46,7 +46,7 @@ export default function WhitepaperModal({
 
         {/* Header info */}
         <div className="flex items-center gap-3 mb-3">
-          <span className="bg-[#0049cc]/10 text-[#0049cc] px-3 py-1 rounded-full font-mono text-xs font-bold uppercase">
+          <span className="bg-[#FF8A00]/10 text-[#FF8A00] px-3 py-1 rounded-full font-mono text-xs font-bold uppercase">
             {whitepaper.tag}
           </span>
           <span className="font-mono text-xs text-[#565f70]">
@@ -72,7 +72,7 @@ export default function WhitepaperModal({
 
         {/* Summary */}
         <div className="mb-6">
-          <h4 className="font-mono text-xs text-[#0049cc] uppercase font-bold tracking-wider mb-2">
+          <h4 className="font-mono text-xs text-[#FF8A00] uppercase font-bold tracking-wider mb-2">
             Executive Abstract
           </h4>
           <p className="font-sans text-sm text-[#424656] leading-relaxed">
@@ -82,13 +82,13 @@ export default function WhitepaperModal({
 
         {/* Takeaways */}
         <div className="bg-[#f9f9f7] border border-[#c3c5d9]/40 rounded-2xl p-6 mb-8">
-          <h4 className="font-mono text-xs text-[#1FA67A] uppercase font-bold tracking-wider mb-3">
+          <h4 className="font-mono text-xs text-[#FF8A00] uppercase font-bold tracking-wider mb-3">
             Key Empirical Takeaways:
           </h4>
           <ul className="space-y-2">
             {whitepaper.takeaways.map((t, idx) => (
               <li key={idx} className="flex items-start gap-3 font-sans text-xs text-[#1a1c1b]">
-                <span className="material-symbols-outlined text-[#1FA67A] text-base mt-0.5">
+                <span className="material-symbols-outlined text-[#FF8A00] text-base mt-0.5">
                   task_alt
                 </span>
                 <span>{t}</span>
@@ -104,7 +104,7 @@ export default function WhitepaperModal({
           </div>
           <button
             onClick={handleDownload}
-            className="bg-[#0049cc] text-white px-6 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0b5fff] transition-colors shadow-md flex items-center gap-2"
+            className="bg-[#FF8A00] text-white px-6 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors shadow-md flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-sm">
               {downloaded ? "check" : "download"}
