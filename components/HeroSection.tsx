@@ -47,7 +47,7 @@ export default function HeroSection({ onExplore, onOpenConsultation }: HeroSecti
         className="absolute inset-0 bg-cover bg-center mix-blend-screen"
         style={{
           backgroundImage:
-            "url('https://lh3.googleusercontent.com/aida/AP1WRLthXp8x2DBlPIRMaB5o0YK_8vV-YAYxSNci05thmyyE1INNKne1B-DnAkvZZE2-rH4pw20_uupXreKL1K3XKE4WBcDv60wjE4LsYThlnyMK45sqDBUxnqNG4mtrbwzwcDoL6l_iaP_9R-GVVjKksarNgZZ6QVk6MpKrZT_qRhoLzuyKKNlKg4yOmnRsW5FLoDHTruu2LsLS8L1m2oODQVDQjSYtx4ZfTr7UqDxyzapqscEOuKaWI0xrlQ')",
+            "url('https://www.tcreng.com/assets/img/og/refining-hero-og.jpg')",
         }}
       />
 

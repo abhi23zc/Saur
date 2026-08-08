@@ -26,7 +26,7 @@ export const whitepapersData: Whitepaper[] = [
     summary:
       "Comprehensive training covering plant layout, piping routing, and material selection using industry-leading software like PDMS, SP3D, E3D & AutoCAD.",
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLvZU3uOTaooCKHV7i2XhpAdv3zM1uACaROCF73QKBeIv0sw86O72nQzjncbpjqtqQaAwZufA73_u-31ekG3hCHuM4JOO2T3WI9GDpDJPSspu-ia4EQNhM4UCQhDN9iw8BItmi-K2m6r6dylGIf_hHjj8w30rf7k3qXjlOJDiH-jfwKF1zmi7dxFrs8eE02swJTG8SpWbfx2iB5rDxqpPfUAtCpfNCtOB2ZlCvAx-Q_efpdqPhY5-czhQA",
+      "https://ars.els-cdn.com/content/image/1-s2.0-S2352012425003649-gr1.jpg",
     readTime: "8 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -44,7 +44,7 @@ export const whitepapersData: Whitepaper[] = [
     summary:
       "Learn to design robust control networks and precise field instrumentation systems in compliance with international ISA and IEC standards.",
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLt1MaLoe5qI5ZSF2niFrGzgc-yXRvFF5yGgfIKsIAlJW84MxWzbAkw3XDvKdQsHN5h2Moeokxh3zQERxD3e1I42LlyremIvjQeHd8zGPYNnD72pLWlfIssfrr34km3_3l-hUAyvot_zfz6wGvLRROtRyKAzee01baYjoi_JgoB7rOz3f2qcxYYvcKy9Ldkp5n7ttQwblmxOi7WCfU5p-k4yKDgX_5acrdUjc4hP1Tpr4rLcOXRkmouIpw",
+      "https://neometrixgroup.com/products/imgs/mwf-coolant-monitoring-skid.jpg",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -62,7 +62,7 @@ export const whitepapersData: Whitepaper[] = [
     summary:
       "Develop skills in process simulation, equipment sizing, and heat & mass balance calculations for Oil & Gas and Petrochemical plants.",
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLtiOen6ACEuFhCTPn9Q1cXGS723KhA7q5swm1zkxz5C5VA9XEmWfScsvXh3JStdqCMiiE_hlRsWy4qJqQ5XdfwdTatWvdKjn4G0k7n79l2b3QkAQj20Itx684I0a6FcRa1lqzC2BhfE4GP9ppVOipTkzaGQoAIYM29X-4IIajm8QpvcqgtqnmMbfoXkBNZxnShXJ25sod8DoVWH5MjGoMnd55VIndMqQFyukDbe4vrNebip7oJ9Pwg0Tg",
+      "https://t3.ftcdn.net/jpg/19/42/33/00/360_F_1942330057_D050Umlm30cCrZ63tnbiqNjyMFPY2oGo.jpg",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [

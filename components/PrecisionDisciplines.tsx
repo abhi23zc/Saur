@@ -41,7 +41,7 @@ export const disciplinesData: Discipline[] = [
       ],
     },
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLtiOen6ACEuFhCTPn9Q1cXGS723KhA7q5swm1zkxz5C5VA9XEmWfScsvXh3JStdqCMiiE_hlRsWy4qJqQ5XdfwdTatWvdKjn4G0k7n79l2b3QkAQj20Itx684I0a6FcRa1lqzC2BhfE4GP9ppVOipTkzaGQoAIYM29X-4IIajm8QpvcqgtqnmMbfoXkBNZxnShXJ25sod8DoVWH5MjGoMnd55VIndMqQFyukDbe4vrNebip7oJ9Pwg0Tg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdkhErjNQUcUeDVSPQNKKfFvm-nrxzUy1Lan7GwyCy7yIBYvA16Scgtfc&s=10",
     badge: "Primary Domain",
     metrics: [
       { label: "EFFICIENCY", value: "98.4%", color: "text-[#FF8A00]" },
@@ -67,7 +67,7 @@ export const disciplinesData: Discipline[] = [
       ],
     },
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLtIKftqAX-iIhCGe3BlB7vI8uYWs7mjLKeTilW2Q2zYm09ZFitCAjWjbj5oU1Qnt5GJ7G7nUX0VxVc2zm5GgvsO4HMKtPPJBFBGHyHsrewZ6KEDQykowBP8xECPMiKVr0w3OyZ8nRifLO9fuaKO6fmB1mAenZypCUSR60Msn-jtqu8jiZ5O7gzeTI17s9JFLRtQQ6oXO0iwOK9StPhqa6gXQpz-EZ6DTqA8zvjC6CNgjYJSvBrV6SnE8w",
+      "https://neometrixgroup.com/products/imgs/mwf-coolant-monitoring-skid.jpg",
     badge: "Turnkey E&I",
     metrics: [
       { label: "RELIABILITY", value: "99.9%", color: "text-[#FF8A00]" },
@@ -93,7 +93,7 @@ export const disciplinesData: Discipline[] = [
       ],
     },
     image:
-      "https://lh3.googleusercontent.com/aida/AP1WRLt1MaLoe5qI5ZSF2niFrGzgc-yXRvFF5yGgfIKsIAlJW84MxWzbAkw3XDvKdQsHN5h2Moeokxh3zQERxD3e1I42LlyremIvjQeHd8zGPYNnD72pLWlfIssfrr34km3_3l-hUAyvot_zfz6wGvLRROtRyKAzee01baYjoi_JgoB7rOz3f2qcxYYvcKy9Ldkp5n7ttQwblmxOi7WCfU5p-k4yKDgX_5acrdUjc4hP1Tpr4rLcOXRkmouIpw",
+      "https://t3.ftcdn.net/jpg/19/42/33/00/360_F_1942330057_D050Umlm30cCrZ63tnbiqNjyMFPY2oGo.jpg",
     badge: "AI Automation",
     metrics: [
       { label: "CONTROL LOOP", value: "<10ms", color: "text-[#FF8A00]" },
@@ -112,12 +112,12 @@ export default function PrecisionDisciplines({
   const [activeId, setActiveId] = useState<string>(disciplinesData[0].id);
 
   return (
-    <section id="disciplines" className="py-24 md:py-32 bg-[#05080c] relative border-t border-white/10 overflow-hidden">
+    <section id="disciplines" className=" py-24 md:py-32 bg-[#05080c] relative border-t border-white/10 overflow-hidden">
       <div className="absolute inset-0 blueprint-grid-dark opacity-30 pointer-events-none" />
-      
+
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -139,7 +139,7 @@ export default function PrecisionDisciplines({
         <div className="flex flex-col md:flex-row w-full h-[90vh] md:h-[650px] min-h-[600px] gap-4">
           {disciplinesData.map((discipline, index) => {
             const isActive = activeId === discipline.id;
-            
+
             return (
               <motion.div
                 key={discipline.id}
@@ -153,39 +153,39 @@ export default function PrecisionDisciplines({
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
-                  <img 
-                    src={discipline.image} 
+                  <img
+                    src={discipline.image}
                     alt={discipline.title}
-                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
                   />
                   <div className={cn(
                     "absolute inset-0 transition-colors duration-[800ms]",
                     isActive ? "bg-gradient-to-t from-[#05080c] via-[#05080c]/60 to-transparent" : "bg-[#05080c]/60 group-hover:bg-[#05080c]/40"
                   )} />
                 </div>
-                
+
                 {/* Content Container */}
                 <div className="relative z-10 w-full h-full flex flex-col justify-end">
-                  
+
                   {/* Collapsed State Title */}
-                  <div 
+                  <div
                     className={cn(
                       "absolute inset-0 flex flex-col justify-end md:justify-center items-start md:items-center p-6 md:p-8 pointer-events-none transition-opacity duration-500",
                       isActive ? "opacity-0" : "opacity-100 delay-200"
                     )}
                   >
                     <div className="md:hidden flex items-center gap-3 w-full">
-                       <span className="font-mono text-[9px] text-[#FF8A00] font-bold">0{index + 1}</span>
-                       <h3 className="font-display text-2xl text-white font-bold tracking-wide uppercase">
-                         {discipline.category}
-                       </h3>
+                      <span className="font-mono text-[9px] text-[#FF8A00] font-bold">0{index + 1}</span>
+                      <h3 className="font-display text-2xl text-white font-bold tracking-wide uppercase">
+                        {discipline.category}
+                      </h3>
                     </div>
-                    
+
                     <div className="hidden md:flex flex-col items-center gap-6">
                       <span className="font-mono text-[10px] text-[#FF8A00] font-bold -rotate-90 tracking-widest">
                         0{index + 1}
                       </span>
-                      <h3 
+                      <h3
                         className="font-display text-4xl text-white font-bold tracking-widest uppercase opacity-80"
                         style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
                       >
@@ -195,47 +195,47 @@ export default function PrecisionDisciplines({
                   </div>
 
                   {/* Expanded Content State */}
-                  <div 
+                  <div
                     className={cn(
                       "flex flex-col justify-end overflow-hidden transition-all duration-700 h-full",
                       isActive ? "opacity-100 delay-100" : "opacity-0 pointer-events-none"
                     )}
                   >
                     <div className="w-full md:w-[600px] p-6 md:p-12 flex flex-col justify-end h-full">
-                       <div className="font-mono text-[9px] md:text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 font-bold flex items-center gap-2">
-                         <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
-                         {discipline.badge}
-                       </div>
-                       
-                       <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 uppercase tracking-tight leading-none">
-                         {discipline.title}
-                       </h3>
-                       
-                       <p className="font-sans text-sm md:text-base text-white/70 max-w-md mb-8 leading-relaxed font-light">
-                         {discipline.description}
-                       </p>
-                       
-                       {/* Metrics Cards */}
-                       <div className="flex gap-3 md:gap-4 mb-8 max-w-md">
-                          {discipline.metrics.map((m, i) => (
-                            <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 flex-1">
-                               <div className="font-mono text-[8px] md:text-[9px] text-white/40 mb-1 uppercase tracking-widest">{m.label}</div>
-                               <div className={cn("font-display text-xl md:text-2xl font-bold", m.color || "text-white")}>{m.value}</div>
-                            </div>
-                          ))}
-                       </div>
+                      <div className="font-mono text-[9px] md:text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 font-bold flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
+                        {discipline.badge}
+                      </div>
 
-                       {/* Call to Action */}
-                       <button 
-                         onClick={(e) => { 
-                           e.stopPropagation(); 
-                           onSelectDiscipline(discipline); 
-                         }} 
-                         className="inline-flex items-center justify-center gap-3 bg-[#FF8A00] text-white px-7 py-3.5 w-max rounded-full font-sans text-[10px] font-bold uppercase tracking-widest hover:bg-[#ffaa44] transition-all duration-300 shadow-[0_0_20px_rgba(255,138,0,0.25)] hover:shadow-[0_0_30px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
-                       >
-                         View Full Specs 
-                         <span className="material-symbols-outlined text-sm">east</span>
-                       </button>
+                      <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 uppercase tracking-tight leading-none">
+                        {discipline.title}
+                      </h3>
+
+                      <p className="font-sans text-sm md:text-base text-white/70 max-w-md mb-8 leading-relaxed font-light">
+                        {discipline.description}
+                      </p>
+
+                      {/* Metrics Cards */}
+                      <div className="flex gap-3 md:gap-4 mb-8 max-w-md">
+                        {discipline.metrics.map((m, i) => (
+                          <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 flex-1">
+                            <div className="font-mono text-[8px] md:text-[9px] text-white/40 mb-1 uppercase tracking-widest">{m.label}</div>
+                            <div className={cn("font-display text-xl md:text-2xl font-bold", m.color || "text-white")}>{m.value}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Call to Action */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectDiscipline(discipline);
+                        }}
+                        className="inline-flex items-center justify-center gap-3 bg-[#FF8A00] text-white px-7 py-3.5 w-max rounded-full font-sans text-[10px] font-bold uppercase tracking-widest hover:bg-[#ffaa44] transition-all duration-300 shadow-[0_0_20px_rgba(255,138,0,0.25)] hover:shadow-[0_0_30px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
+                      >
+                        View Full Specs
+                        <span className="material-symbols-outlined text-sm">east</span>
+                      </button>
                     </div>
                   </div>
                 </div>
