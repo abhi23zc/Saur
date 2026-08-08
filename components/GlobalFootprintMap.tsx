@@ -93,7 +93,7 @@ export default function GlobalFootprintMap() {
           transition={{ duration: 0.7 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <span className="font-mono text-[10px] text-[#0049cc] uppercase tracking-[0.2em] block font-bold mb-3">
+          <span className="font-mono text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] block font-bold mb-3">
             Global Operations
           </span>
           <h2 className="font-display text-3xl md:text-5xl font-bold mb-4 tracking-tighter text-[#1a1c1b] uppercase">
@@ -115,7 +115,7 @@ export default function GlobalFootprintMap() {
           className="relative w-full aspect-[16/10] sm:aspect-[2/1] lg:aspect-[21/9] mt-12 rounded-3xl border border-white/10 overflow-hidden bg-[#05080c] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]"
         >
           <div className="absolute inset-0 blueprint-grid-dark opacity-40 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(11,95,255,0.12),transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,138,0,0.12),transparent_65%)] pointer-events-none" />
 
           {/* Graticule + connection arcs */}
           <svg
@@ -170,9 +170,9 @@ export default function GlobalFootprintMap() {
 
             <defs>
               <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#0b5fff" stopOpacity="0.1" />
-                <stop offset="50%" stopColor="#1FA67A" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#0b5fff" stopOpacity="0.1" />
+                <stop offset="0%" stopColor="#FF9A20" stopOpacity="0.1" />
+                <stop offset="50%" stopColor="#FF8A00" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#FF9A20" stopOpacity="0.1" />
               </linearGradient>
             </defs>
           </svg>
@@ -193,15 +193,15 @@ export default function GlobalFootprintMap() {
                 <span
                   className={cn(
                     "node-ring absolute -inset-2 rounded-full",
-                    isHQ ? "text-[#0b5fff]" : "text-[#1FA67A]"
+                    isHQ ? "text-[#FF9A20]" : "text-[#FF8A00]"
                   )}
                 />
                 <span
                   className={cn(
                     "relative block rounded-full border-2 border-white/90 shadow-lg transition-transform duration-300 group-hover:scale-125",
                     isHQ
-                      ? "w-4 h-4 bg-[#0b5fff] shadow-[0_0_18px_rgba(11,95,255,0.9)]"
-                      : "w-3.5 h-3.5 bg-[#1FA67A] shadow-[0_0_18px_rgba(31,166,122,0.9)]",
+                      ? "w-4 h-4 bg-[#FF9A20] shadow-[0_0_18px_rgba(255,154,32,0.9)]"
+                      : "w-3.5 h-3.5 bg-[#FF8A00] shadow-[0_0_18px_rgba(255,138,0,0.9)]",
                     isSelected && "scale-125"
                   )}
                 />
@@ -215,7 +215,7 @@ export default function GlobalFootprintMap() {
                       : "opacity-0 group-hover:opacity-100 scale-95 pointer-events-none"
                   )}
                 >
-                  <div className="font-mono text-[10px] text-[#0049cc] font-bold uppercase mb-0.5">
+                  <div className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase mb-0.5">
                     {hub.type} {"//"} {hub.city}
                   </div>
                   <div className="font-sans text-xs font-bold text-[#1a1c1b] leading-snug">
@@ -225,7 +225,7 @@ export default function GlobalFootprintMap() {
                     Engineers: <span className="font-bold">{hub.engineers}</span> · Projects:{" "}
                     <span className="font-bold">{hub.activeProjects}</span>
                   </div>
-                  <div className="font-mono text-[9px] text-[#1FA67A] mt-1 font-semibold leading-snug">
+                  <div className="font-mono text-[9px] text-[#FF8A00] mt-1 font-semibold leading-snug">
                     {hub.specialization}
                   </div>
                 </div>
@@ -236,13 +236,13 @@ export default function GlobalFootprintMap() {
           {/* Legend */}
           <div className="absolute bottom-4 left-4 flex flex-wrap gap-4 bg-black/30 backdrop-blur-md rounded-full px-4 py-2 border border-white/10">
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#0b5fff]" />
+              <span className="w-3 h-3 rounded-full bg-[#FF9A20]" />
               <span className="font-mono text-[10px] text-white/70 font-semibold uppercase tracking-wider">
                 Executive HQ
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#1FA67A] animate-pulse" />
+              <span className="w-3 h-3 rounded-full bg-[#FF8A00] animate-pulse" />
               <span className="font-mono text-[10px] text-white/70 font-semibold uppercase tracking-wider">
                 Active Hub
               </span>
@@ -265,14 +265,14 @@ export default function GlobalFootprintMap() {
                   "text-left p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_-12px_rgba(0,0,0,0.2)]",
                   isSelected
                     ? "bg-[#05080c] border-[#05080c] text-white"
-                    : "bg-white border-[#c3c5d9]/40 hover:border-[#0049cc]/40"
+                    : "bg-white border-[#c3c5d9]/40 hover:border-[#FF8A00]/40"
                 )}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <span
                     className={cn(
                       "w-2.5 h-2.5 rounded-full",
-                      isHQ ? "bg-[#0b5fff]" : "bg-[#1FA67A]"
+                      isHQ ? "bg-[#FF9A20]" : "bg-[#FF8A00]"
                     )}
                   />
                   <span
@@ -310,7 +310,7 @@ export default function GlobalFootprintMap() {
                     <div
                       className={cn(
                         "font-display text-lg font-bold",
-                        isSelected ? "text-[#63dcac]" : "text-[#0049cc]"
+                        isSelected ? "text-[#ffaa44]" : "text-[#FF8A00]"
                       )}
                     >
                       {hub.engineers}

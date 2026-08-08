@@ -34,7 +34,7 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGilywHHJWKX8_xH8PH0-KU7bj4qbyZppnHnxDo0U23bbFMfCUR41S16mbhdI136MrakXpNGOdKx8kiruKm2e25PfVCKDyWW6FgGXwy2hM_Qk9i9gJtnF2xfQCDonydx-2yaEmo0CuhkhRIkwg_KMuHKzzNKe9DwJNcJDrOnKMXJKgqFzUv1g1Airpk9l1_Dcyh_Qy6qhSHBtsDtzjAu322hTarK3MSeUJVJquxBk4idUo0YjY9_c"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#05080c] via-[#05080c]/90 to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#1FA67A]/10 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#FF8A00]/10 via-transparent to-transparent opacity-60" />
       </div>
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full h-full flex items-center">
@@ -43,9 +43,9 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="max-w-2xl bg-white/5 p-10 md:p-14 rounded-[2rem] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-2xl relative overflow-hidden"
+          className="max-w-2xl relative"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF8A00]/20 blur-[80px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-[#FF8A00]/10 blur-[120px] rounded-full pointer-events-none" />
 
           <span className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 block font-bold relative z-10">
             Industries Served

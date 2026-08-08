@@ -30,14 +30,14 @@ export default function StrategicPartnerships() {
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
         >
           <div>
-            <span className="font-mono text-[9px] text-[#0049cc] uppercase tracking-[0.2em] font-bold block mb-2">
+            <span className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] font-bold block mb-2">
               Engineering Tech Stack
             </span>
             <h3 className="font-display text-3xl md:text-4xl font-bold text-[#1a1c1b] tracking-tighter uppercase">
               Specialized Software
             </h3>
           </div>
-          <div className="font-mono text-[10px] text-[#565f70] flex flex-wrap gap-8 border-l-2 border-[#0049cc] pl-6 py-2 uppercase tracking-widest">
+          <div className="font-mono text-[10px] text-[#565f70] flex flex-wrap gap-8 border-l-2 border-[#FF8A00] pl-6 py-2 uppercase tracking-widest">
             <div>
               <span className="text-[#424656] block mb-1">Expertise</span>
               <span className="text-[#1a1c1b] font-bold text-sm">2D / 3D Design</span>
@@ -48,7 +48,7 @@ export default function StrategicPartnerships() {
             </div>
             <div>
               <span className="text-[#424656] block mb-1">Analysis</span>
-              <span className="text-[#1FA67A] font-bold text-sm">Structural / E&I</span>
+              <span className="text-[#FF8A00] font-bold text-sm">Structural / E&I</span>
             </div>
           </div>
         </motion.div>
@@ -63,9 +63,9 @@ export default function StrategicPartnerships() {
           {tools.concat(tools).map((tool, index) => (
             <div
               key={index}
-              className="group flex items-center gap-4 font-display text-2xl md:text-3xl font-bold text-[#c3c5d9] hover:text-[#0049cc] transition-all duration-300 cursor-pointer uppercase tracking-tighter"
+              className="group flex items-center gap-4 font-display text-2xl md:text-3xl font-bold text-[#c3c5d9] hover:text-[#FF8A00] transition-all duration-300 cursor-pointer uppercase tracking-tighter"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c3c5d9] group-hover:bg-[#0b5fff] transition-colors duration-300 shadow-[0_0_10px_transparent] group-hover:shadow-[0_0_10px_#0b5fff]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c3c5d9] group-hover:bg-[#FF8A00] transition-colors duration-300 shadow-[0_0_10px_transparent] group-hover:shadow-[0_0_10px_#FF8A00]" />
               {tool}
             </div>
           ))}

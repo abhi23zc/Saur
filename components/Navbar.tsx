@@ -50,25 +50,22 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 flex justify-between items-center h-14">
         {/* Brand Logo & Name */}
-        <a href="#" className="flex items-center gap-4 group">
-          <div className="relative w-10 h-10 overflow-hidden rounded-xl bg-white p-1 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-500 border border-white/10">
+        <a href="#" className="flex items-center gap-3 group">
+          <div className="relative h-14 w-14 overflow-hidden rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-[0_0_12px_rgba(255,138,0,0.15)]">
             <img
               alt="Saur Engineering Logo"
-              className="h-full w-full object-contain"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg-eIOcYbNl5EtJBHCC8uYaSd0UU3u5xmzgOBdTHdYmLMlrRTM2W7N_Fv7Xgn4BvpNqnBPs7cyOjG6yWEhldnW8CJ1OP5zg4-LGayTW8ZJPUYRitVyPeJJnbTzvw1EvdOvhaqNrXZJV4DOCDSNvdya34ZEfmwAF9zVMQU30QXdFwbNNSi7VlYdc-R6O5U2uTU5y1zWDbPrADg9Woyb5ShGGhcyUkEZDxaBuyhEMJkubwObQ7KvOHA"
+              className="h-full w-full object-cover"
+              src="/images/saur.jpeg"
             />
           </div>
           <div className="flex flex-col">
             <span className={cn(
-              "font-display text-lg font-bold tracking-tighter uppercase transition-colors duration-500",
+              "font-display text-base font-bold tracking-tight uppercase transition-colors duration-500 leading-tight",
               scrolled ? "text-[#1a1c1b] dark:text-white" : "text-white"
             )}>
               Saur Engineering
             </span>
-            <span className={cn(
-              "text-[9px] tracking-[0.2em] font-mono uppercase -mt-0.5 transition-colors duration-500",
-              scrolled ? "text-[#FF8A00] dark:text-[#FF8A00]" : "text-[#FF8A00]"
-            )}>
+            <span className="text-[9px] tracking-[0.2em] font-mono uppercase text-[#FF8A00] leading-tight">
               & Consultancy
             </span>
           </div>
@@ -82,7 +79,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
               href={link.href}
               className={cn(
                 "font-sans text-[11px] uppercase tracking-[0.15em] font-semibold transition-colors duration-300 relative group",
-                scrolled ? "text-[#424656] hover:text-[#0049cc] dark:text-white/70 dark:hover:text-white" : "text-white/80 hover:text-white"
+                scrolled ? "text-[#424656] hover:text-[#FF8A00] dark:text-white/70 dark:hover:text-white" : "text-white/80 hover:text-white"
               )}
             >
               {link.name}
@@ -134,7 +131,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
       <motion.div
         style={{ scaleX: progressScaleX }}
         className={cn(
-          "absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#0049cc] via-[#0b5fff] to-[#1FA67A] transition-opacity duration-500",
+          "absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#FF9A20] via-[#FF8A00] to-[#ffaa44] transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0"
         )}
       />
@@ -154,7 +151,7 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-sans text-xs font-bold uppercase tracking-widest text-[#1a1c1b] dark:text-white hover:text-[#0049cc] py-3 border-b border-[#eeeeec] dark:border-white/5"
+                  className="font-sans text-xs font-bold uppercase tracking-widest text-[#1a1c1b] dark:text-white hover:text-[#FF8A00] py-3 border-b border-[#eeeeec] dark:border-white/5"
                 >
                   {link.name}
                 </a>

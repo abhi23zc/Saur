@@ -18,7 +18,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="font-mono text-xs text-[#0049cc] uppercase tracking-widest mb-3 block font-bold">
+            <span className="font-mono text-xs text-[#FF8A00] uppercase tracking-widest mb-3 block font-bold">
               Manpower &amp; Workforce Solutions
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tighter text-[#1a1c1b] uppercase leading-tight">
@@ -29,7 +29,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             </p>
 
             <div className="grid grid-cols-2 gap-8 mb-10">
-              <div className="border-l-2 border-[#0049cc] pl-4">
+              <div className="border-l-2 border-[#FF8A00] pl-4">
                 <div className="font-display text-3xl font-bold text-[#1a1c1b] mb-1">
                   100+
                 </div>
@@ -37,7 +37,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
                   Skilled Experts
                 </div>
               </div>
-              <div className="border-l-2 border-[#1FA67A] pl-4">
+              <div className="border-l-2 border-[#FF8A00] pl-4">
                 <div className="font-display text-3xl font-bold text-[#1a1c1b] mb-1">
                   Zero
                 </div>
@@ -49,7 +49,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
 
             <button
               onClick={onOpenLeadership}
-              className="bg-[#0049cc] text-white px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#0b5fff] transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2"
+              className="bg-[#FF8A00] text-white px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2"
             >
               Request Manpower Support
               <span className="material-symbols-outlined text-base">groups</span>
@@ -64,7 +64,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-[#0049cc]/10 -translate-x-4 translate-y-4 rounded-2xl" />
+            <div className="absolute inset-0 bg-[#FF8A00]/10 -translate-x-4 translate-y-4 rounded-2xl" />
             <img
               alt="Engineering Leadership"
               className="relative z-10 w-full h-auto rounded-2xl shadow-xl border border-white/40"
@@ -75,7 +75,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             <div className="absolute -bottom-6 -left-6 z-20 glass-panel-light p-6 rounded-xl border border-white/60 shadow-xl max-w-[320px]">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-[#eeeeec] flex items-center justify-center border border-[#c3c5d9]">
-                  <span className="material-symbols-outlined text-[#1FA67A]">
+                  <span className="material-symbols-outlined text-[#FF8A00]">
                     verified_user
                   </span>
                 </div>

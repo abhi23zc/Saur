@@ -82,7 +82,7 @@ export default function LifecycleTimeline() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto mb-28"
         >
-          <span className="font-mono text-[9px] text-[#1FA67A] uppercase tracking-[0.2em] mb-4 block font-bold">
+          <span className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 block font-bold">
             Project Lifecycle
           </span>
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter mb-6 uppercase text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60">
@@ -103,7 +103,7 @@ export default function LifecycleTimeline() {
               whileInView={{ height: "100%" }}
               viewport={{ once: true, margin: "-150px" }}
               transition={{ duration: 2.5, ease: "easeInOut" }}
-              className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#1FA67A] via-[#0049cc] to-transparent"
+              className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#FF9A20] via-[#FF8A00] to-transparent"
             />
           </div>
 
@@ -134,7 +134,7 @@ export default function LifecycleTimeline() {
                       <span className="font-display text-5xl font-bold text-white/5 absolute -top-10 -left-6 md:-left-8 -z-10 tracking-tighter transition-colors group-hover:text-white/10">
                         {stage.step}
                       </span>
-                      <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-[#1FA67A] transition-colors duration-300 tracking-tight">
+                      <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-[#FF8A00] transition-colors duration-300 tracking-tight">
                         {stage.title}
                       </h3>
                     </div>
@@ -142,7 +142,7 @@ export default function LifecycleTimeline() {
                       {stage.desc}
                     </p>
                     <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 font-mono text-[10px] text-white/80 shadow-sm uppercase tracking-widest transition-all group-hover:border-white/20 group-hover:bg-white/10">
-                      <span className="text-[#b5c4ff] font-bold">{stage.kpiLabel}</span>
+                      <span className="text-[#FF8A00] font-bold">{stage.kpiLabel}</span>
                       {stage.kpiVal}
                     </div>
 
@@ -156,10 +156,10 @@ export default function LifecycleTimeline() {
                           className="overflow-hidden"
                         >
                           <div className={cn(
-                            "p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-[#1FA67A]/30 shadow-lg",
+                            "p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-[#FF8A00]/30 shadow-lg",
                             isEven ? "md:text-right" : "text-left"
                           )}>
-                            <div className="font-mono text-[9px] text-[#1FA67A] uppercase mb-3 font-bold tracking-[0.2em]">
+                            <div className="font-mono text-[9px] text-[#FF8A00] uppercase mb-3 font-bold tracking-[0.2em]">
                               Stage Verifications:
                             </div>
                             <ul className={cn(
@@ -168,7 +168,7 @@ export default function LifecycleTimeline() {
                             )}>
                               {stage.details.map((d, dIdx) => (
                                 <li key={dIdx} className={cn("flex items-center gap-3", isEven ? "md:flex-row-reverse" : "")}>
-                                  <span className="w-1 h-1 rounded-full bg-[#1FA67A]" />
+                                  <span className="w-1 h-1 rounded-full bg-[#FF8A00]" />
                                   <span>{d}</span>
                                 </li>
                               ))}
@@ -180,9 +180,9 @@ export default function LifecycleTimeline() {
                   </div>
 
                   {/* Circle Node */}
-                  <div className="absolute left-[21px] md:left-1/2 w-10 h-10 rounded-full bg-[#05080c] border-2 border-[#1FA67A] md:-translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 md:order-2 shadow-[0_0_20px_rgba(31,166,122,0.3)] group-hover:shadow-[0_0_30px_rgba(31,166,122,0.6)] group-hover:bg-[#1FA67A]/10">
+                  <div className="absolute left-[21px] md:left-1/2 w-10 h-10 rounded-full bg-[#05080c] border-2 border-[#FF8A00] md:-translate-x-1/2 flex items-center justify-center transition-all duration-300 z-10 md:order-2 shadow-[0_0_20px_rgba(255,138,0,0.3)] group-hover:shadow-[0_0_30px_rgba(255,138,0,0.6)] group-hover:bg-[#FF8A00]/10">
                     <div className={cn(
-                      "w-3 h-3 rounded-full bg-[#1FA67A] transition-transform duration-300",
+                      "w-3 h-3 rounded-full bg-[#FF8A00] transition-transform duration-300",
                       isSelected ? "scale-150 shadow-[0_0_10px_#fff]" : "group-hover:scale-125"
                     )} />
                   </div>
@@ -195,7 +195,7 @@ export default function LifecycleTimeline() {
                       "opacity-70 font-mono text-xs text-white/50 pt-2 transition-opacity group-hover:opacity-100"
                     )}
                   >
-                    <div className="text-[#1FA67A] font-bold text-[10px] tracking-widest uppercase mb-1">
+                    <div className="text-[#FF8A00] font-bold text-[10px] tracking-widest uppercase mb-1">
                       PHASE DURATION: {stage.duration}
                     </div>
                     <div className="text-[10px] text-white/60 uppercase tracking-wider mb-3">
@@ -203,7 +203,7 @@ export default function LifecycleTimeline() {
                     </div>
                     <div className={cn(
                       "text-[9px] text-white/30 uppercase tracking-[0.2em] font-semibold transition-colors",
-                      isSelected ? "text-[#1FA67A]" : "group-hover:text-white/60"
+                      isSelected ? "text-[#FF8A00]" : "group-hover:text-white/60"
                     )}>
                       [Click to {isSelected ? "collapse" : "expand"} specs]
                     </div>

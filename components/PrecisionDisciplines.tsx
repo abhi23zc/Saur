@@ -44,7 +44,7 @@ export const disciplinesData: Discipline[] = [
       "https://lh3.googleusercontent.com/aida/AP1WRLtiOen6ACEuFhCTPn9Q1cXGS723KhA7q5swm1zkxz5C5VA9XEmWfScsvXh3JStdqCMiiE_hlRsWy4qJqQ5XdfwdTatWvdKjn4G0k7n79l2b3QkAQj20Itx684I0a6FcRa1lqzC2BhfE4GP9ppVOipTkzaGQoAIYM29X-4IIajm8QpvcqgtqnmMbfoXkBNZxnShXJ25sod8DoVWH5MjGoMnd55VIndMqQFyukDbe4vrNebip7oJ9Pwg0Tg",
     badge: "Primary Domain",
     metrics: [
-      { label: "EFFICIENCY", value: "98.4%", color: "text-[#1FA67A]" },
+      { label: "EFFICIENCY", value: "98.4%", color: "text-[#FF8A00]" },
       { label: "UPTIME", value: "24/7/365", color: "text-white" },
     ],
   },
@@ -70,7 +70,7 @@ export const disciplinesData: Discipline[] = [
       "https://lh3.googleusercontent.com/aida/AP1WRLtIKftqAX-iIhCGe3BlB7vI8uYWs7mjLKeTilW2Q2zYm09ZFitCAjWjbj5oU1Qnt5GJ7G7nUX0VxVc2zm5GgvsO4HMKtPPJBFBGHyHsrewZ6KEDQykowBP8xECPMiKVr0w3OyZ8nRifLO9fuaKO6fmB1mAenZypCUSR60Msn-jtqu8jiZ5O7gzeTI17s9JFLRtQQ6oXO0iwOK9StPhqa6gXQpz-EZ6DTqA8zvjC6CNgjYJSvBrV6SnE8w",
     badge: "Turnkey E&I",
     metrics: [
-      { label: "RELIABILITY", value: "99.9%", color: "text-[#1FA67A]" },
+      { label: "RELIABILITY", value: "99.9%", color: "text-[#FF8A00]" },
       { label: "STANDARDS", value: "IEC/ISA", color: "text-white" },
     ],
   },
@@ -96,8 +96,8 @@ export const disciplinesData: Discipline[] = [
       "https://lh3.googleusercontent.com/aida/AP1WRLt1MaLoe5qI5ZSF2niFrGzgc-yXRvFF5yGgfIKsIAlJW84MxWzbAkw3XDvKdQsHN5h2Moeokxh3zQERxD3e1I42LlyremIvjQeHd8zGPYNnD72pLWlfIssfrr34km3_3l-hUAyvot_zfz6wGvLRROtRyKAzee01baYjoi_JgoB7rOz3f2qcxYYvcKy9Ldkp5n7ttQwblmxOi7WCfU5p-k4yKDgX_5acrdUjc4hP1Tpr4rLcOXRkmouIpw",
     badge: "AI Automation",
     metrics: [
-      { label: "CONTROL LOOP", value: "<10ms", color: "text-[#0049cc]" },
-      { label: "YIELD BOOST", value: "+14.2%", color: "text-[#1FA67A]" },
+      { label: "CONTROL LOOP", value: "<10ms", color: "text-[#FF8A00]" },
+      { label: "YIELD BOOST", value: "+14.2%", color: "text-[#FF8A00]" },
     ],
   },
 ];
@@ -130,7 +130,7 @@ export default function PrecisionDisciplines({
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
         >
           <div className="max-w-2xl">
-            <span className="font-mono text-[10px] text-[#0049cc] font-bold uppercase tracking-[0.2em] block mb-3">
+            <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-3">
               Capabilities Architecture
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-[#1a1c1b] uppercase">
@@ -150,7 +150,7 @@ export default function PrecisionDisciplines({
                 className={cn(
                   "px-5 py-2.5 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300",
                   activeFilter === cat
-                    ? "bg-[#0049cc] text-white shadow-[0_4px_20px_rgba(0,73,204,0.3)]"
+                    ? "bg-[#FF8A00] text-white shadow-[0_4px_20px_rgba(255,138,0,0.3)]"
                     : "bg-[#f4f4f2] text-[#424656] hover:bg-[#e2e3e1] hover:text-[#1a1c1b]"
                 )}
               >
@@ -166,6 +166,7 @@ export default function PrecisionDisciplines({
             {/* Main 8-col card: Mechanical Systems */}
             {filteredDisciplines.find((d) => d.id === "mechanical-systems") && (
               <motion.div
+                key="mechanical-systems"
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -187,7 +188,7 @@ export default function PrecisionDisciplines({
                   <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-[#05080c]/40 to-transparent" />
                   
                   <div className="absolute top-6 right-6 bg-white/5 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-2 border border-white/10 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-[#1FA67A] animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
                     <span className="font-mono text-[10px] uppercase tracking-widest text-white/90 font-semibold">
                       Primary Domain
                     </span>
@@ -200,10 +201,10 @@ export default function PrecisionDisciplines({
                   </div>
 
                   <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full z-10">
-                    <span className="font-mono text-[10px] text-[#0b5fff] font-bold uppercase tracking-[0.2em] mb-2 block">
+                    <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] mb-2 block">
                       Core Specialization
                     </span>
-                    <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#b5c4ff] transition-all duration-500">
+                    <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#FF8A00] transition-all duration-500">
                       Mechanical Systems
                     </h3>
                     <p className="font-sans text-base text-white/60 max-w-2xl mb-8 font-light">
@@ -215,7 +216,7 @@ export default function PrecisionDisciplines({
                         <div className="font-mono text-[9px] text-white/40 mb-1 uppercase tracking-widest">
                           EFFICIENCY
                         </div>
-                        <div className="font-display text-2xl font-bold text-[#1FA67A]">
+                        <div className="font-display text-2xl font-bold text-[#FF8A00]">
                           98.4%
                         </div>
                       </div>
@@ -240,6 +241,7 @@ export default function PrecisionDisciplines({
             {/* 4-col card: Electrical & Instrumentation */}
             {filteredDisciplines.find((d) => d.id === "electrical-instrumentation") && (
               <motion.div
+                key="electrical-instrumentation"
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -262,20 +264,20 @@ export default function PrecisionDisciplines({
                 </div>
                 
                 <div className="relative z-10 p-8 flex flex-col justify-end h-full">
-                  <div className="font-mono text-[9px] text-[#1FA67A] uppercase tracking-[0.2em] mb-2 font-bold">
+                  <div className="font-mono text-[9px] text-[#FF8A00] uppercase tracking-[0.2em] mb-2 font-bold">
                     Control Systems
                   </div>
-                  <h3 className="font-display text-3xl text-white font-bold mb-3 group-hover:text-[#1FA67A] transition-colors">
+                  <h3 className="font-display text-3xl text-white font-bold mb-3 group-hover:text-[#FF8A00] transition-colors">
                     E&I Engineering
                   </h3>
                   <p className="font-sans text-sm text-white/50 line-clamp-2 mb-6 font-light">
                     Robust electrical networks and precise instrumentation. Turnkey E&I execution.
                   </p>
                   <div className="flex justify-between items-center pt-4 border-t border-white/10">
-                    <div className="font-mono text-[10px] text-[#1FA67A] tracking-widest uppercase">
+                    <div className="font-mono text-[10px] text-[#FF8A00] tracking-widest uppercase">
                       RELIABILITY: 99.9%
                     </div>
-                    <span className="material-symbols-outlined text-white bg-white/10 p-2 rounded-full backdrop-blur-md group-hover:bg-[#1FA67A] transition-colors duration-300 text-sm">
+                    <span className="material-symbols-outlined text-white bg-white/10 p-2 rounded-full backdrop-blur-md group-hover:bg-[#FF8A00] transition-colors duration-300 text-sm">
                       east
                     </span>
                   </div>
@@ -286,6 +288,7 @@ export default function PrecisionDisciplines({
             {/* 4-col card: Process Engineering */}
             {filteredDisciplines.find((d) => d.id === "process-engineering") && (
               <motion.div
+                key="process-engineering"
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -311,7 +314,7 @@ export default function PrecisionDisciplines({
                 </div>
                 <div className="p-8 flex-1 flex flex-col justify-between bg-white relative">
                   <div>
-                    <h3 className="font-display text-2xl text-[#1a1c1b] font-bold mb-2 group-hover:text-[#0049cc] transition-colors">
+                    <h3 className="font-display text-2xl text-[#1a1c1b] font-bold mb-2 group-hover:text-[#FF8A00] transition-colors">
                       Process Engineering
                     </h3>
                     <p className="font-sans text-sm text-[#565f70] line-clamp-2 font-light">
@@ -320,12 +323,12 @@ export default function PrecisionDisciplines({
                   </div>
                   <div className="mt-6 flex items-center justify-between pt-4 border-t border-[#eeeeec]">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#0049cc] animate-pulse shadow-[0_0_8px_#0049cc]" />
+                      <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse shadow-[0_0_8px_#FF8A00]" />
                       <span className="font-mono text-[10px] text-[#424656] uppercase tracking-widest font-semibold">
                         Active Monitoring
                       </span>
                     </div>
-                    <span className="material-symbols-outlined text-[#0049cc] bg-[#f4f4f2] p-2 rounded-full text-sm group-hover:translate-x-1 group-hover:bg-[#0049cc] group-hover:text-white transition-all duration-300">
+                    <span className="material-symbols-outlined text-[#FF8A00] bg-[#f4f4f2] p-2 rounded-full text-sm group-hover:translate-x-1 group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
                       arrow_forward
                     </span>
                   </div>

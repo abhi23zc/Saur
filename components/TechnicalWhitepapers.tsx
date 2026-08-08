@@ -100,7 +100,7 @@ export default function TechnicalWhitepapers({
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-[#c3c5d9]/30 pb-6 gap-6"
         >
           <div>
-            <span className="font-mono text-[10px] text-[#0049cc] uppercase tracking-[0.2em] mb-3 block font-bold">
+            <span className="font-mono text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] mb-3 block font-bold">
               Training &amp; Upskilling
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tighter text-[#1a1c1b] uppercase">
@@ -116,7 +116,7 @@ export default function TechnicalWhitepapers({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search courses..."
-                className="w-full bg-white border border-[#c3c5d9]/40 rounded-xl px-4 py-2.5 pl-10 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#0049cc] focus:ring-2 focus:ring-[#0049cc]/15 transition-shadow"
+                className="w-full bg-white border border-[#c3c5d9]/40 rounded-xl px-4 py-2.5 pl-10 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00] focus:ring-2 focus:ring-[#FF8A00]/15 transition-shadow"
               />
               <span className="material-symbols-outlined absolute left-3 top-2.5 text-lg text-[#737687]">
                 search
@@ -155,7 +155,7 @@ export default function TechnicalWhitepapers({
                 <div className="font-mono text-xs text-[#565f70] mb-2 font-semibold">
                   {paper.category} {"//"} {paper.date}
                 </div>
-                <h3 className="font-display text-xl font-bold mb-3 text-[#1a1c1b] group-hover:text-[#0049cc] transition-colors leading-snug">
+                <h3 className="font-display text-xl font-bold mb-3 text-[#1a1c1b] group-hover:text-[#FF8A00] transition-colors leading-snug">
                   {paper.title}
                 </h3>
                 <p className="font-sans text-xs text-[#424656] mb-4 line-clamp-3 leading-relaxed">
@@ -167,7 +167,7 @@ export default function TechnicalWhitepapers({
                 <span className="font-mono text-[11px] text-[#737687]">
                   {paper.author.split(",")[0]}
                 </span>
-                <div className="inline-flex items-center text-[#0049cc] font-sans text-xs font-bold group-hover:translate-x-1 transition-transform">
+                <div className="inline-flex items-center text-[#FF8A00] font-sans text-xs font-bold group-hover:translate-x-1 transition-transform">
                   View Syllabus
                   <span className="material-symbols-outlined text-sm ml-1">
                     download
