@@ -1,98 +1,108 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface HumanCapitalProps {
   onOpenLeadership: () => void;
 }
 
 export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
+  const capabilities = [
+    {
+      title: "Site Survey & Construction Supervision",
+      desc: "Experienced field engineers for constructability reviews, site measurements, and execution oversight.",
+    },
+    {
+      title: "Pre-Commissioning & Start-Up",
+      desc: "Multi-discipline technician teams for loop checking, hydrotesting, energization, and system start-up.",
+    },
+    {
+      title: "Inspection & Expediting",
+      desc: "Vendor QA/QC surveillance, third-party inspection, and material expediting across manufacturing yards.",
+    },
+    {
+      title: "Turnkey E&I & As-Built Documentation",
+      desc: "Field drafting, 2D/3D redline updates, junction box wiring, and comprehensive as-built handover.",
+    },
+  ];
+
   return (
-    <section className="py-24 md:py-32 bg-[#f4f4f2] border-t border-[#c3c5d9]/30 relative">
+    <section className="py-20 md:py-28 bg-[#f8fafc] border-t border-slate-200 relative">
       <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Text Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="font-mono text-xs text-[#FF8A00] uppercase tracking-widest mb-3 block font-bold">
+          <div className="lg:col-span-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
               Manpower &amp; Workforce Solutions
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tighter text-[#1a1c1b] uppercase leading-tight">
-              EXPERT WORKFORCE DEPUTATION
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold mb-4 tracking-tight text-[#0b233a] leading-tight">
+              Skilled Technical Workforce for Onshore, Yard &amp; Offshore
             </h2>
-            <p className="font-sans text-base text-[#424656] mb-8 leading-relaxed">
-              Focused exclusively on manpower for onshore, yard & offshore operations. We provide skilled engineers and technicians for site survey, pre-commissioning, inspection, and erection.
+            <p className="font-sans text-sm md:text-base text-slate-600 mb-6 leading-relaxed">
+              We provide certified engineers, designers, and site technicians to support EPC contractors and plant owners during fabrication, installation, and commissioning.
             </p>
 
-            <div className="grid grid-cols-2 gap-8 mb-10">
-              <div className="border-l-2 border-[#FF8A00] pl-4">
-                <div className="font-display text-3xl font-bold text-[#1a1c1b] mb-1">
-                  100+
+            {/* Core Capabilities List */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              {capabilities.map((c, i) => (
+                <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="flex items-center gap-2 text-[#0b233a] font-bold text-xs mb-1">
+                    <span className="material-symbols-outlined text-[#FF8A00] text-base">check_circle</span>
+                    <span>{c.title}</span>
+                  </div>
+                  <p className="font-sans text-[11px] text-slate-500 leading-snug">
+                    {c.desc}
+                  </p>
                 </div>
-                <div className="font-mono text-xs text-[#424656] uppercase font-semibold">
-                  Skilled Experts
-                </div>
-              </div>
-              <div className="border-l-2 border-[#FF8A00] pl-4">
-                <div className="font-display text-3xl font-bold text-[#1a1c1b] mb-1">
-                  Zero
-                </div>
-                <div className="font-mono text-xs text-[#424656] uppercase font-semibold">
-                  Safety Incidents
-                </div>
-              </div>
+              ))}
             </div>
 
-            <button
-              onClick={onOpenLeadership}
-              className="bg-[#FF8A00] text-white px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-all duration-300 shadow-md hover:shadow-lg flex items-center gap-2"
-            >
-              Request Manpower Support
-              <span className="material-symbols-outlined text-base">groups</span>
-            </button>
-          </motion.div>
-
-          {/* Right Imagery Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-[#FF8A00]/10 -translate-x-4 translate-y-4 rounded-2xl" />
-            <img
-              alt="Engineering Leadership"
-              className="relative z-10 w-full h-auto rounded-2xl shadow-xl border border-white/40"
-              src="https://mystartupnews.in/_next/image?url=https://res.cloudinary.com/dfycb17sf/image/upload/v1781250211/writerProfiles/abti1vwpsmc6slhztdp7.webp&w=1920&q=75"
-            />
-
-            {/* Floating Safety Card */}
-            <div className="absolute -bottom-6 left-4 right-4 md:right-auto md:-left-6 z-20 glass-panel-light p-6 rounded-xl border border-white/60 shadow-xl md:max-w-[320px]">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-[#eeeeec] flex items-center justify-center border border-[#c3c5d9]">
-                  <span className="material-symbols-outlined text-[#FF8A00]">
-                    verified_user
-                  </span>
-                </div>
-                <div>
-                  <div className="font-sans text-sm font-bold text-[#1a1c1b]">
-                    Commitment & Quality
-                  </div>
-                  <div className="font-mono text-xs text-[#424656]">
-                    HSE Compliance
-                  </div>
-                </div>
-              </div>
-              <p className="font-sans text-xs text-[#424656] italic leading-relaxed">
-                &ldquo;Safety First: Zero unsafe acts, certified equipment, strict compliance with safety norms.&rdquo;
-              </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <button
+                onClick={onOpenLeadership}
+                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-6 py-3 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md flex items-center gap-2"
+              >
+                <span>Request Manpower Support</span>
+                <span className="material-symbols-outlined text-base">groups</span>
+              </button>
+              <Link
+                href="/services#manpower"
+                className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] transition-colors"
+              >
+                Explore Deputation Details →
+              </Link>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Right Column: Verified HSE & Safety Card */}
+          <div className="lg:col-span-6 relative">
+            <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-white relative">
+              <img
+                alt="Engineering Field Execution"
+                className="w-full h-72 sm:h-80 object-cover"
+                src="https://mystartupnews.in/_next/image?url=https://res.cloudinary.com/dfycb17sf/image/upload/v1781250211/writerProfiles/abti1vwpsmc6slhztdp7.webp&w=1920&q=75"
+              />
+
+              {/* HSE Safety Commitment Bar */}
+              <div className="p-6 bg-[#0b233a] text-white">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-full bg-[#FF8A00]/20 border border-[#FF8A00]/40 flex items-center justify-center text-[#FF8A00]">
+                    <span className="material-symbols-outlined text-lg">verified_user</span>
+                  </div>
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-white">
+                      HSE Commitment &amp; Quality
+                    </h4>
+                    <span className="font-mono text-[10px] text-slate-400">Zero Unsafe Acts Policy</span>
+                  </div>
+                </div>
+                <p className="font-sans text-xs text-slate-300 italic leading-relaxed">
+                  &ldquo;Safety First: Zero unsafe acts, certified equipment, and strict compliance with global safety and environmental norms across all deployments.&rdquo;
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

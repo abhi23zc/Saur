@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PrecisionDisciplines, { Discipline } from "@/components/PrecisionDisciplines";
 import StrategicPartnerships from "@/components/StrategicPartnerships";
+import MajorProjects from "@/components/MajorProjects";
 import SectorInsights from "@/components/SectorInsights";
 import LifecycleTimeline from "@/components/LifecycleTimeline";
 import TechnicalWhitepapers, { Whitepaper } from "@/components/TechnicalWhitepapers";
@@ -33,11 +34,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-background text-on-background">
-      {/* Background Grids & Scans */}
-      <div className="fixed inset-0 micro-grid pointer-events-none z-[-1] opacity-[0.25]" />
-      <div className="fixed inset-0 scanlines pointer-events-none z-50 mix-blend-overlay opacity-[0.06]" />
-
+    <div className="relative min-h-screen bg-white text-slate-900">
       {/* Top Navbar */}
       <Navbar
         onOpenSearch={() => setSearchOpen(true)}
@@ -52,53 +49,40 @@ export default function Home() {
           onOpenConsultation={() => setConsultationOpen(true)}
         />
 
-        {/* 2. Precision Disciplines Bento Grid */}
+        {/* 2. Precision Disciplines Grid */}
         <PrecisionDisciplines
           onSelectDiscipline={(discipline) => setSelectedDiscipline(discipline)}
         />
 
-        {/* 3. Strategic Partnerships Infinite Ticker */}
+        {/* 3. Specialized Software Infinite Ticker */}
         <StrategicPartnerships />
 
-        {/* 4. Human Element Sector Insights */}
+        {/* 4. Major Projects Executed (Real PDF Case Studies) */}
+        <MajorProjects />
+
+        {/* 5. Industries Served */}
         <SectorInsights
-          onOpenCaseStudy={() =>
-            setSelectedWhitepaper({
-              id: "cs-petrochemical",
-              category: "PETROCHEMICAL EPC",
-              date: "MAR 2026",
-              tag: "PROJECT",
-              title: "Integrated EPC Execution for Petrochemical Expansion",
-              summary:
-                "Delivering specialized engineering solutions across critical sectors. Our multidisciplinary approach ensures safety, efficiency, and sustainability from FEED to final handover.",
-              image:
-                "https://lh3.googleusercontent.com/aida-public/AB6AXuAGilywHHJWKX8_xH8PH0-KU7bj4qbyZppnHnxDo0U23bbFMfCUR41S16mbhdI136MrakXpNGOdKx8kiruKm2e25PfVCKDyWW6FgGXwy2hM_Qk9i9gJtnF2xfQCDonydx-2yaEmo0CuhkhRIkwg_KMuHKzzNKe9DwJNcJDrOnKMXJKgqFzUv1g1Airpk9l1_Dcyh_Qy6qhSHBtsDtzjAu322hTarK3MSeUJVJquxBk4idUo0YjY9_c",
-              readTime: "5 min read",
-              author: "Saur Project Management Office",
-              takeaways: [
-                "100% ISO 9001 compliance in FEED design.",
-                "Cross-disciplinary integration between Piping and E&I teams.",
-                "Zero safety incidents across the entire execution phase.",
-              ],
-            })
-          }
+          onOpenCaseStudy={() => {
+            const el = document.getElementById("projects");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }}
         />
 
-        {/* 5. Axon Engineering Lifecycle */}
+        {/* 6. Engineering Lifecycle */}
         <LifecycleTimeline />
 
-        {/* 6. Technical Whitepapers Grid */}
+        {/* 7. Manpower & Workforce Solutions */}
+        <HumanCapital onOpenLeadership={() => setLeadershipOpen(true)} />
+
+        {/* 8. Professional Courses & Training */}
         <TechnicalWhitepapers
           onSelectWhitepaper={(whitepaper) => setSelectedWhitepaper(whitepaper)}
         />
 
-        {/* 7. Leadership & Human Capital */}
-        <HumanCapital onOpenLeadership={() => setLeadershipOpen(true)} />
-
-        {/* 8. Global Footprint Map */}
+        {/* 9. Global Footprint & Delivery Centers */}
         <GlobalFootprintMap />
 
-        {/* 9. Initiate Consultation CTA */}
+        {/* 10. Direct Consultation CTA */}
         <ConsultationCTA onOpenConsultation={() => setConsultationOpen(true)} />
       </main>
 

@@ -75,7 +75,7 @@ export default function SearchModal({
         <div className="max-h-[60vh] overflow-y-auto space-y-6">
           {query.trim() === "" ? (
             <div className="text-center py-8 text-[#737687] font-sans text-xs">
-              Type keywords such as <span className="font-mono text-[#FF8A00]">&quot;Turbine&quot;</span>, <span className="font-mono text-[#FF8A00]">&quot;Subsea&quot;</span>, or <span className="font-mono text-[#FF8A00]">&quot;AI&quot;</span> to search global telemetry.
+              Type keywords such as <span className="font-mono text-[#FF8A00]">&quot;Piping&quot;</span>, <span className="font-mono text-[#FF8A00]">&quot;Instrumentation&quot;</span>, <span className="font-mono text-[#FF8A00]">&quot;3D Modeling&quot;</span>, or <span className="font-mono text-[#FF8A00]">&quot;ETAP&quot;</span> to search disciplines and courses.
             </div>
           ) : (
             <>

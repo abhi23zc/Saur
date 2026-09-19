@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 interface HubLocation {
   id: string;
   name: string;
-  type: "HQ" | "Active Operation";
+  type: "HQ" | "Training & Delivery" | "Project Execution";
   coords: { x: number; y: number }; // Percentage relative position
   city: string;
-  engineers: number;
-  activeProjects: number;
+  address: string;
   specialization: string;
+  contact: string;
 }
 
 const hubs: HubLocation[] = [
@@ -20,49 +20,49 @@ const hubs: HubLocation[] = [
     id: "hq-mumbai",
     name: "Corporate Headquarters",
     type: "HQ",
-    coords: { x: 70, y: 42 },
-    city: "Mumbai, India",
-    engineers: 150,
-    activeProjects: 45,
-    specialization: "Engineering & Management",
+    coords: { x: 70, y: 44 },
+    city: "Navi Mumbai, India",
+    address: "507, 5th Floor, Real Tech Park, Sector 30A, Vashi, Navi Mumbai - 400703",
+    specialization: "FEED, Detailed Engineering & Project Management",
+    contact: "+91 99671 12295 / contact@saurengineering.in",
   },
   {
     id: "hub-chennai",
-    name: "Design & Training Center",
-    type: "Active Operation",
-    coords: { x: 72, y: 48 },
+    name: "Design & Training Hub",
+    type: "Training & Delivery",
+    coords: { x: 72, y: 52 },
     city: "Chennai, India",
-    engineers: 120,
-    activeProjects: 30,
-    specialization: "Detailed Design & Workforce",
+    address: "No. 31, Kumaran Colony, 2nd Street, Vadapalani, Chennai - 600026",
+    specialization: "3D Plant Modeling, Academy & Workforce Deputation",
+    contact: "+91 88286 12183",
   },
   {
     id: "me-projects",
-    name: "Middle East Deployments",
-    type: "Active Operation",
-    coords: { x: 60, y: 44 },
-    city: "Dubai, UAE (Projects)",
-    engineers: 80,
-    activeProjects: 15,
-    specialization: "On-site Commissioning",
+    name: "Middle East Delivery",
+    type: "Project Execution",
+    coords: { x: 62, y: 45 },
+    city: "UAE & Saudi Arabia",
+    address: "ADNOC Ruwais, Bab & Buhasa, Das Island & Saudi Aramco CRPO",
+    specialization: "Major EPC, Lifting Studies, Wellhead Instrumentation",
+    contact: "saurengineering.in",
   },
   {
     id: "sea-projects",
-    name: "SE Asia Deployments",
-    type: "Active Operation",
-    coords: { x: 78, y: 50 },
-    city: "Singapore (Projects)",
-    engineers: 45,
-    activeProjects: 12,
-    specialization: "Subsea & EPC Support",
+    name: "SE Asia Operations",
+    type: "Project Execution",
+    coords: { x: 80, y: 58 },
+    city: "Indonesia (Pertamina)",
+    address: "Tanjung Miring Gas Station, Menggala & Lumut Balai II Geothermal",
+    specialization: "Mechanical DED, Piping Stress & Pipeline DED",
+    contact: "saurengineering.in",
   },
 ];
 
-// Ordered connection routes between hubs (great-circle style arcs)
+// Connection arcs between hubs
 const routes = [
   ["hq-mumbai", "hub-chennai"],
   ["hq-mumbai", "me-projects"],
-  ["hub-chennai", "sea-projects"],
+  ["hq-mumbai", "sea-projects"],
 ];
 
 function hubById(id: string) {
@@ -72,8 +72,7 @@ function hubById(id: string) {
 function arcPath(a: HubLocation, b: HubLocation) {
   const mx = (a.coords.x + b.coords.x) / 2;
   const my = (a.coords.y + b.coords.y) / 2;
-  // Bow the control point upward for a satellite-route feel
-  const lift = 10 + Math.abs(a.coords.x - b.coords.x) * 0.12;
+  const lift = 8 + Math.abs(a.coords.x - b.coords.x) * 0.12;
   return `M ${a.coords.x} ${a.coords.y} Q ${mx} ${my - lift} ${b.coords.x} ${b.coords.y}`;
 }
 
@@ -83,49 +82,34 @@ export default function GlobalFootprintMap() {
   return (
     <section
       id="global-footprint"
-      className="py-24 md:py-32 bg-[#ffffff] border-t border-[#c3c5d9]/30"
+      className="py-20 md:py-28 bg-[#ffffff] border-t border-slate-200"
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <span className="font-mono text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] block font-bold mb-3">
-            Global Operations
-          </span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4 tracking-tighter text-[#1a1c1b] uppercase">
-            Global Footprint
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
+            Delivery Centers &amp; Project Footprint
+          </div>
+          <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a]">
+            Global Operations &amp; Office Locations
           </h2>
-          <p className="font-sans text-base text-[#565f70] leading-relaxed font-light">
-            Strategically positioned to deliver critical infrastructure across
-            every major industrial continent. Select a node to view live hub
-            telemetry.
+          <p className="font-sans text-xs md:text-sm text-slate-600 mt-1">
+            Operating from registered headquarters in Navi Mumbai and our training center in Chennai, delivering engineering solutions across the Middle East and SE Asia.
           </p>
-        </motion.div>
+        </div>
 
         {/* Map Box */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8 }}
-          className="relative w-full aspect-[16/10] sm:aspect-[2/1] lg:aspect-[21/9] mt-12 rounded-3xl border border-white/10 overflow-hidden bg-[#05080c] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]"
-        >
-          <div className="absolute inset-0 blueprint-grid-dark opacity-40 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,138,0,0.12),transparent_65%)] pointer-events-none" />
+        <div className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-2xl border border-slate-300 overflow-hidden bg-[#07131e] shadow-xl">
+          <div className="absolute inset-0 micro-grid opacity-20 pointer-events-none" />
 
-          {/* Graticule + connection arcs */}
+          {/* SVG Map Lines & Arcs */}
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            {/* Parallels */}
-            {[20, 35, 50, 65, 80].map((y) => (
+            {/* Parallels & Meridians */}
+            {[25, 45, 65, 85].map((y) => (
               <line
                 key={`p-${y}`}
                 x1="4"
@@ -133,217 +117,140 @@ export default function GlobalFootprintMap() {
                 y1={y}
                 y2={y}
                 stroke="rgba(255,255,255,0.06)"
-                strokeWidth="0.15"
+                strokeWidth="0.2"
               />
             ))}
-            {/* Meridians (subtly bowed for a globe feel) */}
-            {[15, 30, 45, 60, 75, 90].map((x) => (
-              <path
+            {[20, 40, 60, 80].map((x) => (
+              <line
                 key={`m-${x}`}
-                d={`M ${x} 12 Q ${x + (x < 50 ? 3 : -3)} 50 ${x} 88`}
-                fill="none"
-                stroke="rgba(255,255,255,0.05)"
-                strokeWidth="0.15"
+                x1={x}
+                x2={x}
+                y1="10"
+                y2="90"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.2"
               />
             ))}
 
-            {/* Connection routes */}
-            {routes.map(([aId, bId], i) => {
-              const a = hubById(aId);
-              const b = hubById(bId);
+            {/* Routes */}
+            {routes.map(([fromId, toId]) => {
+              const a = hubById(fromId);
+              const b = hubById(toId);
               return (
-                <motion.path
-                  key={`route-${i}`}
+                <path
+                  key={`${fromId}-${toId}`}
                   d={arcPath(a, b)}
                   fill="none"
-                  stroke="url(#routeGradient)"
-                  strokeWidth="0.28"
-                  strokeDasharray="1.4 1.4"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.6, delay: 0.3 + i * 0.25, ease: "easeInOut" }}
+                  stroke="#FF8A00"
+                  strokeWidth="0.6"
+                  strokeDasharray="2 1.5"
+                  opacity="0.75"
                 />
               );
             })}
-
-            <defs>
-              <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#FF9A20" stopOpacity="0.1" />
-                <stop offset="50%" stopColor="#FF8A00" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#FF9A20" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
           </svg>
 
-          {/* Nodes */}
+          {/* Interactive Hub Markers */}
           {hubs.map((hub) => {
             const isHQ = hub.type === "HQ";
             const isSelected = selectedHub?.id === hub.id;
-            return (
-              <button
-                key={hub.id}
-                style={{ top: `${hub.coords.y}%`, left: `${hub.coords.x}%` }}
-                onClick={() => setSelectedHub(isSelected ? null : hub)}
-                aria-label={`View ${hub.name} details`}
-                className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer z-30"
-              >
-                {/* Pulsing ring */}
-                <span
-                  className={cn(
-                    "node-ring absolute -inset-2 rounded-full",
-                    isHQ ? "text-[#FF9A20]" : "text-[#FF8A00]"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "relative block rounded-full border-2 border-white/90 shadow-lg transition-transform duration-300 group-hover:scale-125",
-                    isHQ
-                      ? "w-4 h-4 bg-[#FF9A20] shadow-[0_0_18px_rgba(255,154,32,0.9)]"
-                      : "w-3.5 h-3.5 bg-[#FF8A00] shadow-[0_0_18px_rgba(255,138,0,0.9)]",
-                    isSelected && "scale-125"
-                  )}
-                />
 
-                {/* Hover / active badge (desktop only) */}
-                <div
-                  className={cn(
-                    "absolute top-6 left-1/2 -translate-x-1/2 hidden md:block glass-panel-light px-4 py-2.5 rounded-xl text-left border border-white/60 shadow-xl w-56 transition-all duration-200",
-                    isSelected
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 group-hover:opacity-100 scale-95 pointer-events-none"
-                  )}
+            return (
+              <div
+                key={hub.id}
+                style={{
+                  left: `${hub.coords.x}%`,
+                  top: `${hub.coords.y}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+                className="absolute z-20 group"
+              >
+                <button
+                  onClick={() => setSelectedHub(isSelected ? null : hub)}
+                  className="relative flex items-center justify-center p-2 focus:outline-none"
+                  aria-label={`Select ${hub.name}`}
                 >
-                  <div className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase mb-0.5">
-                    {hub.type} {"//"} {hub.city}
-                  </div>
-                  <div className="font-sans text-xs font-bold text-[#1a1c1b] leading-snug">
-                    {hub.name}
-                  </div>
-                  <div className="font-sans text-[11px] text-[#424656] mt-1">
-                    Engineers: <span className="font-bold">{hub.engineers}</span> · Projects:{" "}
-                    <span className="font-bold">{hub.activeProjects}</span>
-                  </div>
-                  <div className="font-mono text-[9px] text-[#FF8A00] mt-1 font-semibold leading-snug">
-                    {hub.specialization}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-
-          {/* Legend */}
-          <div className="absolute bottom-4 left-4 flex flex-wrap gap-4 bg-black/30 backdrop-blur-md rounded-full px-4 py-2 border border-white/10">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#FF9A20]" />
-              <span className="font-mono text-[10px] text-white/70 font-semibold uppercase tracking-wider">
-                Executive HQ
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#FF8A00] animate-pulse" />
-              <span className="font-mono text-[10px] text-white/70 font-semibold uppercase tracking-wider">
-                Active Hub
-              </span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Responsive hub cards (primary interaction on mobile) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          {hubs.map((hub) => {
-            const isHQ = hub.type === "HQ";
-            const isSelected = selectedHub?.id === hub.id;
-            return (
-              <button
-                key={hub.id}
-                onClick={() =>
-                  setSelectedHub(isSelected ? null : hub)
-                }
-                className={cn(
-                  "text-left p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_-12px_rgba(0,0,0,0.2)]",
-                  isSelected
-                    ? "bg-[#05080c] border-[#05080c] text-white"
-                    : "bg-white border-[#c3c5d9]/40 hover:border-[#FF8A00]/40"
-                )}
-              >
-                <div className="flex items-center gap-2 mb-3">
+                  <span className="absolute w-6 h-6 rounded-full bg-[#FF8A00]/30 animate-ping" />
                   <span
                     className={cn(
-                      "w-2.5 h-2.5 rounded-full",
-                      isHQ ? "bg-[#FF9A20]" : "bg-[#FF8A00]"
+                      "relative w-3.5 h-3.5 rounded-full border-2 border-white transition-transform duration-200",
+                      isHQ ? "bg-[#FF8A00]" : "bg-[#FF9A20]",
+                      isSelected && "scale-150 ring-4 ring-[#FF8A00]/50"
                     )}
                   />
-                  <span
-                    className={cn(
-                      "font-mono text-[9px] uppercase tracking-[0.15em] font-bold",
-                      isSelected ? "text-white/60" : "text-[#737687]"
-                    )}
-                  >
-                    {hub.type}
-                  </span>
-                </div>
+                </button>
+
+                {/* City Tag */}
                 <div
                   className={cn(
-                    "font-display text-base font-bold leading-tight mb-1",
-                    isSelected ? "text-white" : "text-[#1a1c1b]"
+                    "absolute top-full left-1/2 -translate-x-1/2 mt-1 px-2 py-0.5 rounded text-[10px] font-mono whitespace-nowrap font-bold shadow-md transition-all",
+                    isSelected
+                      ? "bg-[#FF8A00] text-white"
+                      : "bg-black/75 text-slate-200 border border-white/10"
                   )}
                 >
                   {hub.city}
                 </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Responsive Hub Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          {hubs.map((hub) => {
+            const isHQ = hub.type === "HQ";
+            const isSelected = selectedHub?.id === hub.id;
+
+            return (
+              <div
+                key={hub.id}
+                onClick={() => setSelectedHub(isSelected ? null : hub)}
+                className={cn(
+                  "p-5 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between",
+                  isSelected
+                    ? "bg-[#0b233a] border-[#FF8A00] text-white shadow-lg"
+                    : "bg-slate-50 border-slate-200 hover:border-slate-300 hover:bg-white"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span
+                      className={cn(
+                        "font-mono text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded",
+                        isHQ ? "bg-[#FF8A00]/20 text-[#FF8A00]" : "bg-slate-200 text-slate-700"
+                      )}
+                    >
+                      {hub.type}
+                    </span>
+                  </div>
+                  <h3
+                    className={cn(
+                      "font-display text-base font-bold mb-1",
+                      isSelected ? "text-white" : "text-[#0b233a]"
+                    )}
+                  >
+                    {hub.name}
+                  </h3>
+                  <p
+                    className={cn(
+                      "font-sans text-xs mb-3 leading-relaxed",
+                      isSelected ? "text-slate-300" : "text-slate-600"
+                    )}
+                  >
+                    {hub.address}
+                  </p>
+                </div>
+
                 <div
                   className={cn(
-                    "font-sans text-xs leading-snug mb-4",
-                    isSelected ? "text-white/60" : "text-[#565f70]"
+                    "pt-3 border-t text-[11px] font-mono",
+                    isSelected ? "border-white/15 text-[#FF8A00]" : "border-slate-200 text-slate-500"
                   )}
                 >
-                  {hub.specialization}
+                  {hub.contact}
                 </div>
-                <div
-                  className={cn(
-                    "flex items-center gap-4 pt-3 border-t",
-                    isSelected ? "border-white/10" : "border-[#eeeeec]"
-                  )}
-                >
-                  <div>
-                    <div
-                      className={cn(
-                        "font-display text-lg font-bold",
-                        isSelected ? "text-[#ffaa44]" : "text-[#FF8A00]"
-                      )}
-                    >
-                      {hub.engineers}
-                    </div>
-                    <div
-                      className={cn(
-                        "font-mono text-[8px] uppercase tracking-widest",
-                        isSelected ? "text-white/40" : "text-[#737687]"
-                      )}
-                    >
-                      Engineers
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      className={cn(
-                        "font-display text-lg font-bold",
-                        isSelected ? "text-white" : "text-[#1a1c1b]"
-                      )}
-                    >
-                      {hub.activeProjects}
-                    </div>
-                    <div
-                      className={cn(
-                        "font-mono text-[8px] uppercase tracking-widest",
-                        isSelected ? "text-white/40" : "text-[#737687]"
-                      )}
-                    >
-                      Projects
-                    </div>
-                  </div>
-                </div>
-              </button>
+              </div>
             );
           })}
         </div>

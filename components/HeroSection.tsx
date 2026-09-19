@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface HeroSectionProps {
@@ -9,131 +8,140 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onExplore, onOpenConsultation }: HeroSectionProps) {
-  const [timeString, setTimeString] = useState<string>("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeString(now.toUTCString().split(" ").slice(4, 5)[0] + " UTC");
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.12,
+        delayChildren: 0.15,
       },
     },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+    },
   };
 
   return (
-    <section className="relative w-full min-h-[100svh] flex flex-col justify-center bg-[#05080c] overflow-hidden pt-32 md:pt-40 pb-40 md:pb-32">
-      {/* Premium Dark Tech Background */}
-      <motion.div
-        initial={{ scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.7 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="absolute inset-0 bg-cover bg-center mix-blend-screen"
+    <section className="relative w-full min-h-[92svh] flex flex-col justify-center bg-[#07131e] overflow-hidden pt-28 md:pt-36 pb-36 md:pb-28">
+      {/* Dark Technical Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity"
         style={{
           backgroundImage:
             "url('https://www.tcreng.com/assets/img/og/refining-hero-og.jpg')",
         }}
       />
 
-      {/* Sophisticated Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#05080c] via-[#05080c]/80 to-transparent opacity-95" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-transparent to-transparent opacity-90" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#0b5fff]/5 via-transparent to-transparent opacity-60" />
-      <div className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none" />
+      {/* Solid Overlays */}
+      <div className="absolute inset-0 bg-[#07131e]/90" />
+      <div className="absolute inset-0 micro-grid opacity-20 pointer-events-none" />
 
       {/* Main Content Container */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full mt-10 md:mt-0 flex flex-col items-start justify-center">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full flex flex-col items-start justify-center">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-4xl w-full relative z-10"
+          className="max-w-4xl w-full"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 mb-6 font-mono text-[12px] uppercase tracking-widest font-bold text-[#FF8A00]">
-            ISO 9001:2015 CERTIFIED
+          {/* Authentic Accreditation Badge */}
+          <motion.div variants={itemVariants}>
+            <a
+              href="/company#certificates"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-white/90 hover:text-white transition-all text-xs font-mono font-medium tracking-wide mb-6 group backdrop-blur-md"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#FF8A00]" />
+              <span>ISO 9001:2015 CERTIFIED</span>
+              <span className="text-white/30">|</span>
+              <span className="text-[#FF8A00]">DPIIT #STARTUPINDIA</span>
+              <span className="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform text-[#FF8A00]">
+                arrow_forward
+              </span>
+            </a>
           </motion.div>
 
+          {/* Authentic PDF Tagline Headline */}
           <motion.h1
             variants={itemVariants}
-            className="font-display text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tighter text-white"
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-white leading-[1.08]"
           >
             Reliable Engineering.<br />
             Sustainable Design.<br />
             <span className="text-[#FF8A00]">Proven Results.</span>
           </motion.h1>
 
+          {/* Simple, Genuine PDF Summary */}
           <motion.p
             variants={itemVariants}
-            className="font-sans text-base md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed font-light"
+            className="font-sans text-base md:text-lg text-slate-300 max-w-2xl mb-8 leading-relaxed font-light"
           >
-            Trusted by ADNOC, L&T Hydrocarbon, Saudi Aramco & more — delivering engineering excellence across Oil & Gas, EPC, and industrial projects.
+            We are an ISO 9001:2015 certified engineering consultancy. We deliver FEED, 3D plant modeling, detailed engineering, and skilled manpower for global Oil & Gas, EPC, and industrial projects.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-5 relative z-10">
+          {/* CTAs */}
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 relative z-10">
             <button
               onClick={onExplore}
-              className="group relative overflow-hidden bg-[#FF8A00] text-white px-8 py-4 rounded-md font-sans text-sm font-bold transition-all duration-300 shadow-[0_4px_15px_rgba(255,138,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,138,0,0.4)] hover:-translate-y-0.5 flex items-center gap-2"
+              className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-7 py-3.5 rounded-lg font-sans text-sm font-semibold transition-all duration-200 shadow-md flex items-center gap-2"
             >
-              <span className="relative z-10">Explore Our Services</span>
-              <span className="material-symbols-outlined text-sm relative z-10 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              <span>Explore Disciplines</span>
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
             <button
               onClick={onOpenConsultation}
-              className="group text-white px-8 py-4 rounded-md font-sans text-sm font-bold transition-all duration-300 flex items-center gap-3 border border-white/40 hover:bg-white/10 hover:-translate-y-0.5"
+              className="bg-white/10 hover:bg-white/15 text-white px-7 py-3.5 rounded-lg font-sans text-sm font-semibold transition-all duration-200 border border-white/20 flex items-center gap-2"
             >
-              Contact Us
+              <span>Request Consultation</span>
             </button>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Bottom Floating Stats Pill */}
+      {/* Bottom Real Stats Bar */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 w-[calc(100%-2.5rem)] sm:w-max max-w-[95vw]"
+        transition={{ duration: 0.7, delay: 0.6 }}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[calc(100%-2rem)] sm:w-auto max-w-[95vw]"
       >
-        <div className="grid grid-cols-3 divide-x divide-white/10 bg-white/5 backdrop-blur-2xl rounded-2xl sm:rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.25)] px-2 sm:px-10 md:px-14 py-4 sm:py-5">
-          <div className="text-center px-3 sm:px-6">
-            <div className="font-mono text-[8px] sm:text-[9px] text-white/40 uppercase tracking-[0.2em] mb-1 sm:mb-1.5">
-              Active Projects
+        <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10 bg-[#0b1b2a]/95 backdrop-blur-md rounded-xl border border-white/15 shadow-xl px-4 sm:px-8 py-3.5">
+          <div className="text-center px-3 sm:px-5 py-1">
+            <div className="font-mono text-[9px] text-slate-400 uppercase tracking-wider mb-0.5">
+              Engineering Hours
             </div>
-            <div className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A20] to-[#FF8A00]">
-              500+
+            <div className="font-display text-lg sm:text-2xl font-bold text-[#FF8A00]">
+              50,000+
             </div>
           </div>
-          <div className="text-center px-3 sm:px-6">
-            <div className="font-mono text-[8px] sm:text-[9px] text-white/40 uppercase tracking-[0.2em] mb-1 sm:mb-1.5">
-              Quality
+          <div className="text-center px-3 sm:px-5 py-1">
+            <div className="font-mono text-[9px] text-slate-400 uppercase tracking-wider mb-0.5">
+              Deliverables
             </div>
-            <div className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+            <div className="font-display text-lg sm:text-2xl font-bold text-white">
+              2,000+
+            </div>
+          </div>
+          <div className="text-center px-3 sm:px-5 py-1">
+            <div className="font-mono text-[9px] text-slate-400 uppercase tracking-wider mb-0.5">
+              Disciplines
+            </div>
+            <div className="font-display text-lg sm:text-2xl font-bold text-white">
+              11 Core
+            </div>
+          </div>
+          <div className="text-center px-3 sm:px-5 py-1">
+            <div className="font-mono text-[9px] text-slate-400 uppercase tracking-wider mb-0.5">
+              Quality Standard
+            </div>
+            <div className="font-display text-lg sm:text-2xl font-bold text-[#FF8A00]">
               ISO 9001
-            </div>
-          </div>
-          <div className="text-center px-3 sm:px-6">
-            <div className="font-mono text-[8px] sm:text-[9px] text-white/40 uppercase tracking-[0.2em] mb-1 sm:mb-1.5">
-              Global Reach
-            </div>
-            <div className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-              10+
-              <span className="hidden sm:inline"> Countries</span>
             </div>
           </div>
         </div>

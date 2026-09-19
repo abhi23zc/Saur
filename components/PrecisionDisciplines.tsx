@@ -23,55 +23,84 @@ export interface Discipline {
 
 export const disciplinesData: Discipline[] = [
   {
-    id: "mechanical-systems",
-    title: "Mechanical Systems",
-    category: "Mechanical",
+    id: "piping-mechanical",
+    title: "Piping & Mechanical Engineering",
+    category: "Piping & Mechanical",
     description:
-      "Designing high-precision mechanical components and turbine systems for industrial applications. Ultra-sharp detail, polished steel, and premium technical integration.",
+      "Complete piping layout design, 3D equipment modeling, CAESAR II stress analysis, isometric generation, and material take-offs (MTO/BOM).",
     detailedSpecs: {
-      tolerances: "±0.001mm micro-machining accuracy",
-      materials: "Titanium Grade 5, Super Invar, Inconel 718",
-      standards: "ISO 9001:2015, AS9100D, ASME Section VIII",
-      efficiency: "98.4% thermal and mechanical conversion rate",
+      tolerances: "CAESAR II, PVElite, AutoCAD Plant 3D, TANK",
+      materials: "Carbon Steel, Stainless Steel, Duplex, Inconel, Alloy Steel",
+      standards: "ASME B31.3 / B31.1 / B31.8, API 650 / 620, ASME Sec VIII",
+      efficiency: "100% Clash-Free 3D Routing & ISO 9001 QA Check",
       deliverables: [
-        "High-RPM Turbine Assemblies",
-        "Kinetic Energy Storage Rotors",
-        "Cryogenic Valve Manifolds",
-        "Structural Dynamic Shock Absorbers",
+        "Piping General Arrangement Drawings (GAD)",
+        "Piping Isometrics & Vessel Trims",
+        "CAESAR II Pipe Stress & Flexibility Analysis",
+        "Static Equipment GA & Fabrication Drawings",
+        "Material Take-Off (MTO) & Support Schedule",
       ],
     },
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdkhErjNQUcUeDVSPQNKKfFvm-nrxzUy1Lan7GwyCy7yIBYvA16Scgtfc&s=10",
-    badge: "Primary Domain",
+    badge: "Core Discipline",
     metrics: [
-      { label: "EFFICIENCY", value: "98.4%", color: "text-[#FF8A00]" },
-      { label: "UPTIME", value: "24/7/365", color: "text-white" },
+      { label: "STANDARDS", value: "ASME / API", color: "text-[#FF8A00]" },
+      { label: "DELIVERY", value: "IFC / As-Built", color: "text-white" },
     ],
   },
   {
-    id: "electrical-instrumentation",
-    title: "Electrical & Instrumentation",
+    id: "electrical-engineering",
+    title: "Electrical Engineering",
     category: "Electrical",
     description:
-      "Delivering robust electrical networks and precise instrumentation systems. From detailed design to turnkey E&I project execution.",
+      "Substation layouts, power system studies, Single Line Diagrams (SLD), cable tray routing, and industrial lighting calculations.",
     detailedSpecs: {
-      tolerances: "Sub-millisecond data acquisition",
-      materials: "Industrial Grade Sensors, Flameproof Enclosures",
-      standards: "IEC 61511, ISA, IEEE Standards",
-      efficiency: "99.9% network reliability",
+      tolerances: "ETAP, Dialux, Smart Electrical (SEL), AutoCAD",
+      materials: "HV/MV/LV Switchgear, Transformers, Cables, Cable Trays",
+      standards: "IEC 60364, IEEE, NFPA 70 (NEC), IS Standards",
+      efficiency: "Optimized Load Flow & Short-Circuit Analysis",
       deliverables: [
-        "2D/3D Design & Drafting",
-        "As-built documentation",
-        "Control System Architecture",
-        "Field Instrument Calibration",
+        "Single Line Diagrams (SLD) & Schematics",
+        "ETAP Power System Studies & Sizing Calculations",
+        "Electrical Equipment Layouts & Substation Design",
+        "Cable Tray Routing & Sizing Schedules",
+        "Lighting Calculation Reports & Dialux Layouts",
+      ],
+    },
+    image:
+      "https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-control-systems/switchboards/pow-r-line-xd-switchboard/pow-r-line-xd-switchboard-isometric-front-view.jpg",
+    badge: "Power Systems",
+    metrics: [
+      { label: "TOOLS", value: "ETAP / SEL", color: "text-[#FF8A00]" },
+      { label: "ACCURACY", value: "100% Verified", color: "text-white" },
+    ],
+  },
+  {
+    id: "instrumentation-control",
+    title: "Instrumentation & Control",
+    category: "Instrumentation",
+    description:
+      "Field instrumentation design, SmartPlant Instrumentation (SPI), loop diagrams, cable schedules, and control room architecture.",
+    detailedSpecs: {
+      tolerances: "Smart Instrumentation (SPI), InstruCalc, AutoCAD",
+      materials: "Transmitters, Control Valves, DCS/PLC Racks, Fire & Gas Systems",
+      standards: "ISA 5.1, IEC 61508 / 61511 (SIL), API RP 551",
+      efficiency: "Complete SPI Database Automation & I/O Mapping",
+      deliverables: [
+        "SmartPlant Instrumentation (SPI / INtools) Setup",
+        "Instrument Datasheets & Sizing Calculations",
+        "Loop Diagrams & Interconnection Wiring Schedules",
+        "Junction Box (JB) Schedules & Cable Routing",
+        "Instrument Hook-Up & Installation Details",
       ],
     },
     image:
       "https://neometrixgroup.com/products/imgs/mwf-coolant-monitoring-skid.jpg",
-    badge: "Turnkey E&I",
+    badge: "Smart Automation",
     metrics: [
-      { label: "RELIABILITY", value: "99.9%", color: "text-[#FF8A00]" },
-      { label: "STANDARDS", value: "IEC/ISA", color: "text-white" },
+      { label: "SYSTEMS", value: "SPI / DCS", color: "text-[#FF8A00]" },
+      { label: "SAFETY", value: "SIL 2 / SIL 3", color: "text-white" },
     ],
   },
   {
@@ -79,25 +108,134 @@ export const disciplinesData: Discipline[] = [
     title: "Process Engineering",
     category: "Process",
     description:
-      "Optimizing complex chemical and physical processes with state-of-the-art simulation, AI control loops, and digital twin monitoring.",
+      "Process Flow Diagrams (PFD), Piping & Instrumentation Diagrams (P&ID), control philosophies, cause & effect, and equipment sizing.",
     detailedSpecs: {
-      tolerances: "Sub-second automation response times",
-      materials: "Hastelloy C-276, PTFE-lined piping, Alloy 20",
-      standards: "ISA-88, IEC 61511 (SIL 3), OSHA PSM",
-      efficiency: "32% energy reduction in continuous processing",
+      tolerances: "SmartPID, AVEVA PID, Aspen HYSYS, AutoCAD",
+      materials: "Process Vessels, Pumps, Compressors, Flare & Utility Networks",
+      standards: "API 520 / 521, ISO 10418, Shell DEP, Client Specs",
+      efficiency: "Rigorous Heat & Mass Balance Verification",
       deliverables: [
-        "Closed-loop Distillation Columns",
-        "Catalytic Reaction Chambers",
-        "Real-time SCADA AI Controllers",
-        "Zero-Liquid Discharge Systems",
+        "P&ID and PFD Development & Updating",
+        "Operating & Control Philosophy Documents",
+        "Cause & Effect Matrix (C&E) and Alarm/Trip Lists",
+        "Pump NPSH, Line Sizing & Relief Valve Calculations",
+        "Storage Tank & Separator Sizing Calculations",
       ],
     },
     image:
       "https://t3.ftcdn.net/jpg/19/42/33/00/360_F_1942330057_D050Umlm30cCrZ63tnbiqNjyMFPY2oGo.jpg",
-    badge: "AI Automation",
+    badge: "Design Basis",
     metrics: [
-      { label: "CONTROL LOOP", value: "<10ms", color: "text-[#FF8A00]" },
-      { label: "YIELD BOOST", value: "+14.2%", color: "text-[#FF8A00]" },
+      { label: "P&ID VERIFIED", value: "100%", color: "text-[#FF8A00]" },
+      { label: "PLATFORMS", value: "SmartPID / AVEVA", color: "text-white" },
+    ],
+  },
+  {
+    id: "plant-3d-modeling",
+    title: "3D Plant Modeling & BIM",
+    category: "3D Plant Modeling",
+    description:
+      "Complete multi-discipline 3D modeling using Smart 3D (S3D) and AVEVA E3D/PDMS, clash detection, and automated 2D drawing extraction.",
+    detailedSpecs: {
+      tolerances: "Intergraph Smart 3D (S3D), AVEVA E3D, PDMS, Navisworks",
+      materials: "Full Multi-Discipline Plant Assets (Piping, Civ/Struct, E&I, Telecom)",
+      standards: "ISO 19650 (BIM), Client CAD Specifications",
+      efficiency: "Zero-Clash Model Integration Across Disciplines",
+      deliverables: [
+        "Comprehensive 3D Plant Model in S3D / E3D",
+        "Multi-Discipline Clash Detection & Resolution Reports",
+        "Automated Extraction of Isometrics & GADs",
+        "BIM / Yard Fabrication 3D Verification Models",
+        "As-Built 3D Model Laser Scan Reconciliation",
+      ],
+    },
+    image:
+      "https://ars.els-cdn.com/content/image/1-s2.0-S2352012425003649-gr1.jpg",
+    badge: "Smart 3D & E3D",
+    metrics: [
+      { label: "MODELING", value: "S3D / E3D", color: "text-[#FF8A00]" },
+      { label: "CLASHES", value: "Zero Tolerance", color: "text-white" },
+    ],
+  },
+  {
+    id: "telecommunication",
+    title: "Telecommunication Engineering",
+    category: "Telecom",
+    description:
+      "Plant telecommunications design, CCTV surveillance, Public Address & General Alarm (PAGA), and fiber optic network infrastructure.",
+    detailedSpecs: {
+      tolerances: "AutoCAD, SmartPlant 3D, Specialist Telecom Tools",
+      materials: "Fiber Optic Cables, CCTV Cameras, PAGA Speakers, Telecom Racks",
+      standards: "ITU-T, IEEE 802.3, IEC Standards, Client Specs",
+      efficiency: "100% Plant Coverage & Fail-Safe Emergency Broadcast",
+      deliverables: [
+        "Telecom Overall Block Diagrams & Architecture",
+        "PAGA System Block Diagrams & Acoustic Coverage",
+        "CCTV Layouts & Field Coverage Maps",
+        "Fiber Optic & Telecom Cable Schedules",
+        "Telecom Equipment Lists & Bill of Quantities (BOQ)",
+      ],
+    },
+    image:
+      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80",
+    badge: "Plant Security",
+    metrics: [
+      { label: "COVERAGE", value: "100% Plant Wide", color: "text-[#FF8A00]" },
+      { label: "SYSTEMS", value: "PAGA / CCTV / FO", color: "text-white" },
+    ],
+  },
+  {
+    id: "civil-structural",
+    title: "Civil & Structural Engineering",
+    category: "Structural & Civil",
+    description:
+      "Structural steel framing, equipment foundations, pipe racks, heavy lifting rigging studies, and blast-resistant building design.",
+    detailedSpecs: {
+      tolerances: "STAAD.Pro, Tekla Structures, AutoCAD, Revit",
+      materials: "Structural Steel, Reinforced Concrete, Grout, Anchor Bolts",
+      standards: "AISC 360, ACI 318, ASCE 7, IS 456 / IS 800",
+      efficiency: "Safe Load Bearing & Optimized Steel Weight",
+      deliverables: [
+        "Equipment & Dynamic Compressor Foundation Design",
+        "Pipe Rack & Technological Structure Calculations (STAAD.Pro)",
+        "Rigging & Heavy Lifting Arrangement Studies",
+        "Civil Architectural & Drainage Layouts",
+        "Bar Bending Schedules (BBS) & Structural BOQ",
+      ],
+    },
+    image:
+      "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+    badge: "Structural Rigor",
+    metrics: [
+      { label: "ANALYSIS", value: "STAAD.Pro", color: "text-[#FF8A00]" },
+      { label: "FOUNDATIONS", value: "Heavy Industrial", color: "text-white" },
+    ],
+  },
+  {
+    id: "pipeline-engineering",
+    title: "Pipeline & Alignment Engineering",
+    category: "Pipeline",
+    description:
+      "Cross-country pipeline design, alignment sheets, crossing drawings (HDD/thrust boring), stress analysis, and route optimization.",
+    detailedSpecs: {
+      tolerances: "AutoCAD, CAESAR II, Google Earth Pro, GIS Tools",
+      materials: "API 5L Line Pipe (Grade B to X70), 3LPE Coating",
+      standards: "ASME B31.4 / B31.8, API 1104, OISD Standards",
+      efficiency: "Optimized Route Corridor & Stress Compliance",
+      deliverables: [
+        "Pipeline Route Alignment Sheets & Corridor Maps",
+        "Road, Railway & River Crossing Detail Drawings",
+        "Pipeline Stress Analysis & Wall Thickness Calculations",
+        "Station Approach & Block Valve Station Drawings",
+        "Right-of-Way (ROW) Cut Sheets & MTO / BOM",
+      ],
+    },
+    image:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+    badge: "Cross-Country",
+    metrics: [
+      { label: "PIPELINES", value: "Gas & Liquid", color: "text-[#FF8A00]" },
+      { label: "CODES", value: "ASME B31.4/8", color: "text-white" },
     ],
   },
 ];
@@ -109,139 +247,134 @@ interface PrecisionDisciplinesProps {
 export default function PrecisionDisciplines({
   onSelectDiscipline,
 }: PrecisionDisciplinesProps) {
-  const [activeId, setActiveId] = useState<string>(disciplinesData[0].id);
+  const [filter, setFilter] = useState<string>("all");
+
+  const categories = [
+    { id: "all", label: "All Disciplines" },
+    { id: "piping-mechanical", label: "Piping & Mechanical" },
+    { id: "electrical-engineering", label: "Electrical" },
+    { id: "instrumentation-control", label: "Instrumentation" },
+    { id: "process-engineering", label: "Process" },
+    { id: "plant-3d-modeling", label: "3D Plant Modeling" },
+    { id: "civil-structural", label: "Structural" },
+    { id: "pipeline-engineering", label: "Pipeline" },
+  ];
+
+  const filteredDisciplines =
+    filter === "all"
+      ? disciplinesData
+      : disciplinesData.filter((d) => d.id === filter);
 
   return (
-    <section id="disciplines" className="py-24 md:py-32 bg-[#f4f4f2] relative border-t border-[#c3c5d9]/30 overflow-hidden">
-      <div className="absolute inset-0 micro-grid opacity-50 pointer-events-none" />
-
+    <section id="disciplines" className="py-20 md:py-28 bg-[#f8fafc] relative border-t border-slate-200">
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="max-w-2xl mb-12"
-        >
-          <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-3">
-            Capabilities Architecture
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tighter text-[#1a1c1b] uppercase">
-            Precision Disciplines
-          </h2>
-          <p className="font-sans text-base text-[#565f70] mt-5 leading-relaxed font-light">
-            Mastery across multiple engineering domains, delivering integrated solutions for the world&apos;s most demanding environments.
-          </p>
-        </motion.div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/20 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
+              Multidisciplinary Capabilities
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a]">
+              Engineering Disciplines
+            </h2>
+            <p className="font-sans text-sm md:text-base text-slate-600 mt-2 leading-relaxed">
+              We provide full-spectrum engineering and 3D modeling across all 11 core disciplines, meeting international codes and client specifications.
+            </p>
+          </div>
 
-        {/* Hover Expand Pillars */}
-        <div className="flex flex-col md:flex-row w-full h-[90vh] md:h-[650px] min-h-[600px] gap-4">
-          {disciplinesData.map((discipline, index) => {
-            const isActive = activeId === discipline.id;
+          {/* Quick Filter Bar */}
+          <div className="flex flex-wrap gap-2">
+            {categories.slice(0, 5).map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setFilter(cat.id)}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200",
+                  filter === cat.id
+                    ? "bg-[#0b233a] text-white shadow-sm"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900"
+                )}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-            return (
+        {/* Compact Discipline Cards Grid with Hostinger Hover Drawer Pattern */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredDisciplines.map((discipline) => (
               <motion.div
                 key={discipline.id}
                 layout
-                onMouseEnter={() => setActiveId(discipline.id)}
-                onClick={() => setActiveId(discipline.id)}
-                className={cn(
-                  "relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl border border-white/10 group",
-                  isActive ? "md:flex-[3.5] flex-[4]" : "md:flex-[1] flex-[1]"
-                )}
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => onSelectDiscipline(discipline)}
+                className="group relative h-[340px] rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 bg-[#07131e]"
               >
                 {/* Background Image */}
-                <div className="absolute inset-0">
-                  <img
-                    src={discipline.image}
-                    alt={discipline.title}
-                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
-                  />
-                  <div className={cn(
-                    "absolute inset-0 transition-colors duration-[800ms]",
-                    isActive ? "bg-gradient-to-t from-[#05080c] via-[#05080c]/60 to-transparent" : "bg-[#05080c]/60 group-hover:bg-[#05080c]/40"
-                  )} />
+                <img
+                  src={discipline.image}
+                  alt={discipline.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+                />
+
+                {/* Dark Vignette Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07131e] via-[#07131e]/60 to-transparent" />
+
+                {/* Top Badge */}
+                <div className="absolute top-4 left-4 z-10">
+                  <span className="px-2.5 py-1 rounded bg-[#07131e]/85 backdrop-blur-md border border-white/15 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider">
+                    {discipline.badge}
+                  </span>
                 </div>
 
-                {/* Content Container */}
-                <div className="relative z-10 w-full h-full flex flex-col justify-end">
+                {/* Top Right Inspect Icon */}
+                <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 group-hover:bg-[#FF8A00] text-white flex items-center justify-center transition-colors">
+                  <span className="material-symbols-outlined text-base">visibility</span>
+                </div>
 
-                  {/* Collapsed State Title */}
-                  <div
-                    className={cn(
-                      "absolute inset-0 flex flex-col justify-end md:justify-center items-start md:items-center p-6 md:p-8 pointer-events-none transition-opacity duration-500",
-                      isActive ? "opacity-0" : "opacity-100 delay-200"
-                    )}
-                  >
-                    <div className="md:hidden flex items-center gap-3 w-full">
-                      <span className="font-mono text-[9px] text-[#FF8A00] font-bold">0{index + 1}</span>
-                      <h3 className="font-display text-2xl text-white font-bold tracking-wide uppercase">
-                        {discipline.category}
-                      </h3>
+                {/* Bottom Content & Hover Slide-Up Drawer */}
+                <div className="absolute inset-x-0 bottom-0 p-5 z-20 flex flex-col justify-end bg-gradient-to-t from-[#07131e] via-[#07131e]/90 to-transparent pt-12">
+                  <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-wider block mb-1">
+                    {discipline.category}
+                  </span>
+                  <h3 className="font-display text-lg font-bold text-white tracking-tight leading-snug mb-2 group-hover:text-[#FF8A00] transition-colors">
+                    {discipline.title}
+                  </h3>
+
+                  {/* Rest State Short Description */}
+                  <p className="font-sans text-xs text-slate-300 line-clamp-2 leading-relaxed mb-1 group-hover:hidden">
+                    {discipline.description}
+                  </p>
+
+                  {/* Hover Slide-up Details */}
+                  <div className="hidden group-hover:block transition-all duration-300 space-y-2.5 pt-1">
+                    <p className="font-sans text-xs text-slate-200 leading-relaxed">
+                      {discipline.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {discipline.detailedSpecs.deliverables.slice(0, 2).map((del, i) => (
+                        <span
+                          key={i}
+                          className="px-2 py-0.5 rounded bg-white/10 text-white/90 text-[10px] font-sans border border-white/10 truncate max-w-full"
+                        >
+                          ✓ {del}
+                        </span>
+                      ))}
                     </div>
-
-                    <div className="hidden md:flex flex-col items-center gap-6">
-                      <span className="font-mono text-[10px] text-[#FF8A00] font-bold -rotate-90 tracking-widest">
-                        0{index + 1}
-                      </span>
-                      <h3
-                        className="font-display text-4xl text-white font-bold tracking-widest uppercase opacity-80"
-                        style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-                      >
-                        {discipline.category}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Expanded Content State */}
-                  <div
-                    className={cn(
-                      "flex flex-col justify-end overflow-hidden transition-all duration-700 h-full",
-                      isActive ? "opacity-100 delay-100" : "opacity-0 pointer-events-none"
-                    )}
-                  >
-                    <div className="w-full md:w-[600px] p-6 md:p-12 flex flex-col justify-end h-full">
-                      <div className="font-mono text-[9px] md:text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] mb-4 font-bold flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
-                        {discipline.badge}
-                      </div>
-
-                      <h3 className="font-display text-4xl md:text-5xl text-white font-bold mb-4 uppercase tracking-tight leading-none">
-                        {discipline.title}
-                      </h3>
-
-                      <p className="font-sans text-sm md:text-base text-white/70 max-w-md mb-8 leading-relaxed font-light">
-                        {discipline.description}
-                      </p>
-
-                      {/* Metrics Cards */}
-                      <div className="flex gap-3 md:gap-4 mb-8 max-w-md">
-                        {discipline.metrics.map((m, i) => (
-                          <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 flex-1">
-                            <div className="font-mono text-[8px] md:text-[9px] text-white/40 mb-1 uppercase tracking-widest">{m.label}</div>
-                            <div className={cn("font-display text-xl md:text-2xl font-bold", m.color || "text-white")}>{m.value}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Call to Action */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelectDiscipline(discipline);
-                        }}
-                        className="inline-flex items-center justify-center gap-3 bg-[#FF8A00] text-white px-7 py-3.5 w-max rounded-full font-sans text-[10px] font-bold uppercase tracking-widest hover:bg-[#ffaa44] transition-all duration-300 shadow-[0_0_20px_rgba(255,138,0,0.25)] hover:shadow-[0_0_30px_rgba(255,138,0,0.4)] hover:-translate-y-0.5"
-                      >
-                        View Full Specs
-                        <span className="material-symbols-outlined text-sm">east</span>
-                      </button>
+                    <div className="pt-2 flex items-center justify-between text-xs font-bold text-[#FF8A00]">
+                      <span>View Specifications</span>
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </div>
                   </div>
                 </div>
               </motion.div>
-            );
-          })}
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </section>

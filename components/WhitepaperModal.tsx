@@ -27,42 +27,42 @@ export default function WhitepaperModal({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in"
     >
       <div
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        className="modal-surface bg-white text-[#1a1c1b] rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-[#c3c5d9]/40 relative max-h-[90vh] overflow-y-auto"
+        className="bg-white text-[#0b233a] rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto"
       >
         {/* Close */}
         <button
           onClick={onClose}
-          aria-label="Close whitepaper modal"
-          className="absolute top-6 right-6 p-2 rounded-full text-[#737687] hover:text-[#1a1c1b] hover:bg-[#eeeeec] transition-colors"
+          aria-label="Close modal"
+          className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
         >
-          <span className="material-symbols-outlined text-2xl">close</span>
+          <span className="material-symbols-outlined text-xl">close</span>
         </button>
 
         {/* Header info */}
-        <div className="flex items-center gap-3 mb-3">
-          <span className="bg-[#FF8A00]/10 text-[#FF8A00] px-3 py-1 rounded-full font-mono text-xs font-bold uppercase">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="bg-[#FF8A00]/10 text-[#FF8A00] px-2.5 py-0.5 rounded font-mono text-[10px] font-bold uppercase">
             {whitepaper.tag}
           </span>
-          <span className="font-mono text-xs text-[#565f70]">
-            {whitepaper.category} {"//"} {whitepaper.date}
+          <span className="font-mono text-xs text-slate-500">
+            {whitepaper.category} · {whitepaper.date}
           </span>
         </div>
 
-        <h2 className="font-display text-3xl font-bold text-[#1a1c1b] mb-3 leading-snug">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#0b233a] mb-2 leading-snug">
           {whitepaper.title}
         </h2>
-        <div className="font-mono text-xs text-[#737687] mb-6">
-          Author: {whitepaper.author} | {whitepaper.readTime}
+        <div className="font-mono text-xs text-slate-500 mb-5">
+          Conducted by: {whitepaper.author} | Duration: {whitepaper.readTime}
         </div>
 
         {/* Image */}
-        <div className="aspect-[16/9] rounded-2xl overflow-hidden mb-6 bg-[#0a0f18]">
+        <div className="aspect-[16/9] rounded-xl overflow-hidden mb-5 bg-[#07131e]">
           <img
             src={whitepaper.image}
             alt={whitepaper.title}
@@ -71,25 +71,25 @@ export default function WhitepaperModal({
         </div>
 
         {/* Summary */}
-        <div className="mb-6">
-          <h4 className="font-mono text-xs text-[#FF8A00] uppercase font-bold tracking-wider mb-2">
-            Executive Abstract
+        <div className="mb-5">
+          <h4 className="font-mono text-xs text-[#FF8A00] uppercase font-bold tracking-wider mb-1.5">
+            Course Overview
           </h4>
-          <p className="font-sans text-sm text-[#424656] leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed">
             {whitepaper.summary}
           </p>
         </div>
 
         {/* Takeaways */}
-        <div className="bg-[#f9f9f7] border border-[#c3c5d9]/40 rounded-2xl p-6 mb-8">
-          <h4 className="font-mono text-xs text-[#FF8A00] uppercase font-bold tracking-wider mb-3">
-            Key Empirical Takeaways:
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
+          <h4 className="font-mono text-xs text-[#0b233a] uppercase font-bold tracking-wider mb-2.5">
+            Key Learning Outcomes &amp; Skills:
           </h4>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {whitepaper.takeaways.map((t, idx) => (
-              <li key={idx} className="flex items-start gap-3 font-sans text-xs text-[#1a1c1b]">
-                <span className="material-symbols-outlined text-[#FF8A00] text-base mt-0.5">
-                  task_alt
+              <li key={idx} className="flex items-start gap-2.5 font-sans text-xs text-slate-700">
+                <span className="material-symbols-outlined text-[#FF8A00] text-sm mt-0.5">
+                  check_circle
                 </span>
                 <span>{t}</span>
               </li>
@@ -97,19 +97,19 @@ export default function WhitepaperModal({
           </ul>
         </div>
 
-        {/* Download action */}
-        <div className="flex items-center justify-between border-t border-[#eeeeec] pt-6">
-          <div className="font-mono text-xs text-[#737687]">
-            Format: PDF (High-Res 300 DPI) | Size: 4.8 MB
+        {/* Action button */}
+        <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+          <div className="font-mono text-xs text-slate-500">
+            Delivery: Classroom &amp; Hands-on Software Labs
           </div>
           <button
             onClick={handleDownload}
-            className="bg-[#FF8A00] text-white px-6 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors shadow-md flex items-center gap-2"
+            className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">
               {downloaded ? "check" : "download"}
             </span>
-            {downloaded ? "PDF Package Generated!" : "Download Research PDF"}
+            {downloaded ? "Syllabus Downloaded!" : "Download Syllabus"}
           </button>
         </div>
       </div>

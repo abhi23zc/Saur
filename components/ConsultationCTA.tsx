@@ -8,38 +8,44 @@ interface ConsultationCTAProps {
 
 export default function ConsultationCTA({ onOpenConsultation }: ConsultationCTAProps) {
   return (
-    <section className="py-24 md:py-32 bg-[#0a0f18] text-white relative overflow-hidden border-t border-white/10">
-      <div className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none" />
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#FF8A00]/10 blur-[140px] rounded-full pointer-events-none" />
+    <section className="py-20 md:py-28 bg-[#07131e] text-white relative overflow-hidden border-t border-white/10">
+      <div className="absolute inset-0 micro-grid opacity-15 pointer-events-none" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-[1440px] mx-auto px-6 md:px-16 text-center relative z-10"
-      >
-        <span className="font-mono text-[10px] text-[#FF8A00] uppercase tracking-[0.2em] block font-bold mb-4">
-          Enterprise Engagement
-        </span>
-        <h2 className="font-display text-3xl md:text-5xl font-bold mb-6 tracking-tighter uppercase leading-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60">
-          Ready to Define the Next Frontier?
+      <div className="max-w-[1440px] mx-auto px-6 md:px-16 text-center relative z-10">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-4">
+          Direct Engineering Support
+        </div>
+        <h2 className="font-display text-3xl md:text-5xl font-bold mb-4 tracking-tight text-white leading-tight">
+          Ready to Partner on Your Next Engineering Project?
         </h2>
-        <p className="font-sans text-base md:text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-          Partner with Saur Engineering &amp; Consultancy to deliver your most ambitious
-          infrastructure and industrial projects with unprecedented precision.
+        <p className="font-sans text-sm md:text-base text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed font-light">
+          Connect directly with our engineering team in Navi Mumbai and Chennai for FEED, 3D plant modeling, detailed engineering, or skilled manpower support.
         </p>
 
-        <button
-          onClick={onOpenConsultation}
-          className="shimmer-sweep group inline-flex items-center gap-3 bg-[#FF8A00] text-white px-9 py-4 rounded-full font-sans text-xs md:text-sm font-bold uppercase tracking-widest hover:bg-[#ffaa44] transition-all duration-300 shadow-[0_0_40px_rgba(255,138,0,0.3)] hover:shadow-[0_0_60px_rgba(255,138,0,0.55)] hover:-translate-y-0.5"
-        >
-          Initiate Consultation
-          <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">
-            arrow_forward
-          </span>
-        </button>
-      </motion.div>
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+          <button
+            onClick={onOpenConsultation}
+            className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-8 py-4 rounded-lg font-sans text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+          >
+            <span>Request Project Consultation</span>
+            <span className="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+          <a
+            href="mailto:contact@saurengineering.in"
+            className="bg-white/10 hover:bg-white/15 text-white px-7 py-4 rounded-lg font-sans text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border border-white/15"
+          >
+            contact@saurengineering.in
+          </a>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-slate-400">
+          <span>📞 +91 99671 12295</span>
+          <span>•</span>
+          <span>📞 +91 88286 12183</span>
+          <span>•</span>
+          <span>📍 Mumbai &amp; Chennai Offices</span>
+        </div>
+      </div>
     </section>
   );
 }
