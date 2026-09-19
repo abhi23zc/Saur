@@ -7,11 +7,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface NavbarProps {
-  onOpenSearch: () => void;
+  onOpenSearch?: () => void;
   onOpenConsultation: () => void;
 }
 
-export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps) {
+export default function Navbar({ onOpenConsultation }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -92,14 +92,6 @@ export default function Navbar({ onOpenSearch, onOpenConsultation }: NavbarProps
 
           {/* Action Controls */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={onOpenSearch}
-              aria-label="Search"
-              className="p-2 rounded-lg transition-all duration-200 flex items-center justify-center border text-slate-700 hover:bg-slate-100 border-slate-200 bg-white"
-            >
-              <span className="material-symbols-outlined text-[20px]">search</span>
-            </button>
-
             <button
               onClick={onOpenConsultation}
               className="hidden sm:inline-flex items-center gap-2 bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-md font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow"

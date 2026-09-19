@@ -146,67 +146,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Accreditations & Certifications Strip */}
-      <div className="border-t border-white/10 bg-white/[0.02]">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-1">
-                ACCREDITATIONS &amp; REGULATORY COMPLIANCE
-              </div>
-              <p className="text-white/80 text-xs font-sans">
-                Operating under accredited Integrated Management Systems and recognized by the Government of India.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <Link
-                href="/company#certificates"
-                className="group flex flex-col p-3 rounded-lg bg-white/5 border border-white/10 hover:border-[#FF8A00]/60 hover:bg-white/10 transition-all"
-              >
-                <div className="font-display text-xs font-bold text-white group-hover:text-[#FF8A00] transition-colors">
-                  ISO 9001:2015
-                </div>
-                <div className="font-mono text-[10px] text-white/50">
-                  Quality Management (IAF)
-                </div>
-              </Link>
-              <Link
-                href="/company#certificates"
-                className="group flex flex-col p-3 rounded-lg bg-white/5 border border-white/10 hover:border-[#FF8A00]/60 hover:bg-white/10 transition-all"
-              >
-                <div className="font-display text-xs font-bold text-white group-hover:text-[#FF8A00] transition-colors">
-                  ISO 14001:2015
-                </div>
-                <div className="font-mono text-[10px] text-white/50">
-                  Environment System (UK)
-                </div>
-              </Link>
-              <Link
-                href="/company#certificates"
-                className="group flex flex-col p-3 rounded-lg bg-white/5 border border-white/10 hover:border-[#FF8A00]/60 hover:bg-white/10 transition-all"
-              >
-                <div className="font-display text-xs font-bold text-white group-hover:text-[#FF8A00] transition-colors">
-                  ISO 45001:2018
-                </div>
-                <div className="font-mono text-[10px] text-white/50">
-                  Health &amp; Safety (UK)
-                </div>
-              </Link>
-              <Link
-                href="/company#certificates"
-                className="group flex flex-col p-3 rounded-lg bg-white/5 border border-white/10 hover:border-[#FF8A00]/60 hover:bg-white/10 transition-all"
-              >
-                <div className="font-display text-xs font-bold text-amber-400 group-hover:text-[#FF8A00] transition-colors">
-                  DPIIT RECOGNIZED
-                </div>
-                <div className="font-mono text-[10px] text-white/50">
-                  Govt. of India #startupindia
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Bottom Bar */}
       <div className="border-t border-white/5">
