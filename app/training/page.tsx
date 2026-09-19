@@ -78,7 +78,7 @@ export default function TrainingPage() {
       />
 
       <main className="w-full pt-14 lg:pt-20">
-        
+
         {/* ══════════════════════════════════════════════════════════════════════
            1. HERO: Diagonal Angle-Split Hero with Photographic Background
            ══════════════════════════════════════════════════════════════════════ */}
@@ -94,7 +94,7 @@ export default function TrainingPage() {
             {/* Gradient Scrim */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#0b233a] via-[#0b233a]/90 to-[#0b233a]/40" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a] via-transparent to-transparent" />
-            
+
             {/* Editorial Badges on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
@@ -117,7 +117,7 @@ export default function TrainingPage() {
           {/* Hero Content */}
           <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 w-full flex flex-col justify-center my-auto py-6">
             <div className="max-w-2xl">
-              
+
               {/* Category Eyebrow */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#FF8A00]/20 border border-[#FF8A00]/40 text-amber-300 font-mono text-[10px] font-bold uppercase tracking-[0.16em] mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
@@ -169,7 +169,7 @@ export default function TrainingPage() {
         <section className="py-6 sm:py-8 bg-slate-50 border-b border-slate-200">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-4 sm:divide-x divide-slate-200">
-              
+
               <div className="sm:px-4 first:pl-0">
                 <span className="font-mono text-[10px] text-slate-400 uppercase font-bold tracking-wider block mb-1">
                   Core Disciplines
@@ -224,7 +224,7 @@ export default function TrainingPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-20 bg-white" id="courses">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            
+
             <div className="max-w-2xl mb-12">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#0b233a]/5 border border-[#0b233a]/10 mb-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
@@ -357,7 +357,7 @@ export default function TrainingPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-20 bg-slate-50 border-t border-b border-slate-200">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            
+
             <div className="max-w-2xl mb-12">
               <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF8A00] font-bold block mb-1">
                 OUR METHODOLOGY &amp; PEDAGOGY
@@ -368,7 +368,7 @@ export default function TrainingPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              
+
               {/* Pillar 1 */}
               <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="w-10 h-10 rounded-lg bg-[#FF8A00]/10 flex items-center justify-center text-[#FF8A00] mb-4">
@@ -431,8 +431,8 @@ export default function TrainingPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-20 bg-white">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col lg:flex-row">
-              
+            <div className=" rounded-2xl overflow-hidden flex flex-col lg:flex-row">
+
               <div className="p-8 lg:p-12 lg:w-[60%] flex flex-col justify-between">
                 <div>
                   <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#0b233a]/5 border border-[#0b233a]/10 mb-3">
@@ -556,8 +556,8 @@ export default function TrainingPage() {
       <SearchModal
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
-        onSelectDiscipline={() => {}}
-        onSelectWhitepaper={() => {}}
+        onSelectDiscipline={() => { }}
+        onSelectWhitepaper={() => { }}
       />
     </div>
   );

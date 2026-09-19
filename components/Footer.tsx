@@ -17,7 +17,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#05080c] relative w-full overflow-hidden border-t border-white/10">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-24 grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
         {/* Brand & Newsletter */}
         <div className="md:col-span-5 mb-8 md:mb-0">
           <Link href="/" className="flex items-center gap-3 mb-4">

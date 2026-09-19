@@ -127,7 +127,7 @@ export default function GlobalFootprintMap() {
       className="py-16 md:py-24 bg-white border-t border-slate-200 relative overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
-        
+
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="max-w-2xl">
@@ -161,8 +161,8 @@ export default function GlobalFootprintMap() {
         {/* ══════════════════════════════════════════════════════════════════════
            Clean Dot-Matrix World Map Container (Pure Reference Aesthetic)
            ══════════════════════════════════════════════════════════════════════ */}
-        <div className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-3xl border border-slate-200/90 overflow-hidden bg-white shadow-lg">
-          
+        <div className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-3xl  overflow-hidden ">
+
           {/* Subtle Technical Dot Grid */}
           <div
             className="absolute inset-0 pointer-events-none opacity-40"
@@ -242,8 +242,8 @@ export default function GlobalFootprintMap() {
                         isHQ
                           ? "bg-[#FF8A00]/20 text-[#FF8A00]"
                           : isSelected
-                          ? "bg-white/15 text-white"
-                          : "bg-slate-200 text-slate-700"
+                            ? "bg-white/15 text-white"
+                            : "bg-slate-200 text-slate-700"
                       )}
                     >
                       {hub.type}
