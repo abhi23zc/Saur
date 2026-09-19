@@ -20,53 +20,6 @@ import {
 import type { Discipline } from "@/components/PrecisionDisciplines";
 import type { Whitepaper } from "@/components/TechnicalWhitepapers";
 
-const capabilities = [
-  {
-    title: "Piping & Mechanical Engineering",
-    code: "DISC-01",
-    desc: "Piping layout, 3D equipment modeling, Caesar II stress analysis, and fabrication drawings.",
-    icon: "plumbing",
-    software: "Caesar II · SP3D / E3D",
-    standard: "ASME B31.3 / API 650",
-    image: "/media/saur-fabrication-projects.png",
-    deliverables: ["Piping Isometrics & BOM", "Caesar II Stress Reports", "Support Schedules & 3D Model"],
-    href: "/expertise#piping-mechanical",
-  },
-  {
-    title: "Electrical & Instrumentation (E&I)",
-    code: "DISC-02",
-    desc: "Power distribution, single-line diagrams (SLDs), cable schedules, and control room design.",
-    icon: "bolt",
-    software: "ETAP · SmartPlant SPI",
-    standard: "IEC 61850 / IEEE",
-    image: "/images/electrical.png",
-    deliverables: ["Single-Line Diagrams (SLD)", "Instrument Loop Diagrams", "Load Flow & Arc Flash Study"],
-    href: "/expertise#electrical",
-  },
-  {
-    title: "Process & Flow Assurance",
-    code: "DISC-03",
-    desc: "P&ID development, equipment datasheets, flow calculations, and Aspen HYSYS simulation.",
-    icon: "science",
-    software: "Aspen HYSYS · FlareNet",
-    standard: "API 520 / 521 / 2000",
-    image: "/images/process.png",
-    deliverables: ["Process P&ID & PFD", "Equipment Process Datasheets", "Hydraulic Line Sizing & Surge"],
-    href: "/expertise#process",
-  },
-  {
-    title: "Civil & Structural Engineering",
-    code: "DISC-04",
-    desc: "Pipe racks, heavy equipment foundations, STAAD.Pro structural analysis, and steel detailing.",
-    icon: "apartment",
-    software: "STAAD.Pro · TEKLA",
-    standard: "AISC / IS 800 / Eurocodes",
-    image: "/media/page-services-hero.png",
-    deliverables: ["Structural Framing & GA", "STAAD.Pro Analysis Reports", "Foundation & Anchor Bolt Plans"],
-    href: "/expertise#civil-structural",
-  },
-];
-
 // Corporate Animation Physics (Classical, Sleek, Formal)
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -358,32 +311,30 @@ export default function AboutPage() {
               </motion.div>
 
               {/* Metric 2 */}
-              <motion.div
-                variants={itemVariants}
-                className="flex items-center gap-3.5 lg:border-r lg:border-slate-200 lg:pr-6 group cursor-pointer"
-                onClick={() => {
-                  const el = document.getElementById("capabilities");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <div className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center shrink-0 text-[#0b233a] bg-slate-50 group-hover:bg-[#FF8A00] group-hover:text-white group-hover:border-[#FF8A00] transition-colors">
-                  <span className="material-symbols-outlined text-2xl">hub</span>
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-1.5">
-                    <AnimatedCounter
-                      value={11}
-                      suffix="+"
-                      className="font-display text-2xl font-extrabold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors"
-                    />
-                    <span className="font-display text-sm font-bold text-[#0b233a]">
-                      DISCIPLINES
-                    </span>
+              <motion.div variants={itemVariants}>
+                <Link
+                  href="/expertise"
+                  className="flex items-center gap-3.5 lg:border-r lg:border-slate-200 lg:pr-6 group cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center shrink-0 text-[#0b233a] bg-slate-50 group-hover:bg-[#FF8A00] group-hover:text-white group-hover:border-[#FF8A00] transition-colors">
+                    <span className="material-symbols-outlined text-2xl">hub</span>
                   </div>
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
-                    PROCESS, PIPING, E&amp;I, SUBSEA
+                  <div>
+                    <div className="flex items-baseline gap-1.5">
+                      <AnimatedCounter
+                        value={11}
+                        suffix="+"
+                        className="font-display text-2xl font-extrabold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors"
+                      />
+                      <span className="font-display text-sm font-bold text-[#0b233a]">
+                        DISCIPLINES
+                      </span>
+                    </div>
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                      PROCESS, PIPING, E&amp;I, SUBSEA
+                    </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
 
               {/* Metric 3 */}
@@ -693,135 +644,8 @@ export default function AboutPage() {
             </motion.div>
           </div>
         </section>
-
         {/* ══════════════════════════════════════════════════════════════════════
-           4. CORE CAPABILITIES: Split Cards
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-slate-50 border-y border-slate-200" id="capabilities">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              variants={containerVariants}
-              className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4"
-            >
-              <div>
-                <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-                <span className="font-mono text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                  OUR CAPABILITIES
-                </span>
-                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight">
-                  Engineering disciplines built for complex industry
-                </h2>
-              </div>
-
-              <Link
-                href="/expertise"
-                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[#0b233a] hover:text-[#FF8A00] transition-colors self-start md:self-auto"
-              >
-                <span>View All 11 Disciplines</span>
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </Link>
-            </motion.div>
-
-            {/* 4 Floating Overlay Discipline Cards with Hover Slide-Up Drawer */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-2 gap-7"
-            >
-              {capabilities.map((item) => (
-                <motion.div key={item.title} variants={itemVariants}>
-                  <Link
-                    href={item.href}
-                    className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 shadow-sm hover:shadow-xl hover:border-[#FF8A00]/50 transition-all duration-300 min-h-[380px] sm:min-h-[400px] flex flex-col justify-between p-4 sm:p-5 block"
-                  >
-                    {/* Full-bleed Background Image with subtle contrast scrim */}
-                    <div className="absolute inset-0 z-0 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.92]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a]/90 via-[#0b233a]/25 to-black/35" />
-                    </div>
-
-                    {/* Top Floating Telemetry Badges */}
-                    <div className="relative z-10 flex flex-wrap items-center gap-2">
-                      <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm border border-slate-200/80 text-xs font-mono font-bold text-[#0b233a] flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-sm text-[#FF8A00]">{item.icon}</span>
-                        <span>{item.code}</span>
-                      </div>
-                      <div className="bg-white/90 backdrop-blur-sm px-2.5 py-1.5 rounded-lg shadow-sm border border-slate-200/80 text-[11px] font-mono font-semibold text-slate-700 flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-xs text-[#FF8A00]">terminal</span>
-                        <span>{item.software}</span>
-                      </div>
-                      <div className="hidden sm:flex bg-white/90 backdrop-blur-sm px-2.5 py-1.5 rounded-lg shadow-sm border border-slate-200/80 text-[11px] font-mono font-semibold text-slate-700 items-center gap-1.5">
-                        <span className="material-symbols-outlined text-xs text-[#FF8A00]">verified</span>
-                        <span>{item.standard}</span>
-                      </div>
-                    </div>
-
-                    {/* Bottom Floating Navy Card Overlay with Slide-Up Hover Drawer */}
-                    <div className="relative z-10 bg-[#0b233a]/95 backdrop-blur-md rounded-xl p-5 sm:p-6 border border-white/15 shadow-2xl transition-all duration-500 ease-out">
-                      {/* Always-Visible Header Bar in Rest State */}
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <span className="font-mono text-[10px] uppercase font-bold text-[#FF8A00] tracking-wider block mb-1">
-                            ENGINEERING DISCIPLINE
-                          </span>
-                          <h3 className="font-display text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors leading-snug truncate sm:whitespace-normal">
-                            {item.title}
-                          </h3>
-                        </div>
-
-                        {/* Orange Action Button with Hover Rotation */}
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-[#FF8A00] flex items-center justify-center text-white shrink-0 group-hover:scale-105 group-hover:rotate-[-45deg] transition-all duration-300 shadow-md">
-                          <span className="material-symbols-outlined text-lg sm:text-xl">arrow_forward</span>
-                        </div>
-                      </div>
-
-                      {/* Expandable Drawer: Slides Up and Fades in ONLY on Hover */}
-                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out">
-                        <div className="overflow-hidden">
-                          <div className="pt-3.5 mt-3 border-t border-white/10">
-                            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-3">
-                              {item.desc}
-                            </p>
-
-                            {/* Key Deliverables Pills */}
-                            <div className="flex flex-wrap gap-1.5 pt-1 mb-3">
-                              {item.deliverables.map((deliv) => (
-                                <span
-                                  key={deliv}
-                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-white/10 text-slate-200 border border-white/10 flex items-center gap-1"
-                                >
-                                  <span className="material-symbols-outlined text-[12px] text-[#FF8A00]">check</span>
-                                  <span>{deliv}</span>
-                                </span>
-                              ))}
-                            </div>
-
-                            <div className="flex items-center gap-1 text-xs font-mono font-bold text-[#FF8A00] group-hover:translate-x-0.5 transition-transform">
-                              <span>Explore Discipline Scope</span>
-                              <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════════════════════════════
-           5. ISO 9001:2015 QUALITY PROCESS: Clean Hover-Drawer Cards (Hostinger Pattern)
+           4. ISO 9001:2015 QUALITY PROCESS: Clean Hover-Drawer Cards (Hostinger Pattern)
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-16 bg-white" id="quality-process">
           <div className="max-w-[1440px] mx-auto px-6 md:px-16">
@@ -940,7 +764,7 @@ export default function AboutPage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           6. OPTION D: Interactive Certificate Lens & Inspection Showcase
+           5. ACCREDITATIONS & REGULATORY COMPLIANCE: Interactive Certificate Lens
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-20 bg-slate-50 border-t border-slate-200" id="certificates">
           <div className="max-w-[1440px] mx-auto px-6 md:px-16">
@@ -1040,7 +864,7 @@ export default function AboutPage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           7. LOCATIONS: Navi Mumbai HQ & Chennai Delivery Center
+           6. LOCATIONS: Navi Mumbai HQ & Chennai Delivery Center
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-20 bg-white border-t border-slate-200" id="locations">
           <div className="max-w-[1440px] mx-auto px-6 md:px-16">
@@ -1158,7 +982,7 @@ export default function AboutPage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           8. CORE VALUES: 3 Simple, Classical Cards
+           7. CORE VALUES: 3 Simple, Classical Cards
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-20 bg-slate-50 border-t border-slate-200">
           <div className="max-w-[1440px] mx-auto px-6 md:px-16">
@@ -1207,7 +1031,7 @@ export default function AboutPage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           9. ACTIONABLE CTA (Matching the Hero Navy `#0b233a`)
+           8. ACTIONABLE CTA (Matching the Hero Navy `#0b233a`)
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-20 bg-[#0b233a] text-white">
           <div className="max-w-[1440px] mx-auto px-6 md:px-16 text-center">

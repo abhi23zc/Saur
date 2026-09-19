@@ -26,8 +26,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Piping Engineering & Design",
     summary:
       "Comprehensive training covering plant layout, piping routing, CAESAR II stress analysis, and isometric generation using PDMS, SP3D, and AutoCAD.",
-    image:
-      "https://ars.els-cdn.com/content/image/1-s2.0-S2352012425003649-gr1.jpg",
+    image: "/media/saur-fabrication-projects.png",
     readTime: "8 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -44,8 +43,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Instrumentation Engineering & Design",
     summary:
       "Learn to design robust control networks, instrument datasheets, and loop diagrams using SmartPlant Instrumentation (SPI / INtools).",
-    image:
-      "https://neometrixgroup.com/products/imgs/mwf-coolant-monitoring-skid.jpg",
+    image: "/media/ot-security-control-room.png",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -62,8 +60,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Process Engineering & Simulation",
     summary:
       "Develop practical skills in process simulation, equipment sizing, and heat & mass balance calculations for Oil & Gas and chemical plants.",
-    image:
-      "https://t3.ftcdn.net/jpg/19/42/33/00/360_F_1942330057_D050Umlm30cCrZ63tnbiqNjyMFPY2oGo.jpg",
+    image: "/images/process.png",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -80,8 +77,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Electrical Engineering & Design",
     summary:
       "Master Single Line Diagrams (SLD), ETAP power studies, substation layout design, and industrial lighting calculations.",
-    image:
-      "https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-control-systems/switchboards/pow-r-line-xd-switchboard/pow-r-line-xd-switchboard-isometric-front-view.jpg",
+    image: "/images/electrical.png",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -98,8 +94,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Mechanical Equipment Design",
     summary:
       "Design static equipment, pressure vessels, and storage tanks in compliance with ASME Section VIII and API 650 using PVElite.",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdkhErjNQUcUeDVSPQNKKfFvm-nrxzUy1Lan7GwyCy7yIBYvA16Scgtfc&s=10",
+    image: "/images/mechanical.png",
     readTime: "6 Weeks",
     author: "Saur Training Division",
     takeaways: [
@@ -116,8 +111,7 @@ export const whitepapersData: Whitepaper[] = [
     title: "Plant 3D Modeling (SP3D / E3D)",
     summary:
       "Hands-on industry modeling in Intergraph Smart 3D (S3D), AVEVA E3D, PDMS, and AutoCAD Plant 3D with multi-discipline clash resolution.",
-    image:
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+    image: "/media/page-training-hero.png",
     readTime: "4 Weeks",
     author: "Saur Training Division",
     takeaways: [
