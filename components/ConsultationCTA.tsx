@@ -32,9 +32,10 @@ export default function ConsultationCTA({ onOpenConsultation }: ConsultationCTAP
           </button>
           <a
             href="mailto:contact@saurengineering.in"
-            className="bg-white/10 hover:bg-white/15 text-white px-6 sm:px-7 py-3.5 sm:py-4 rounded-lg font-sans text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 border border-white/15 text-center justify-center inline-flex w-full sm:w-auto"
+            className="bg-white/10 hover:bg-white/15 text-white hover:text-[#FF8A00] px-6 sm:px-7 py-3.5 sm:py-4 rounded-lg font-sans text-xs md:text-sm font-semibold lowercase tracking-normal transition-all duration-200 border border-white/15 hover:border-white/30 text-center justify-center inline-flex items-center gap-2 w-full sm:w-auto"
           >
-            contact@saurengineering.in
+            <span className="material-symbols-outlined text-base text-[#FF8A00]">mail</span>
+            <span>contact@saurengineering.in</span>
           </a>
         </div>
 

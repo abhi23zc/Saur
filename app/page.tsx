@@ -61,12 +61,7 @@ export default function Home() {
         <MajorProjects />
 
         {/* 5. Industries Served */}
-        <SectorInsights
-          onOpenCaseStudy={() => {
-            const el = document.getElementById("projects");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-        />
+        <SectorInsights />
 
         {/* 6. Engineering Lifecycle */}
         <LifecycleTimeline />

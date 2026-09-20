@@ -81,7 +81,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
               <img
                 alt="Engineering Field Execution"
                 className="w-full h-56 sm:h-72 sm:h-80 object-cover"
-                src="https://mystartupnews.in/_next/image?url=https://res.cloudinary.com/dfycb17sf/image/upload/v1781250211/writerProfiles/abti1vwpsmc6slhztdp7.webp&w=1920&q=75"
+                src="/images/workforce-field-engineers.jpg"
               />
 
               {/* HSE Safety Commitment Bar */}

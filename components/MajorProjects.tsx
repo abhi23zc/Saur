@@ -233,12 +233,12 @@ export default function MajorProjects() {
     : { duration: 0.65, ease: [0.25, 1, 0.5, 1] as [number, number, number, number] };
 
   return (
-    <section id="projects" className="py-14 sm:py-16 md:py-24 bg-[#f8fafc] text-slate-800 relative border-t border-slate-200 overflow-hidden">
+    <section id="projects" className="py-14  bg-[#f8fafc] text-slate-800 relative border-t border-slate-200 overflow-hidden">
       {/* Subtle Micro-Grid */}
       <div className="absolute inset-0 micro-grid opacity-25 pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
-        
+
         {/* Section Header with Figure Pre-Title & Navigation Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
