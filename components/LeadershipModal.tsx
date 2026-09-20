@@ -51,21 +51,21 @@ export default function LeadershipModal({
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        className="modal-surface bg-white text-[#1a1c1b] rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-[#c3c5d9]/40 relative max-h-[90vh] overflow-y-auto"
+        className="modal-surface bg-white text-[#1a1c1b] rounded-2xl sm:rounded-3xl max-w-3xl w-full p-5 sm:p-8 shadow-2xl border border-[#c3c5d9]/40 relative max-h-[88vh] overflow-y-auto"
       >
         <button
           onClick={onClose}
           aria-label="Close leadership modal"
-          className="absolute top-6 right-6 p-2 rounded-full text-[#737687] hover:text-[#1a1c1b] hover:bg-[#eeeeec] transition-colors"
+          className="absolute top-4 sm:top-6 right-4 sm:right-6 p-2 rounded-full text-[#737687] hover:text-[#1a1c1b] hover:bg-[#eeeeec] transition-colors"
         >
-          <span className="material-symbols-outlined text-2xl">close</span>
+          <span className="material-symbols-outlined text-xl sm:text-2xl">close</span>
         </button>
 
-        <div className="mb-6">
-          <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
+        <div className="mb-5 sm:mb-6 pr-6">
+          <span className="font-mono text-[10px] sm:text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
             Saur Global Council
           </span>
-          <h2 className="font-display text-3xl font-bold text-[#1a1c1b]">
+          <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-[#1a1c1b] leading-tight">
             Engineering Leadership Team
           </h2>
           <p className="font-sans text-xs text-[#424656] mt-1">
@@ -73,34 +73,34 @@ export default function LeadershipModal({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {team.map((member) => (
             <div
               key={member.name}
-              className="p-5 rounded-2xl bg-[#f9f9f7] border border-[#c3c5d9]/40 flex flex-col justify-between"
+              className="p-4 sm:p-5 rounded-2xl bg-[#f9f9f7] border border-[#c3c5d9]/40 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] font-bold flex items-center justify-center font-display text-sm">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] font-bold flex items-center justify-center font-display text-xs sm:text-sm shrink-0">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </div>
                   <div>
-                    <h4 className="font-sans text-sm font-bold text-[#1a1c1b]">
+                    <h4 className="font-sans text-xs sm:text-sm font-bold text-[#1a1c1b]">
                       {member.name}
                     </h4>
-                    <span className="font-mono text-[10px] text-[#FF8A00] font-semibold block">
+                    <span className="font-mono text-[9px] sm:text-[10px] text-[#FF8A00] font-semibold block">
                       {member.role}
                     </span>
                   </div>
                 </div>
-                <p className="font-sans text-xs text-[#424656] leading-relaxed mb-3">
+                <p className="font-sans text-xs text-[#424656] leading-relaxed mb-3 font-light">
                   {member.bio}
                 </p>
               </div>
-              <div className="pt-2 border-t border-[#eeeeec] font-mono text-[10px] text-[#FF8A00] font-bold">
+              <div className="pt-2 border-t border-[#eeeeec] font-mono text-[9px] sm:text-[10px] text-[#FF8A00] font-bold">
                 Domain: {member.specialty}
               </div>
             </div>
@@ -110,7 +110,7 @@ export default function LeadershipModal({
         <div className="flex justify-end border-t border-[#eeeeec] pt-4">
           <button
             onClick={onClose}
-            className="bg-[#FF8A00] text-white px-6 py-2.5 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
+            className="w-full sm:w-auto bg-[#FF8A00] text-white px-6 py-2.5 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
           >
             Close Profile View
           </button>

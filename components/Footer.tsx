@@ -17,13 +17,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#05080c] relative w-full overflow-hidden border-t border-white/10">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-12 sm:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
         {/* Brand & Newsletter */}
-        <div className="md:col-span-5 mb-8 md:mb-0">
+        <div className="md:col-span-5 mb-4 md:mb-0">
           <Link href="/" className="flex items-center gap-3 mb-4">
             <img
               alt="Saur Engineering Logo"
-              className="h-12 w-12 object-cover rounded-xl"
+              className="h-11 w-11 sm:h-12 sm:w-12 object-cover rounded-xl"
               src="/images/saur.jpeg"
             />
             <div className="flex flex-col">
@@ -31,11 +31,11 @@ export default function Footer() {
                 Saur Engineering
               </span>
               <span className="text-[9px] tracking-[0.2em] font-mono uppercase text-[#FF8A00] leading-tight">
-                & Consultancy
+                &amp; Consultancy
               </span>
             </div>
           </Link>
-          <p className="font-sans text-sm text-white/60 mb-6 pr-8 leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-white/60 mb-6 pr-0 md:pr-8 leading-relaxed">
             Reliable Engineering. Sustainable Design. Proven Results. IMS Certified (ISO 9001 · 14001 · 45001) &amp; DPIIT Recognized.
           </p>
 
@@ -60,7 +60,7 @@ export default function Footer() {
                 />
                 <button
                   type="submit"
-                  className="bg-[#FF8A00] text-white px-5 py-2 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
+                  className="bg-[#FF8A00] text-white px-5 py-2 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors shrink-0"
                 >
                   Join
                 </button>
@@ -68,18 +68,18 @@ export default function Footer() {
             )}
           </div>
 
-          <p className="font-sans text-xs text-white/40 mt-8">
-            © {new Date().getFullYear()} Saur Engineering & Consultancy. All rights reserved.
+          <p className="font-sans text-xs text-white/40 mt-6 sm:mt-8">
+            © {new Date().getFullYear()} Saur Engineering &amp; Consultancy. All rights reserved.
           </p>
         </div>
 
         {/* Links */}
-        <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
           <div>
-            <h4 className="font-sans text-xs font-bold text-white mb-6 uppercase tracking-wider">
+            <h4 className="font-sans text-xs font-bold text-white mb-4 sm:mb-6 uppercase tracking-wider">
               Company
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {[
                 { label: "About Us", href: "/company" },
                 { label: "Case Studies", href: "/case-studies" },
@@ -89,7 +89,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="font-sans text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
+                    className="font-sans text-xs sm:text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
                   >
                     {item.label}
                   </Link>
@@ -99,10 +99,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-sans text-xs font-bold text-white mb-6 uppercase tracking-wider">
+            <h4 className="font-sans text-xs font-bold text-white mb-4 sm:mb-6 uppercase tracking-wider">
               Services
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {[
                 { label: "FEED & Detail Engineering", href: "/services" },
                 { label: "Workforce Solutions", href: "/digital-workforce#workforce" },
@@ -112,7 +112,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="font-sans text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
+                    className="font-sans text-xs sm:text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
                   >
                     {item.label}
                   </Link>
@@ -122,10 +122,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-sans text-xs font-bold text-white mb-6 uppercase tracking-wider">
+            <h4 className="font-sans text-xs font-bold text-white mb-4 sm:mb-6 uppercase tracking-wider">
               Capabilities
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {[
                 { label: "Engineering Expertise", href: "/expertise" },
                 { label: "Technology & Software", href: "/technology" },
@@ -135,7 +135,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="font-sans text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
+                    className="font-sans text-xs sm:text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
                   >
                     {item.label}
                   </Link>
@@ -146,11 +146,10 @@ export default function Footer() {
         </div>
       </div>
 
-
       {/* Bottom Bar */}
       <div className="border-t border-white/5">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-6 flex flex-wrap justify-between items-center gap-4">
-          <div className="flex flex-wrap gap-6">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-4 sm:py-6 flex flex-wrap justify-between items-center gap-3 sm:gap-4">
+          <div className="flex flex-wrap gap-4 sm:gap-6">
             <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">Mumbai · Chennai</span>
             <a href="https://www.linkedin.com/company/saur-engineering-consultancy" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] text-white/30 uppercase tracking-wider hover:text-[#FF8A00] transition-colors">
               LinkedIn

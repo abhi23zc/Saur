@@ -60,54 +60,47 @@ export default function ProjectQuickModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 12 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl border border-slate-300 z-10 flex flex-col"
+            className="relative w-full max-w-xl sm:max-w-2xl max-h-[90vh] bg-white rounded-2xl border border-slate-200 shadow-2xl z-10 flex flex-col overflow-hidden"
           >
-            {/* Header with High-Impact Background Hero Image (Increased Height for Balanced Proportions) */}
-            <div className="relative h-64 sm:h-80 md:h-[350px] lg:h-[380px] w-full overflow-hidden bg-[#0b233a] shrink-0">
-              <img
-                src={project.image || "/media/saur-industrial-hero.png"}
-                alt={project.title}
-                className="w-full h-full object-cover object-center brightness-[0.88]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a] via-[#0b233a]/40 to-transparent" />
-
+            {/* Clean Light Header (No Image, Spacious & High Contrast) */}
+            <div className="p-4 sm:p-5 sm:px-7 border-b border-slate-100 bg-white relative shrink-0">
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-lg bg-black/60 hover:bg-[#FF8A00] text-white flex items-center justify-center transition-colors border border-white/20 cursor-pointer"
+                className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors border border-slate-200 cursor-pointer active:scale-95"
                 aria-label="Close modal"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4 text-slate-700" />
               </button>
 
-              {/* Top Badges inside Hero */}
-              <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-1 rounded-md bg-white text-[#0b233a] font-mono text-[11px] font-bold border border-slate-200">
+              {/* Badges */}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#0b233a] text-white font-mono text-[10px] font-bold">
                   {project.endUser}
                 </span>
-                <span className="px-2.5 py-1 rounded-md bg-[#FF8A00] text-white font-mono text-[11px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00] text-white font-mono text-[10px] font-bold">
                   {project.year}
                 </span>
                 {project.sector && (
-                  <span className="px-2 py-0.5 rounded-md bg-black/60 text-amber-300 border border-white/15 font-mono text-[10px] uppercase font-semibold">
+                  <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[10px] uppercase font-semibold">
                     {project.sector}
                   </span>
                 )}
               </div>
 
-              {/* Title inside bottom of Hero */}
-              <div className="absolute bottom-4 left-5 right-5 z-20">
-                <div className="font-mono text-[10px] text-[#FF8A00] uppercase font-bold tracking-wider mb-1">
+              {/* Title & Client */}
+              <div className="pr-10">
+                <div className="font-mono text-[10px] text-[#FF8A00] uppercase font-bold tracking-wider mb-0.5">
                   CLIENT: {project.client}
                 </div>
-                <h3 className="font-display text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
+                <h3 className="font-display text-lg sm:text-2xl font-extrabold text-[#0b233a] leading-tight">
                   {project.title}
                 </h3>
               </div>
             </div>
 
             {/* Content Body */}
-            <div className="p-5 sm:p-7 space-y-5">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5">
               
               {/* Telemetry Metric Strip (Flat Integrated Strip with Hairline Dividers) */}
               <div className="bg-slate-50 border border-slate-200 rounded-lg grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200">

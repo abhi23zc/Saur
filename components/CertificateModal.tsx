@@ -27,23 +27,23 @@ export default function CertificateModal({
         className="relative w-full max-w-4xl max-h-[92vh] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col modal-surface"
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0">
-          <div>
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded text-[11px] font-mono font-bold uppercase bg-amber-50 text-[#FF8A00] border border-amber-200">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 bg-slate-50 shrink-0">
+          <div className="min-w-0 pr-2">
+            <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-mono font-bold uppercase bg-amber-50 text-[#FF8A00] border border-amber-200">
               {certificate.badge}
             </div>
-            <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a] mt-1">
+            <h3 className="font-display text-base sm:text-xl font-bold text-[#0b233a] mt-1 truncate sm:whitespace-normal">
               {certificate.title} — {certificate.subtitle}
             </h3>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <a
               href={certificate.image}
               target="_blank"
               rel="noopener noreferrer"
               download
-              className="p-2 text-slate-600 hover:text-[#FF8A00] hover:bg-slate-200 rounded-lg transition-colors inline-flex items-center gap-1 text-xs font-mono font-bold"
+              className="p-1.5 sm:p-2 text-slate-600 hover:text-[#FF8A00] hover:bg-slate-200 rounded-lg transition-colors inline-flex items-center gap-1 text-xs font-mono font-bold"
               title="Open full size image"
             >
               <span className="material-symbols-outlined text-lg">open_in_new</span>
@@ -51,22 +51,22 @@ export default function CertificateModal({
             </a>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-lg transition-colors"
+              className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-lg transition-colors"
               aria-label="Close"
             >
-              <span className="material-symbols-outlined text-2xl">close</span>
+              <span className="material-symbols-outlined text-xl sm:text-2xl">close</span>
             </button>
           </div>
         </div>
 
         {/* Modal Body: Two-column layout with image preview & official metadata */}
-        <div className="overflow-y-auto p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        <div className="overflow-y-auto p-4 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start">
           {/* Left: Certificate Document Viewer */}
           <div className="md:col-span-7 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-inner flex items-center justify-center p-2">
             <img
               src={certificate.image}
               alt={certificate.title}
-              className="w-full max-h-[65vh] object-contain rounded shadow-sm bg-white"
+              className="w-full max-h-[42vh] sm:max-h-[65vh] object-contain rounded shadow-sm bg-white"
             />
           </div>
 

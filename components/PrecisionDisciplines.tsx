@@ -278,7 +278,17 @@ export default function PrecisionDisciplines({
   const [isPaused, setIsPaused] = useState<boolean>(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef<boolean>(false);
+  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [metrics, setMetrics] = useState({ cardWidth: 380, gap: 24, containerWidth: 1200 });
+
+  const pauseAutoCycle = () => {
+    setIsPaused(true);
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    pauseTimeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 6000);
+  };
 
   // Measure container and card dynamically for pixel-perfect centering
   useEffect(() => {
@@ -286,8 +296,9 @@ export default function PrecisionDisciplines({
       if (!containerRef.current) return;
       const cWidth = containerRef.current.offsetWidth;
       const isMobile = window.innerWidth < 640;
-      const cW = isMobile ? Math.min(340, cWidth - 32) : 380;
-      const g = isMobile ? 16 : 24;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+      const cW = isMobile ? Math.min(290, cWidth - 48) : isTablet ? 340 : 380;
+      const g = isMobile ? 12 : 24;
       setMetrics({ cardWidth: cW, gap: g, containerWidth: cWidth });
     };
 
@@ -303,7 +314,7 @@ export default function PrecisionDisciplines({
     const timer = setInterval(() => {
       setIsResetting(false);
       setCurrentIndex((prev) => prev + 1);
-    }, 3500);
+    }, 3800);
 
     return () => clearInterval(timer);
   }, [isPaused]);
@@ -350,24 +361,24 @@ export default function PrecisionDisciplines({
       {/* Subtle Technical Grid Background */}
       <div className="absolute inset-0 micro-grid opacity-25 pointer-events-none" />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         
         {/* Top Header & Integrated Navigation Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
             <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
               {preTitle}
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
               {title}
             </h2>
-            <p className="font-sans text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">
+            <p className="font-sans text-xs sm:text-base text-slate-600 mt-2 sm:mt-3 leading-relaxed">
               {description}
             </p>
           </div>
 
           {/* Navigation Controls on Right */}
-          <div className="flex flex-wrap items-center gap-4 shrink-0">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
             <div className="font-mono text-xs text-slate-500 font-semibold">
               <span className="text-[#FF8A00] font-bold">0{activeDisciplineIndex + 1}</span> / 0{disciplinesData.length} Disciplines
             </div>
@@ -376,23 +387,23 @@ export default function PrecisionDisciplines({
               <button
                 onClick={handlePrev}
                 aria-label="Previous discipline"
-                className="w-10 h-10 rounded-full bg-white border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] text-slate-700 flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] text-slate-700 flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
               >
-                <span className="material-symbols-outlined text-lg">arrow_back</span>
+                <span className="material-symbols-outlined text-base sm:text-lg">arrow_back</span>
               </button>
               <button
                 onClick={handleNext}
                 aria-label="Next discipline"
-                className="w-10 h-10 rounded-full bg-[#0b233a] hover:bg-[#FF8A00] text-white flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0b233a] hover:bg-[#FF8A00] text-white flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
               >
-                <span className="material-symbols-outlined text-lg">arrow_forward</span>
+                <span className="material-symbols-outlined text-base sm:text-lg">arrow_forward</span>
               </button>
             </div>
 
             {viewAllHref && (
               <a
                 href={viewAllHref}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] hover:border-[#FF8A00] transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] hover:border-[#FF8A00] transition-all shadow-xs"
               >
                 <span>{viewAllText}</span>
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -406,20 +417,27 @@ export default function PrecisionDisciplines({
            ══════════════════════════════════════════════════════════════════════ */}
         <div
           ref={containerRef}
-          className="relative pt-4 pb-8 overflow-hidden select-none"
+          className="relative pt-4 pb-8 overflow-hidden select-none touch-pan-y"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={pauseAutoCycle}
         >
-          {/* Continuous Sliding Horizontal Track with GPU acceleration & Touch Drag */}
+          {/* Continuous Sliding Horizontal Track with GPU acceleration & Touch Pan */}
           <div className="w-full py-4">
             <motion.div
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.15}
-              onDragEnd={(_, { offset, velocity }) => {
-                if (offset.x < -60 || velocity.x < -400) {
+              onPanStart={() => {
+                isDraggingRef.current = true;
+                pauseAutoCycle();
+              }}
+              onPanEnd={(_, info) => {
+                setTimeout(() => {
+                  isDraggingRef.current = false;
+                }, 80);
+                pauseAutoCycle();
+
+                if (info.offset.x < -30 || info.velocity.x < -150) {
                   handleNext();
-                } else if (offset.x > 60 || velocity.x > 400) {
+                } else if (info.offset.x > 30 || info.velocity.x > 150) {
                   handlePrev();
                 }
               }}
@@ -430,7 +448,7 @@ export default function PrecisionDisciplines({
                 gap: `${metrics.gap}px`,
                 willChange: "transform",
               }}
-              className="flex items-center cursor-grab active:cursor-grabbing"
+              className="flex items-center cursor-grab active:cursor-grabbing touch-pan-y"
             >
               {allItems.map((disc, idx) => {
                 const isCenter = idx === currentIndex;
@@ -439,6 +457,7 @@ export default function PrecisionDisciplines({
                   <motion.div
                     key={`${disc.id}-${idx}`}
                     onClick={() => {
+                      if (isDraggingRef.current) return;
                       if (!isCenter) {
                         setIsResetting(false);
                         setCurrentIndex(idx);
@@ -454,7 +473,7 @@ export default function PrecisionDisciplines({
                     }}
                     transition={transitionConfig}
                     className={cn(
-                      "shrink-0 bg-white rounded-3xl p-5 sm:p-6 border transition-shadow duration-500 cursor-pointer flex flex-col justify-between select-none min-h-[460px]",
+                      "shrink-0 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-shadow duration-500 cursor-pointer flex flex-col justify-between select-none min-h-[440px] sm:min-h-[460px]",
                       isCenter
                         ? "border-slate-300 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/80 z-20"
                         : "border-slate-200 shadow-sm hover:opacity-80 z-10"

@@ -308,6 +308,27 @@ export default function ServicesPage() {
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [expandedModel, setExpandedModel] = useState<string | null>(null);
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>("all");
+
+  const categories = [
+    { id: "all", label: "All 6 Pillars" },
+    { id: "Front-End Engineering", label: "FEED" },
+    { id: "Detail Engineering", label: "DED (11 Disc)" },
+    { id: "Digital Plant Modeling", label: "3D BIM" },
+    { id: "Construction Engineering", label: "Fabrication" },
+    { id: "Workforce Solutions", label: "Workforce" },
+    { id: "Digital Transformation", label: "IT / SME" },
+  ];
+
+  const filteredPillars =
+    activeCategoryFilter === "all"
+      ? servicePillars
+      : servicePillars.filter((p) => p.category === activeCategoryFilter);
+
+  const toggleModelExpand = (id: string) => {
+    setExpandedModel((prev) => (prev === id ? null : id));
+  };
 
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-[#FF8A00] selection:text-white flex flex-col justify-between">
@@ -319,9 +340,9 @@ export default function ServicesPage() {
 
       <main className="w-full">
         {/* ══════════════════════════════════════════════════════════════════════
-           1. HERO: Classical Geometric Diagonal Angle Split
+           1. HERO: Classical Geometric Diagonal Angle Split (Mobile Optimized)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-8 bg-[#0b233a]">
+        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
           {/* Full-bleed Industrial Plant Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -330,7 +351,7 @@ export default function ServicesPage() {
               backgroundPosition: "center right",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
             
             {/* Floating Editorial Badges on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
@@ -349,33 +370,33 @@ export default function ServicesPage() {
           </div>
 
           {/* Left Angle Polygonal Navy Container */}
-          <div className="relative z-10 w-full lg:w-[58%] xl:w-[54%] bg-[#0b233a] flex flex-col justify-center px-6 sm:px-12 md:px-16 py-10 lg:py-14 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
+          <div className="relative z-10 w-full lg:w-[60%] xl:w-[54%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
             <div className="max-w-xl">
               {/* Eyebrow */}
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-6 h-0.5 bg-[#FF8A00]" />
-                <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
+              <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+                <div className="w-5 sm:w-6 h-0.5 bg-[#FF8A00]" />
+                <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
                   SERVICES &amp; EXECUTION CAPABILITIES
                 </span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-[1.12] mb-5">
+              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-[1.15] sm:leading-[1.12] mb-4 sm:mb-5">
                 Engineering Services <br />
                 <span className="text-white">Built for Critical</span>{" "}
                 <span className="text-[#FF8A00]">Industrial Assets.</span>
               </h1>
 
               {/* Description */}
-              <p className="font-sans text-sm sm:text-base text-slate-200 leading-relaxed mb-8 max-w-lg font-light">
+              <p className="font-sans text-xs xs:text-sm sm:text-base text-slate-200 leading-relaxed mb-6 sm:mb-8 max-w-lg font-light">
                 From conceptual FEED and multidisciplinary detailed engineering to 3D plant modeling, fabrication support, technical manpower deputation, and IT engineering domain solutions.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4 mb-8">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all duration-200 shadow-sm hover:shadow inline-flex items-center gap-2 group"
+                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all duration-200 shadow-sm hover:shadow inline-flex items-center gap-2 group min-h-[44px]"
                 >
                   <span>Request Service Proposal</span>
                   <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
@@ -385,14 +406,14 @@ export default function ServicesPage() {
 
                 <a
                   href="#pillars"
-                  className="border border-white/40 hover:bg-white/10 text-white px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2"
+                  className="w-full xs:w-auto justify-center border border-white/40 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 min-h-[44px]"
                 >
                   <span>Explore 6 Pillars</span>
                 </a>
               </div>
 
               {/* Bottom Telemetry Line */}
-              <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 pt-5 border-t border-white/15">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.16em] sm:tracking-[0.2em] text-slate-300 pt-4 sm:pt-5 border-t border-white/15">
                 <span>FEED &amp; DED</span>
                 <span className="text-white/30">•</span>
                 <span>3D MODELING</span>
@@ -408,10 +429,10 @@ export default function ServicesPage() {
         {/* ══════════════════════════════════════════════════════════════════════
            2. COMMERCIAL ENGAGEMENT MODELS (How We Work With Clients)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-16 md:py-20 bg-slate-50 border-b border-slate-200">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
+        <section className="py-12 sm:py-16 md:py-20 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
             
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
@@ -419,100 +440,126 @@ export default function ServicesPage() {
                     FLEXIBLE COMMERCIAL FRAMEWORKS
                   </span>
                 </div>
-                <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
+                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                   Commercial Engagement Models
                 </h2>
-                <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 font-light">
-                  Tailored collaboration structures designed for international EPC contractors, plant operators, and engineering consultants.
+                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
+                  Tailored collaboration structures designed for international EPC contractors, plant operators, and engineering consultancies.
                 </p>
               </div>
 
               <button
                 onClick={() => setConsultationOpen(true)}
-                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#FF8A00] hover:text-[#E67C00] transition-colors self-start md:self-auto"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#FF8A00] hover:text-[#E67C00] transition-colors self-start md:self-auto py-1"
               >
                 <span>Discuss Custom Engagement</span>
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
             </div>
 
-            {/* 3 High-Impact Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {engagementModels.map((model) => (
-                <div
-                  key={model.id}
-                  className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-xs hover:shadow-xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div>
-                    {/* Top Metadata */}
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider bg-[#FF8A00]/10 px-2.5 py-1 rounded">
-                        {model.badge}
-                      </span>
-                      <span className="font-mono text-xs text-slate-400 font-semibold">
-                        {model.code}
-                      </span>
+            {/* 3 High-Impact Cards with Mobile Tap-to-Expand option */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              {engagementModels.map((model) => {
+                const isExpanded = expandedModel === model.id;
+
+                return (
+                  <div
+                    key={model.id}
+                    className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200 shadow-xs hover:shadow-xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between group active:scale-[0.99]"
+                  >
+                    <div>
+                      {/* Top Metadata */}
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider bg-[#FF8A00]/10 px-2.5 py-1 rounded">
+                          {model.badge}
+                        </span>
+                        <span className="font-mono text-xs text-slate-400 font-semibold">
+                          {model.code}
+                        </span>
+                      </div>
+
+                      {/* Icon & Title */}
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0b233a] mb-4 group-hover:bg-[#FF8A00] group-hover:text-white group-hover:border-[#FF8A00] transition-colors shadow-2xs">
+                        <span className="material-symbols-outlined text-2xl">{model.icon}</span>
+                      </div>
+
+                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a] mb-1 group-hover:text-[#FF8A00] transition-colors">
+                        {model.title}
+                      </h3>
+                      <p className="font-mono text-xs text-slate-500 mb-3.5 font-medium leading-snug">
+                        {model.subtitle}
+                      </p>
+
+                      <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed mb-4 sm:mb-6 font-light">
+                        {model.desc}
+                      </p>
+
+                      {/* Mobile Expand Toggle Button */}
+                      <button
+                        type="button"
+                        onClick={() => toggleModelExpand(model.id)}
+                        className="sm:hidden w-full mb-4 py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 font-mono text-[11px] font-bold flex items-center justify-between cursor-pointer"
+                      >
+                        <span>{isExpanded ? "Hide Scope & Benefits" : "View Scope & Key Benefits"}</span>
+                        <span
+                          className={cn(
+                            "material-symbols-outlined text-sm text-[#FF8A00] transition-transform duration-200",
+                            isExpanded && "rotate-180"
+                          )}
+                        >
+                          expand_more
+                        </span>
+                      </button>
+
+                      {/* Value Bullet List (Always visible on desktop/tablet, toggleable on mobile) */}
+                      <div
+                        className={cn(
+                          "space-y-2 pt-3 sm:pt-4 border-t border-slate-100 mb-4 sm:mb-6",
+                          isExpanded ? "block" : "hidden sm:block"
+                        )}
+                      >
+                        {model.benefits.map((b, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                            <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
+                              check_circle
+                            </span>
+                            <span className="leading-snug">{b}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Icon & Title */}
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0b233a] mb-4 group-hover:bg-[#FF8A00] group-hover:text-white group-hover:border-[#FF8A00] transition-colors shadow-2xs">
-                      <span className="material-symbols-outlined text-2xl">{model.icon}</span>
-                    </div>
-
-                    <h3 className="font-display text-xl font-bold text-[#0b233a] mb-1 group-hover:text-[#FF8A00] transition-colors">
-                      {model.title}
-                    </h3>
-                    <p className="font-mono text-xs text-slate-500 mb-4 font-medium">
-                      {model.subtitle}
-                    </p>
-
-                    <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-light">
-                      {model.desc}
-                    </p>
-
-                    {/* Value Bullet List */}
-                    <div className="space-y-2 pt-4 border-t border-slate-100 mb-6">
-                      {model.benefits.map((b, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
-                          <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
-                            check_circle
-                          </span>
-                          <span className="leading-snug">{b}</span>
-                        </div>
-                      ))}
+                    {/* Bottom Ideal For Badge */}
+                    <div className="pt-3.5 sm:pt-4 border-t border-slate-100 mt-2">
+                      <div className="text-[11px] font-mono text-slate-500">
+                        <span className="text-slate-400 block uppercase text-[9px] font-bold">Best Suited For:</span>
+                        <span className="font-bold text-slate-800">{model.idealFor}</span>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Bottom Ideal For Badge */}
-                  <div className="pt-4 border-t border-slate-100">
-                    <div className="text-[11px] font-mono text-slate-500">
-                      <span className="text-slate-400 block uppercase text-[9px]">Best Suited For:</span>
-                      <span className="font-bold text-slate-800">{model.idealFor}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           3. CORE SERVICE PILLARS: 3x2 Bento Grid Showcase
+           3. CORE SERVICE PILLARS: 3x2 Bento Grid Showcase with Filter Chips
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 md:py-24 bg-white" id="pillars">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
+        <section className="py-14 sm:py-20 md:py-24 bg-white" id="pillars">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
             
             {/* Header & Eyebrow */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
               <div className="max-w-2xl">
                 <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                   TECHNICAL DEPTH &amp; OFFERINGS
                 </span>
-                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
+                <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
                   Our Six Core Service Pillars
                 </h2>
-                <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 font-light">
+                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
                   Explore our end-to-end multidisciplinary engineering capabilities, licensed CAD/CAE platforms, verified deliverables, and international compliance benchmarks.
                 </p>
               </div>
@@ -524,15 +571,34 @@ export default function ServicesPage() {
               </div>
             </div>
 
+            {/* Quick Interactive Category Filter Bar for Mobile & Desktop */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 sm:mb-8 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategoryFilter(cat.id)}
+                  className={cn(
+                    "px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 min-h-[38px] border",
+                    activeCategoryFilter === cat.id
+                      ? "bg-[#0b233a] text-white border-[#0b233a] shadow-xs"
+                      : "bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200"
+                  )}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
             {/* 3x2 Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-              {servicePillars.map((pillar) => (
+              {filteredPillars.map((pillar) => (
                 <div
                   key={pillar.id}
-                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between"
+                  onClick={() => setSelectedPillar(pillar)}
+                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between cursor-pointer active:scale-[0.99]"
                 >
                   {/* Top Image Banner */}
-                  <div className="relative h-52 w-full overflow-hidden bg-slate-900 shrink-0">
+                  <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 shrink-0">
                     <img
                       src={pillar.image}
                       alt={pillar.title}
@@ -555,14 +621,14 @@ export default function ServicesPage() {
                       <span className="font-mono text-[10px] uppercase font-bold text-[#FF8A00] tracking-wider block mb-1">
                         {pillar.category}
                       </span>
-                      <h3 className="font-display text-xl font-bold text-white leading-tight drop-shadow">
+                      <h3 className="font-display text-lg sm:text-xl font-bold text-white leading-tight drop-shadow">
                         {pillar.title}
                       </h3>
                     </div>
                   </div>
 
                   {/* Body Content */}
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-6">
+                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-5 sm:space-y-6">
                     <div className="space-y-4">
                       <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-light line-clamp-3">
                         {pillar.overview}
@@ -601,8 +667,12 @@ export default function ServicesPage() {
 
                       {/* Action Button */}
                       <button
-                        onClick={() => setSelectedPillar(pillar)}
-                        className="w-full py-3 rounded-xl bg-slate-50 hover:bg-[#0b233a] hover:text-white text-[#0b233a] border border-slate-200 hover:border-[#0b233a] font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer group-hover:border-[#FF8A00]/50"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPillar(pillar);
+                        }}
+                        className="w-full py-3 rounded-xl bg-slate-50 hover:bg-[#0b233a] hover:text-white text-[#0b233a] border border-slate-200 hover:border-[#0b233a] font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer group-hover:border-[#FF8A00]/50 min-h-[44px]"
                       >
                         <span>Explore Full Scope &amp; Deliverables</span>
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -634,22 +704,22 @@ export default function ServicesPage() {
         {/* ══════════════════════════════════════════════════════════════════════
            5. PROJECT EXECUTION LIFECYCLE (Step-by-Step Delivery Flow)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-white">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
+        <section className="py-14 sm:py-20 bg-white">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
             
-            <div className="max-w-2xl mb-12">
+            <div className="max-w-2xl mb-8 sm:mb-12">
               <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                 DELIVERY GOVERNANCE
               </span>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
+              <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
                 Project Execution Lifecycle
               </h2>
-              <p className="font-sans text-sm text-slate-600 mt-2 font-light">
+              <p className="font-sans text-xs sm:text-sm text-slate-600 mt-2 font-light leading-relaxed">
                 How our multidisciplinary design offices in Navi Mumbai and Chennai execute project scopes from kickoff to site handover.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
                 {
                   step: "01",
@@ -682,22 +752,22 @@ export default function ServicesPage() {
               ].map((item) => (
                 <div
                   key={item.step}
-                  className="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover:border-[#FF8A00]/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 hover:border-[#FF8A00]/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group active:scale-[0.99]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs font-bold text-[#FF8A00] bg-[#FF8A00]/10 px-2 py-0.5 rounded">
+                      <span className="font-mono text-xs font-bold text-[#FF8A00] bg-[#FF8A00]/10 px-2.5 py-0.5 rounded">
                         STAGE {item.step}
                       </span>
-                      <span className="material-symbols-outlined text-2xl text-slate-400">
+                      <span className="material-symbols-outlined text-2xl text-slate-400 group-hover:text-[#FF8A00] transition-colors">
                         {item.icon}
                       </span>
                     </div>
 
-                    <h3 className="font-display text-lg font-bold text-[#0b233a] mb-1">
+                    <h3 className="font-display text-base sm:text-lg font-bold text-[#0b233a] mb-1">
                       {item.title}
                     </h3>
-                    <p className="font-mono text-[11px] text-slate-500 font-medium mb-3">
+                    <p className="font-mono text-[11px] text-slate-500 font-medium mb-2.5 sm:mb-3">
                       {item.subtitle}
                     </p>
                     <p className="font-sans text-xs text-slate-600 leading-relaxed font-light">
@@ -714,26 +784,26 @@ export default function ServicesPage() {
         {/* ══════════════════════════════════════════════════════════════════════
            6. ACTIONABLE CONSULTATION CTA
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-[#0b233a] text-white">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16 text-center">
+        <section className="py-14 sm:py-20 bg-[#0b233a] text-white">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center">
             <div className="w-8 h-1 bg-[#FF8A00] mx-auto mb-4" />
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
               Need multidisciplinary engineering execution?
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-8 text-sm sm:text-base font-light leading-relaxed">
+            <p className="text-slate-300 max-w-xl mx-auto mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-light leading-relaxed">
               Connect with our Navi Mumbai HQ and Chennai engineering leads to review your project scope, deliverable schedule, and dedicated team staffing.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
               <button
                 onClick={() => setConsultationOpen(true)}
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 shadow-sm"
+                className="w-full sm:w-auto bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 shadow-sm min-h-[44px]"
               >
                 <span>Request Project Proposal</span>
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
               <Link
                 href="/projects"
-                className="border border-white/40 hover:bg-white/10 text-white px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2"
+                className="w-full sm:w-auto border border-white/40 hover:bg-white/10 active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <span>Inspect Major Projects</span>
               </Link>
@@ -764,11 +834,11 @@ export default function ServicesPage() {
       />
 
       {/* ══════════════════════════════════════════════════════════════════════
-         PILLAR DETAILED SCOPE MODAL (Interactive Drilldown)
+         PILLAR DETAILED SCOPE MODAL (Clean Light Mode Engineering Scope)
          ══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {selectedPillar && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -778,163 +848,179 @@ export default function ServicesPage() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             />
 
-            {/* Modal Dialog */}
+            {/* Modal Dialog (Light Mode) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col z-10"
+              exit={{ opacity: 0, scale: 0.96, y: 20 }}
+              className="relative w-full max-w-xl sm:max-w-2xl max-h-[92vh] sm:max-h-[86vh] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col z-10 overscroll-contain"
             >
-              {/* Modal Header Frame */}
-              <div className="relative h-44 sm:h-52 w-full bg-slate-900 shrink-0 overflow-hidden">
-                <img
-                  src={selectedPillar.image}
-                  alt={selectedPillar.title}
-                  className="w-full h-full object-cover opacity-75"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a] via-[#0b233a]/60 to-transparent" />
-
+              {/* Modal Header (Light Mode) */}
+              <div className="bg-white px-5 sm:px-7 py-4 sm:py-5 border-b border-slate-100 shrink-0 relative">
                 {/* Close Button */}
                 <button
+                  type="button"
                   onClick={() => setSelectedPillar(null)}
-                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
+                  aria-label="Close modal"
+                  className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer border border-slate-200 active:scale-95"
                 >
-                  <span className="material-symbols-outlined text-lg">close</span>
+                  <span className="material-symbols-outlined text-base sm:text-lg">close</span>
                 </button>
 
-                {/* Badges & Title on Image */}
-                <div className="absolute bottom-4 left-6 right-6 text-white">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="font-mono text-[10px] font-bold bg-[#FF8A00] text-white px-2.5 py-0.5 rounded shadow">
-                      PILLAR {selectedPillar.number}
-                    </span>
-                    <span className="font-mono text-[10px] font-semibold bg-white/20 backdrop-blur-xs text-white px-2.5 py-0.5 rounded">
-                      {selectedPillar.code}
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-300">
-                      {selectedPillar.category}
-                    </span>
-                  </div>
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold leading-tight">
-                    {selectedPillar.title}
-                  </h2>
-                  <p className="font-sans text-xs sm:text-sm text-[#FF8A00] font-medium mt-0.5">
-                    {selectedPillar.tagline}
-                  </p>
+                {/* Badges */}
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
+                  <span className="font-mono text-[9px] sm:text-[10px] font-bold bg-[#FF8A00] text-white px-2 sm:px-2.5 py-0.5 rounded shadow-2xs">
+                    PILLAR {selectedPillar.number}
+                  </span>
+                  <span className="font-mono text-[9px] sm:text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 sm:px-2.5 py-0.5 rounded border border-slate-200">
+                    {selectedPillar.code}
+                  </span>
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400">
+                    {selectedPillar.category}
+                  </span>
                 </div>
+
+                {/* Title & Tagline */}
+                <h2 className="font-display text-lg sm:text-2xl font-extrabold text-[#0b233a] tracking-tight leading-tight pr-10">
+                  {selectedPillar.title}
+                </h2>
+                <p className="font-sans text-[11px] sm:text-xs text-[#FF8A00] font-bold uppercase tracking-wider mt-0.5">
+                  {selectedPillar.tagline}
+                </p>
               </div>
 
-              {/* Modal Body (Scrollable) */}
-              <div className="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1 text-slate-800">
+              {/* Modal Body (Light Mode) */}
+              <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 bg-white text-slate-800">
                 
-                {/* Overview */}
-                <div>
-                  <span className="font-mono text-xs uppercase font-bold text-slate-400 block mb-2">
+                {/* Service Overview */}
+                <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4.5 border border-slate-200/80">
+                  <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-[#FF8A00] tracking-wider block mb-1.5">
                     SERVICE OVERVIEW
                   </span>
-                  <p className="font-sans text-sm sm:text-base text-slate-700 leading-relaxed font-light">
+                  <p className="font-sans text-xs sm:text-sm text-slate-700 leading-relaxed font-light">
                     {selectedPillar.overview}
                   </p>
                 </div>
 
-                {/* 3 Capabilities Grid */}
+                {/* 3 Execution Capabilities */}
                 <div>
-                  <span className="font-mono text-xs uppercase font-bold text-slate-400 block mb-3">
-                    EXECUTION CAPABILITIES &amp; SPECIALIZATIONS
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider">
+                      EXECUTION CAPABILITIES &amp; SPECIALIZATIONS
+                    </span>
+                    <div className="flex-1 h-px bg-slate-200" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                     {selectedPillar.capabilities.map((cap, cIdx) => (
-                      <div key={cIdx} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                        <h4 className="font-display text-xs font-bold text-[#0b233a] mb-1.5">
-                          {cap.title}
-                        </h4>
-                        <p className="font-sans text-xs text-slate-600 font-light leading-relaxed">
-                          {cap.desc}
-                        </p>
+                      <div key={cIdx} className="p-3 sm:p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 hover:bg-white hover:border-[#FF8A00]/50 hover:shadow-2xs transition-all flex flex-col justify-between">
+                        <div>
+                          <div className="w-6 h-6 rounded-md bg-orange-50 text-[#FF8A00] flex items-center justify-center font-mono text-[10px] font-bold mb-2 border border-orange-200/60">
+                            0{cIdx + 1}
+                          </div>
+                          <h4 className="font-display text-xs font-bold text-[#0b233a] mb-1 leading-snug">
+                            {cap.title}
+                          </h4>
+                          <p className="font-sans text-[11px] text-slate-600 font-light leading-relaxed">
+                            {cap.desc}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* All Verified Deliverables Checklist */}
+                {/* Standard Verified Deliverables Checklist */}
                 <div>
-                  <span className="font-mono text-xs uppercase font-bold text-slate-400 block mb-3">
-                    STANDARD VERIFIED DELIVERABLES
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider">
+                      STANDARD VERIFIED DELIVERABLES
+                    </span>
+                    <div className="flex-1 h-px bg-slate-200" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {selectedPillar.deliverables.map((deliv, dIdx) => (
                       <div
                         key={dIdx}
-                        className="flex items-start gap-2.5 text-xs text-slate-700 p-3 rounded-xl bg-slate-50 border border-slate-100"
+                        className="flex items-start gap-2 text-xs text-slate-700 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-white hover:border-[#FF8A00]/40 transition-colors"
                       >
                         <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
                           check_circle
                         </span>
-                        <span className="leading-snug font-medium">{deliv}</span>
+                        <span className="leading-snug font-medium text-slate-800 text-[11px] sm:text-xs">{deliv}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Tools & Standards Box */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div className="p-4 rounded-xl bg-[#0b233a] text-white">
-                    <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
-                      Licensed Software Suite
-                    </span>
-                    <div className="font-mono text-xs text-[#FF8A00] font-bold">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 shadow-2xs">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="material-symbols-outlined text-[#FF8A00] text-xs">terminal</span>
+                      <span className="font-mono text-[9px] text-slate-400 uppercase tracking-wider font-bold">
+                        Licensed Software Suite
+                      </span>
+                    </div>
+                    <div className="font-mono text-xs text-slate-900 font-bold">
                       {selectedPillar.software}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#0b233a] text-white">
-                    <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider block mb-1">
-                      Governing Standards
-                    </span>
-                    <div className="font-mono text-xs text-slate-200 font-bold">
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 shadow-2xs">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="material-symbols-outlined text-slate-400 text-xs">verified</span>
+                      <span className="font-mono text-[9px] text-slate-400 uppercase tracking-wider font-bold">
+                        Governing Standards
+                      </span>
+                    </div>
+                    <div className="font-mono text-xs text-[#0b233a] font-bold">
                       {selectedPillar.standards}
                     </div>
                   </div>
                 </div>
 
                 {/* Case Citation */}
-                <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs flex items-center gap-3">
                   <span className="material-symbols-outlined text-[#FF8A00] text-xl shrink-0">
                     history_edu
                   </span>
                   <div>
-                    <span className="font-bold block">Case Study Benchmark:</span>
-                    <span className="font-light">{selectedPillar.caseReference}</span>
+                    <span className="font-bold block text-[#0b233a] text-[10px] uppercase font-mono tracking-wider">
+                      Case Study Benchmark:
+                    </span>
+                    <span className="font-medium text-slate-700 text-[11px] sm:text-xs mt-0.5 block">{selectedPillar.caseReference}</span>
                   </div>
                 </div>
 
               </div>
 
-              {/* Modal Footer Actions */}
-              <div className="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4 shrink-0">
+              {/* Modal Footer Actions (Light Mode) */}
+              <div className="p-3.5 sm:p-4 sm:px-6 bg-slate-50 border-t border-slate-200 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shrink-0">
                 <button
+                  type="button"
                   onClick={() => setSelectedPillar(null)}
-                  className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-mono font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors cursor-pointer text-center min-h-[40px]"
                 >
                   Close Scope
                 </button>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
                   <Link
                     href="/projects"
                     onClick={() => setSelectedPillar(null)}
-                    className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-[#0b233a] hover:border-[#0b233a] transition-colors"
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-[#0b233a] hover:border-[#0b233a] transition-colors text-center min-h-[40px] flex items-center justify-center"
                   >
-                    View Real Projects →
+                    View Projects →
                   </Link>
                   <button
+                    type="button"
                     onClick={() => {
                       setSelectedPillar(null);
                       setConsultationOpen(true);
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-[#FF8A00] hover:bg-[#E67C00] text-white text-xs font-mono font-bold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white text-xs font-mono font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px]"
                   >
-                    <span>Request Scope Proposal</span>
+                    <span>Request Proposal</span>
                     <span className="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
                 </div>
@@ -947,4 +1033,5 @@ export default function ServicesPage() {
     </div>
   );
 }
+
 

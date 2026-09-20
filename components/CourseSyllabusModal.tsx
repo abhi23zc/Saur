@@ -35,32 +35,32 @@ export default function CourseSyllabusModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-3xl max-h-[88vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-xl sm:max-w-2xl max-h-[88vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Compact Modal Header */}
-        <div className="bg-[#0b233a] text-white px-5 sm:px-6 py-4 border-b border-slate-800 relative">
+        {/* Light Modal Header */}
+        <div className="p-4 sm:p-5 sm:px-7 border-b border-slate-100 bg-white relative shrink-0">
           <div className="flex items-start justify-between gap-3">
-            <div className="space-y-1">
+            <div className="space-y-1 pr-8">
               {/* Category & Program Number */}
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[10px] font-bold text-[#FF8A00] bg-[#FF8A00]/15 border border-[#FF8A00]/30 px-2 py-0.5 rounded">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="font-mono text-[10px] font-bold text-white bg-[#FF8A00] px-2 py-0.5 rounded">
                   PROGRAM {course.number}
                 </span>
-                <span className="font-mono text-[10px] text-amber-300 font-semibold uppercase tracking-wider">
+                <span className="font-mono text-[10px] text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-semibold uppercase tracking-wider">
                   {course.category}
                 </span>
               </div>
 
               {/* Title */}
-              <h2 className="font-display text-lg sm:text-xl font-bold tracking-tight text-white leading-snug">
+              <h2 className="font-display text-lg sm:text-2xl font-extrabold tracking-tight text-[#0b233a] leading-snug">
                 {course.title}
               </h2>
 
               {/* Inline Metadata */}
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono text-slate-300 pt-0.5">
-                <span className="flex items-center gap-1 text-amber-300 font-medium">
-                  <Clock className="w-3 h-3 text-[#FF8A00]" />
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono text-slate-500 pt-0.5">
+                <span className="flex items-center gap-1 text-[#FF8A00] font-bold">
+                  <Clock className="w-3.5 h-3.5 text-[#FF8A00]" />
                   <span>{course.duration}</span>
                 </span>
                 <span>•</span>
@@ -73,10 +73,10 @@ export default function CourseSyllabusModal({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors shrink-0 cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors border border-slate-200 cursor-pointer active:scale-95"
               aria-label="Close modal"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-slate-700" />
             </button>
           </div>
         </div>

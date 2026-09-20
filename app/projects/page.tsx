@@ -148,6 +148,32 @@ export default function ProjectsPage() {
     return () => clearInterval(timer);
   }, [isPaused, quickViewProject, consultationOpen, searchOpen, flagshipProjects.length]);
 
+  const touchStartX = useState<number | null>(null)[0];
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    setIsPaused(false);
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > 50) {
+      handleNextFlagship();
+    } else if (distance < -50) {
+      handlePrevFlagship();
+    }
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   const handleSelectFlagship = (index: number) => {
     setActiveFlagshipIndex(index);
     setSlideProgress(0);
@@ -190,7 +216,7 @@ export default function ProjectsPage() {
         {/* ══════════════════════════════════════════════════════════════════════
            1. HERO: Clean Corporate Diagonal Angle Split (Fully Responsive)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[480px] lg:min-h-[520px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-10 bg-[#0b233a]">
+        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
           {/* Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -199,7 +225,7 @@ export default function ProjectsPage() {
               backgroundPosition: "center right",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/30 to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
             
             {/* Editorial Badge on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
@@ -213,46 +239,37 @@ export default function ProjectsPage() {
             </div>
           </div>
 
-          {/* Left Navy Polygon Split (Desktop Only) */}
+          {/* Left Navy Angle-Split Polygon (Desktop polygon / Mobile full width overlay) */}
           <div
-            className="absolute inset-y-0 left-0 w-full lg:w-[65%] z-10 bg-[#0b233a] opacity-95 lg:opacity-100"
-            style={{
-              clipPath: "polygon(0 0, 100% 0, 85% 100%, 0% 100%)",
-            }}
-          />
-
-          {/* Mobile Overlay */}
-          <div className="absolute inset-0 bg-[#0b233a]/90 lg:hidden z-10" />
-
-          {/* Hero Content */}
-          <div className="relative z-20 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 w-full flex flex-col justify-center my-auto py-6">
+            className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
+          >
             <div className="max-w-2xl">
               
               {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-3 sm:mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
                 <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
                   PROJECT PORTFOLIO &amp; TRACK RECORD
                 </span>
               </div>
 
               {/* Headline */}
-              <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.12] mb-4">
+              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-3 sm:mb-4">
                 Engineering delivered for <br />
                 <span className="text-[#FF8A00]">critical industrial assets.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="font-sans text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-light mb-6 max-w-xl">
+              <p className="font-sans text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-light mb-6 sm:mb-8 max-w-xl">
                 A verified track record of FEED verification, detailed engineering, 3D modelling, MTO
                 calculations, and site execution support for global energy and infrastructure majors.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-8">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 sm:px-6 py-3 rounded-lg font-sans text-xs uppercase tracking-wider font-bold transition-colors flex items-center gap-2 cursor-pointer"
+                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md shadow-[#FF8A00]/20 flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Discuss a Project</span>
                   <ArrowRight className="w-4 h-4" />
@@ -260,14 +277,14 @@ export default function ProjectsPage() {
 
                 <a
                   href="#directory"
-                  className="border border-white/30 hover:bg-white/10 text-white px-5 sm:px-6 py-3 rounded-lg font-sans text-xs uppercase tracking-wider font-bold transition-colors flex items-center gap-2 cursor-pointer"
+                  className="w-full xs:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Explore 18 Projects</span>
                 </a>
               </div>
 
               {/* Telemetry Strip */}
-              <div className="pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-4 text-white">
+              <div className="pt-5 sm:pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-white">
                 <div>
                   <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">68,000+</div>
                   <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Man-Hours</div>
@@ -302,11 +319,14 @@ export default function ProjectsPage() {
           className="py-12 sm:py-16 bg-slate-50 border-b border-slate-200"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
             
             {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
                 <span className="font-mono text-[11px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-1">
                   FLAGSHIP PROGRAMS
@@ -320,7 +340,7 @@ export default function ProjectsPage() {
               </div>
 
               {/* Clean Segmented Tab Switcher with Subtle Progress Line */}
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-200/70 border border-slate-200 overflow-x-auto max-w-full">
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-200/70 border border-slate-200 overflow-x-auto max-w-full scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-1">
                 {flagshipProjects.map((fp, idx) => {
                   const isActive = activeFlagshipIndex === idx;
                   return (
@@ -328,7 +348,7 @@ export default function ProjectsPage() {
                       key={fp.slug}
                       onClick={() => handleSelectFlagship(idx)}
                       className={cn(
-                        "relative px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all whitespace-nowrap cursor-pointer select-none overflow-hidden",
+                        "relative px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all whitespace-nowrap cursor-pointer select-none overflow-hidden min-h-[36px]",
                         isActive
                           ? "bg-[#0b233a] text-white"
                           : "text-slate-700 hover:text-[#0b233a] hover:bg-white/50"
@@ -444,10 +464,10 @@ export default function ProjectsPage() {
                       </div>
 
                       {/* Card Actions */}
-                      <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center gap-3">
+                      <div className="pt-4 border-t border-slate-200 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-3">
                         <button
                           onClick={() => setQuickViewProject(currentFlagship)}
-                          className="px-4 py-2.5 rounded-lg bg-[#0b233a] hover:bg-[#143c61] text-white font-sans text-xs uppercase tracking-wider font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                          className="w-full xs:w-auto justify-center px-4 py-2.5 rounded-xl bg-[#0b233a] hover:bg-[#143c61] active:scale-[0.98] text-white font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[42px]"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>Quick Inspect Scope</span>
@@ -455,7 +475,7 @@ export default function ProjectsPage() {
 
                         <Link
                           href={`/projects/${currentFlagship.slug}`}
-                          className="px-4 py-2.5 rounded-lg border border-slate-300 hover:border-[#0b233a] text-slate-800 font-sans text-xs uppercase tracking-wider font-bold transition-colors flex items-center gap-1.5"
+                          className="w-full xs:w-auto justify-center px-4 py-2.5 rounded-xl border border-slate-300 hover:border-[#0b233a] active:scale-[0.98] text-slate-800 font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 min-h-[42px]"
                         >
                           <span>Full Case Study</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -822,7 +842,7 @@ export default function ProjectsPage() {
                   <div className="p-4 sm:p-5 pt-0 flex items-center justify-between gap-2 border-t border-slate-100 mt-2">
                     <button
                       onClick={() => setQuickViewProject(project)}
-                      className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-[#0b233a] hover:text-white text-[#0b233a] font-mono text-[11px] font-bold uppercase transition-colors flex items-center gap-1 cursor-pointer border border-slate-200/60"
+                      className="flex-1 justify-center px-3 py-2 rounded-lg bg-slate-100 hover:bg-[#0b233a] hover:text-white active:scale-[0.98] text-[#0b233a] font-mono text-[11px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200/60 min-h-[38px]"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Quick View</span>
@@ -830,7 +850,7 @@ export default function ProjectsPage() {
 
                     <Link
                       href={`/projects/${project.slug}`}
-                      className="px-3 py-1.5 rounded-lg border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] text-slate-700 font-mono text-[11px] font-bold uppercase transition-colors flex items-center gap-1"
+                      className="flex-1 justify-center px-3 py-2 rounded-lg border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] active:scale-[0.98] text-slate-700 font-mono text-[11px] font-bold uppercase transition-all flex items-center gap-1.5 min-h-[38px]"
                     >
                       <span>Full Case</span>
                       <ArrowRight className="w-3.5 h-3.5" />

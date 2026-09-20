@@ -563,17 +563,17 @@ export default function CaseStudyDetailView({
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           RELATED CASE STUDIES SECTION (Clean & Responsive)
+           RELATED CASE STUDIES SECTION (High Contrast & Responsive)
            ══════════════════════════════════════════════════════════════════════ */}
         {relatedCaseStudies.length > 0 && (
-          <section className="py-16 sm:py-20 bg-white">
+          <section className="py-16 sm:py-20 bg-[#F4F6F9] border-t border-slate-200">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
               
               <div className="max-w-2xl mb-8">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF8A00] font-bold block mb-1">
                   RELATED CASE FILES
                 </span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#0b233a]">
+                <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0b233a]">
                   Explore Adjacent Engineering Studies
                 </h2>
               </div>
@@ -583,36 +583,36 @@ export default function CaseStudyDetailView({
                   <Link
                     key={cs.slug}
                     href={`/case-studies/${cs.slug}`}
-                    className="group bg-white border border-slate-200 rounded-xl p-5 hover:border-[#0b233a] hover:shadow-sm transition-all flex flex-col justify-between"
+                    className="bg-white border border-slate-200 hover:border-[#0b233a] rounded-xl p-5 sm:p-6 transition-colors flex flex-col justify-between"
                   >
                     <div>
                       {/* Badge Strip */}
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="font-mono text-[10px] font-bold text-[#FF8A00] bg-[#FF8A00]/10 px-2 py-0.5 rounded">
+                      <div className="flex items-center justify-between gap-2 mb-3.5">
+                        <span className="font-mono text-[10px] font-extrabold text-white bg-[#FF8A00] px-2.5 py-1 rounded">
                           CASE {cs.number}
                         </span>
-                        <span className="font-mono text-[10px] font-bold text-[#0b233a] bg-slate-100 px-2 py-0.5 rounded">
+                        <span className="font-mono text-[11px] font-extrabold text-white bg-[#0b233a] px-2.5 py-1 rounded">
                           {cs.endUser}
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="font-display text-sm sm:text-base font-bold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors mb-2 line-clamp-2 leading-snug">
+                      <h3 className="font-display text-base sm:text-lg font-bold text-[#0b233a] hover:text-[#FF8A00] transition-colors mb-2 line-clamp-2 leading-snug">
                         {cs.title}
                       </h3>
 
                       {/* Scope Summary */}
-                      <p className="text-xs text-slate-600 line-clamp-3 font-normal leading-relaxed mb-4">
+                      <p className="text-xs sm:text-[13px] text-slate-600 line-clamp-3 font-normal leading-relaxed mb-4">
                         {cs.scope}
                       </p>
                     </div>
 
                     {/* Footer Metrics */}
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-500 font-semibold">
-                        {cs.manHours} hrs · {cs.deliverableCount} docs
+                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs font-mono">
+                      <span className="text-slate-600 font-bold">
+                        <strong className="text-[#FF8A00]">{cs.manHours} hrs</strong> · <strong className="text-[#0b233a]">{cs.deliverableCount} docs</strong>
                       </span>
-                      <span className="font-bold text-[#0b233a] group-hover:text-[#FF8A00] flex items-center gap-1">
+                      <span className="font-bold text-[#0b233a] flex items-center gap-1">
                         <span>Case File</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </span>

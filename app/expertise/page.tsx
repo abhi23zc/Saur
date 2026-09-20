@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TrustCredentialsStrip from "@/components/TrustCredentialsStrip";
@@ -630,9 +629,9 @@ export default function ExpertisePage() {
 
       <main className="w-full">
         {/* ══════════════════════════════════════════════════════════════════════
-           1. HERO: Classical Geometric Diagonal Angle Split
+           1. HERO: Classical Geometric Diagonal Angle Split (Mobile Optimized)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-8 bg-[#0b233a]">
+        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
           {/* Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -641,8 +640,8 @@ export default function ExpertisePage() {
               backgroundPosition: "center right",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-black/50" />
-            
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
+
             {/* Floating Editorial Badges on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
@@ -655,19 +654,13 @@ export default function ExpertisePage() {
             </div>
           </div>
 
-          {/* Left Navy Angle-Split Polygon */}
+          {/* Left Navy Angle-Split Polygon (Desktop polygon / Mobile full width overlay) */}
           <div
-            className="absolute inset-y-0 left-0 w-full lg:w-[68%] z-10 bg-[#0b233a]"
-            style={{
-              clipPath: "polygon(0 0, 100% 0, 84% 100%, 0% 100%)",
-            }}
-          />
-
-          {/* Hero Content */}
-          <div className="relative z-20 max-w-[1440px] mx-auto px-6 md:px-16 w-full flex flex-col justify-center my-auto py-8">
+            className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
+          >
             <div className="max-w-2xl">
               {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3 sm:mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
                 <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
                   MULTIDISCIPLINARY CAPABILITIES
@@ -675,22 +668,22 @@ export default function ExpertisePage() {
               </div>
 
               {/* Headline */}
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.08] mb-5">
+              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] sm:leading-[1.08] mb-4 sm:mb-5">
                 11 engineering disciplines. <br />
                 <span className="text-[#FF8A00]">One integrated delivery.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="font-sans text-sm sm:text-base text-slate-200 leading-relaxed font-light mb-8 max-w-xl">
+              <p className="font-sans text-xs xs:text-sm sm:text-base text-slate-200 leading-relaxed font-light mb-6 sm:mb-8 max-w-xl">
                 Every discipline is structured around clear, audited engineering deliverables — ensuring
                 constructability, regulatory compliance, and seamless inter-discipline coordination.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-8">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md shadow-[#FF8A00]/20 flex items-center gap-2 cursor-pointer"
+                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md shadow-[#FF8A00]/20 flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Consult an Engineering Lead</span>
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -698,29 +691,29 @@ export default function ExpertisePage() {
 
                 <a
                   href="#disciplines"
-                  className="border border-white/30 hover:bg-white/10 text-white px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer"
+                  className="w-full xs:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Explore 11 Disciplines</span>
                 </a>
               </div>
 
               {/* Telemetry Strip */}
-              <div className="mt-10 pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-white">
+              <div className="pt-4 sm:pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-white">
                 <div>
-                  <div className="font-display text-2xl font-bold text-[#FF8A00]">11</div>
-                  <div className="font-mono text-[10px] text-slate-300 uppercase">Core Disciplines</div>
+                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">11</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase">Core Disciplines</div>
                 </div>
                 <div>
-                  <div className="font-display text-2xl font-bold text-white">100%</div>
-                  <div className="font-mono text-[10px] text-slate-300 uppercase">IDC Zero Clash</div>
+                  <div className="font-display text-xl sm:text-2xl font-bold text-white">100%</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase">IDC Zero Clash</div>
                 </div>
                 <div>
-                  <div className="font-display text-2xl font-bold text-[#FF8A00]">20+</div>
-                  <div className="font-mono text-[10px] text-slate-300 uppercase">CAD/CAE Platforms</div>
+                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">20+</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase">CAD/CAE Platforms</div>
                 </div>
                 <div>
-                  <div className="font-display text-2xl font-bold text-white">ISO 9001</div>
-                  <div className="font-mono text-[10px] text-slate-300 uppercase">QA Certified</div>
+                  <div className="font-display text-xl sm:text-2xl font-bold text-white">ISO 9001</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase">QA Certified</div>
                 </div>
               </div>
 
@@ -736,33 +729,33 @@ export default function ExpertisePage() {
         {/* ══════════════════════════════════════════════════════════════════════
            3. 11 DISCIPLINE DIRECTORY: Rich Interactive Visual Cards
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-slate-50 border-b border-slate-200" id="disciplines">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-            
+        <section className="py-14 sm:py-20 bg-slate-50 border-b border-slate-200" id="disciplines">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+
             {/* Header & Filter Row */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
               <div className="max-w-2xl">
                 <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                   DISCIPLINE DIRECTORY
                 </span>
-                <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
+                <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
                   Comprehensive Engineering Expertise
                 </h2>
-                <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 font-light">
+                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
                   Standard technical deliverables generated, audited, and issued for construction across all 11 disciplines.
                 </p>
               </div>
 
-              {/* Filter Pills */}
-              <div className="flex flex-wrap gap-2">
+              {/* Filter Pills with Mobile Horizontal Scroll */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
                     className={cn(
-                      "px-3.5 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all border cursor-pointer select-none",
+                      "px-3.5 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all border cursor-pointer select-none whitespace-nowrap min-h-[38px]",
                       activeCategory === cat
-                        ? "bg-[#0b233a] text-white border-[#0b233a] shadow-sm"
+                        ? "bg-[#0b233a] text-white border-[#0b233a] shadow-xs"
                         : "bg-white text-slate-700 border-slate-200 hover:border-[#FF8A00] hover:text-[#0b233a]"
                     )}
                   >
@@ -772,13 +765,13 @@ export default function ExpertisePage() {
               </div>
             </div>
 
-            {/* 11 Discipline Cards Grid: Sleek Full-Bleed Photographic Cards with Hover-Drawer */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {/* 11 Discipline Cards Grid: Sleek Full-Bleed Photographic Cards with Touch & Hover Support */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 items-stretch">
               {filteredDisciplines.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() => setSelectedDiscipline(item as unknown as Discipline)}
-                  className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 shadow-xs hover:shadow-2xl hover:border-[#FF8A00]/60 transition-all duration-300 min-h-[380px] sm:min-h-[420px] flex flex-col justify-between p-4 cursor-pointer select-none"
+                  onClick={() => setSelectedDiscipline({ ...item, description: item.summary } as unknown as Discipline)}
+                  className="group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 shadow-xs hover:shadow-2xl hover:border-[#FF8A00]/60 transition-all duration-300 min-h-[360px] sm:min-h-[420px] flex flex-col justify-between p-4 cursor-pointer select-none active:scale-[0.99]"
                 >
                   {/* Full-bleed Background Image */}
                   <div className="absolute inset-0 z-0 overflow-hidden">
@@ -805,14 +798,14 @@ export default function ExpertisePage() {
                   </div>
 
                   {/* Bottom Floating Navy Drawer */}
-                  <div className="relative z-10 bg-[#0b233a]/95 backdrop-blur-md rounded-xl p-4 border border-white/15 shadow-xl transition-all duration-500 ease-out">
+                  <div className="relative z-10 bg-[#0b233a]/95 backdrop-blur-md rounded-xl p-3.5 sm:p-4 border border-white/15 shadow-xl transition-all duration-500 ease-out">
                     {/* Always-Visible Header in Rest State */}
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <span className="font-mono text-[9px] uppercase font-bold text-[#FF8A00] tracking-wider block mb-0.5">
                           DISCIPLINE {item.number} · {item.category}
                         </span>
-                        <h3 className="font-display text-base font-bold text-white group-hover:text-amber-300 transition-colors leading-snug truncate">
+                        <h3 className="font-display text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors leading-snug truncate">
                           {item.title}
                         </h3>
                       </div>
@@ -823,7 +816,7 @@ export default function ExpertisePage() {
                       </div>
                     </div>
 
-                    {/* Expandable Drawer: Slides Up and Fades in on Hover */}
+                    {/* Expandable Details Area (Visible on Hover & Tap Drilldown) */}
                     <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out">
                       <div className="overflow-hidden">
                         <div className="pt-3 mt-2.5 border-t border-white/10 space-y-2.5">
@@ -877,30 +870,27 @@ export default function ExpertisePage() {
         {/* ══════════════════════════════════════════════════════════════════════
            4. INTER-DISCIPLINE COORDINATION (IDC) & ZERO-CLASH 3D WORKFLOW
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-white">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-            
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <section className="py-14 sm:py-20 bg-white">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
               <div className="max-w-2xl">
                 <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                   INTEGRATED DELIVERY GOVERNANCE
                 </span>
-                <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
+                <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
                   Inter-Discipline Coordination (IDC) &amp; QA
                 </h2>
-                <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 font-light">
+                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
                   How our 11 disciplines collaborate concurrently to eliminate dimensional clashes, avoid rework, and guarantee constructability.
                 </p>
               </div>
 
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-800 self-start md:self-auto">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Zero Dimensional Clash Commitment</span>
-              </div>
+
             </div>
 
             {/* 4-Stage Process Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
                 {
                   stage: "01",
@@ -929,7 +919,7 @@ export default function ExpertisePage() {
               ].map((item) => (
                 <div
                   key={item.stage}
-                  className="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover:border-[#FF8A00]/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group"
+                  className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 hover:border-[#FF8A00]/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group active:scale-[0.99]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -958,38 +948,38 @@ export default function ExpertisePage() {
         {/* ══════════════════════════════════════════════════════════════════════
            5. SPECIALIZED SOFTWARE & INDUSTRY TOOLS (100% AUTHENTIC PDF PAGE 8)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-slate-50 border-t border-slate-200" id="software-ecosystem">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-            
+        <section className="py-14 sm:py-20 bg-slate-50 border-t border-slate-200" id="software-ecosystem">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+
             {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
               <div className="max-w-2xl">
                 <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                   TOOLS &amp; INFRASTRUCTURE
                 </span>
-                <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
+                <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
                   Specialized Software &amp; Industry Tools
                 </h2>
-                <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 font-light">
+                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
                   Enterprise licensed engineering platforms and specialized analytical suites deployed across our Mumbai and Chennai delivery centers.
                 </p>
               </div>
 
               {/* Verified Badge */}
-              <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-mono text-slate-700 shadow-2xs self-start md:self-auto">
+              <div className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-mono text-slate-700 shadow-2xs self-start md:self-auto">
                 <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
                 <span className="font-bold text-[#0b233a]">28 Authentic Tools &amp; Platforms</span>
               </div>
             </div>
 
             {/* 2-Pillar Dual Console (Direct 1:1 Mirror of PDF Page 8) */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-              
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+
               {/* Pillar 1: Engineering Software & Platforms */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between">
+              <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 md:p-8 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between">
                 <div>
                   {/* Card Header */}
-                  <div className="flex items-center justify-between gap-4 pb-5 mb-6 border-b border-slate-100">
+                  <div className="flex items-center justify-between gap-4 pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-slate-100">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#0b233a] flex items-center justify-center text-white shrink-0 shadow-sm">
                         <span className="material-symbols-outlined text-xl">view_in_ar</span>
@@ -998,21 +988,21 @@ export default function ExpertisePage() {
                         <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider block">
                           PILLAR 01 · CAD &amp; DATABASES
                         </span>
-                        <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a]">
+                        <h3 className="font-display text-base sm:text-xl font-bold text-[#0b233a]">
                           Engineering Software &amp; Platforms
                         </h3>
                       </div>
                     </div>
 
-                    <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full shrink-0">
+                    <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
                       14 Platforms
                     </span>
                   </div>
 
                   {/* Ecosystem Groups */}
-                  <div className="space-y-6">
+                  <div className="space-y-5 sm:space-y-6">
                     {engineeringSoftwarePlatforms.map((group, gIdx) => (
-                      <div key={gIdx} className="space-y-2.5">
+                      <div key={gIdx} className="space-y-2">
                         <div className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-sm text-[#FF8A00]">
                             {group.icon}
@@ -1022,20 +1012,20 @@ export default function ExpertisePage() {
                           </h4>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-2">
+                        <div className="grid grid-cols-1 gap-1.5 sm:gap-2">
                           {group.items.map((item, iIdx) => (
                             <div
                               key={iIdx}
-                              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100/90 hover:border-[#FF8A00]/50 hover:bg-orange-50/20 transition-all text-xs group"
+                              className="flex flex-col xs:flex-row xs:items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-100/90 hover:border-[#FF8A00]/50 hover:bg-orange-50/20 transition-all text-xs group gap-1 xs:gap-2"
                             >
-                              <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="flex items-center gap-2 min-w-0">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] shrink-0" />
-                                <span className="font-mono font-bold text-[#0b233a] truncate group-hover:text-[#FF8A00] transition-colors">
+                                <span className="font-mono font-bold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors">
                                   {item.name}
                                 </span>
                               </div>
 
-                              <span className="font-sans text-[11px] text-slate-500 font-light truncate ml-3 shrink-0">
+                              <span className="font-sans text-[11px] text-slate-500 font-light shrink-0">
                                 {item.role}
                               </span>
                             </div>
@@ -1047,7 +1037,7 @@ export default function ExpertisePage() {
                 </div>
 
                 {/* Pillar 1 Footer */}
-                <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
                   <span className="flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-sm text-emerald-600">verified</span>
                     <span>Direct Server &amp; Citrix Integration</span>
@@ -1057,10 +1047,10 @@ export default function ExpertisePage() {
               </div>
 
               {/* Pillar 2: Industry Specific Tools */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between">
+              <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 md:p-8 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between">
                 <div>
                   {/* Card Header */}
-                  <div className="flex items-center justify-between gap-4 pb-5 mb-6 border-b border-slate-100">
+                  <div className="flex items-center justify-between gap-4 pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-slate-100">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#0b233a] flex items-center justify-center text-white shrink-0 shadow-sm">
                         <span className="material-symbols-outlined text-xl">precision_manufacturing</span>
@@ -1069,21 +1059,21 @@ export default function ExpertisePage() {
                         <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider block">
                           PILLAR 02 · CAE, FEA &amp; SIZING
                         </span>
-                        <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a]">
+                        <h3 className="font-display text-base sm:text-xl font-bold text-[#0b233a]">
                           Industry Specific Tools
                         </h3>
                       </div>
                     </div>
 
-                    <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full shrink-0">
+                    <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
                       14 Specialized Tools
                     </span>
                   </div>
 
                   {/* Discipline Groups */}
-                  <div className="space-y-6">
+                  <div className="space-y-5 sm:space-y-6">
                     {industrySpecificTools.map((group, gIdx) => (
-                      <div key={gIdx} className="space-y-2.5">
+                      <div key={gIdx} className="space-y-2">
                         <div className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-sm text-[#FF8A00]">
                             {group.icon}
@@ -1093,20 +1083,20 @@ export default function ExpertisePage() {
                           </h4>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-2">
+                        <div className="grid grid-cols-1 gap-1.5 sm:gap-2">
                           {group.items.map((item, iIdx) => (
                             <div
                               key={iIdx}
-                              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100/90 hover:border-[#FF8A00]/50 hover:bg-orange-50/20 transition-all text-xs group"
+                              className="flex flex-col xs:flex-row xs:items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-100/90 hover:border-[#FF8A00]/50 hover:bg-orange-50/20 transition-all text-xs group gap-1 xs:gap-2"
                             >
-                              <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="flex items-center gap-2 min-w-0">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] shrink-0" />
-                                <span className="font-mono font-bold text-[#0b233a] truncate group-hover:text-[#FF8A00] transition-colors">
+                                <span className="font-mono font-bold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors">
                                   {item.name}
                                 </span>
                               </div>
 
-                              <span className="font-sans text-[11px] text-slate-500 font-light truncate ml-3 shrink-0">
+                              <span className="font-sans text-[11px] text-slate-500 font-light shrink-0">
                                 {item.role}
                               </span>
                             </div>
@@ -1118,7 +1108,7 @@ export default function ExpertisePage() {
                 </div>
 
                 {/* Pillar 2 Footer */}
-                <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
                   <span className="flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-sm text-emerald-600">verified</span>
                     <span>Audited Calculation Reports &amp; FEA</span>
@@ -1130,19 +1120,19 @@ export default function ExpertisePage() {
             </div>
 
             {/* Bottom Direct Proposal Action Strip */}
-            <div className="mt-10 p-6 rounded-2xl bg-[#0b233a] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+            <div className="mt-8 sm:mt-10 p-5 sm:p-6 rounded-2xl bg-[#0b233a] text-white flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6 shadow-xl">
               <div>
-                <h4 className="font-display text-base font-bold text-white mb-1">
+                <h4 className="font-display text-sm sm:text-base font-bold text-white mb-1">
                   Need project delivery on a specific CAD / CAE software platform?
                 </h4>
-                <p className="font-sans text-xs text-slate-300 font-light">
+                <p className="font-sans text-xs text-slate-300 font-light leading-relaxed">
                   Our engineering teams integrate seamlessly with client database servers, project specs, and software versions.
                 </p>
               </div>
 
               <button
                 onClick={() => setConsultationOpen(true)}
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-6 py-3 rounded-xl font-mono text-xs uppercase font-bold tracking-wider transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 py-3 rounded-xl font-mono text-xs uppercase font-bold tracking-wider transition-all shadow-md shrink-0 flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
               >
                 <span>Consult Software Specialist</span>
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1155,9 +1145,9 @@ export default function ExpertisePage() {
         {/* ══════════════════════════════════════════════════════════════════════
            6. GOVERNING INTERNATIONAL CODES & COMPLIANCE WALL
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-16 bg-white border-t border-slate-200">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-            <div className="text-center max-w-2xl mx-auto mb-10">
+        <section className="py-12 sm:py-16 bg-white border-t border-slate-200">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+            <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
               <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                 GLOBAL BENCHMARKS
               </span>
@@ -1166,7 +1156,7 @@ export default function ExpertisePage() {
               </h2>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
               {[
                 { code: "ASME B31.3", title: "Process Piping" },
                 { code: "ASME B31.4 / B31.8", title: "Liquid & Gas Pipelines" },
@@ -1183,7 +1173,7 @@ export default function ExpertisePage() {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center hover:border-[#FF8A00] transition-colors"
+                  className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center hover:border-[#FF8A00] transition-colors shadow-2xs"
                 >
                   <div className="font-mono text-xs font-bold text-[#0b233a]">{item.code}</div>
                   <div className="font-sans text-[10px] text-slate-500 font-light">{item.title}</div>
@@ -1196,26 +1186,26 @@ export default function ExpertisePage() {
         {/* ══════════════════════════════════════════════════════════════════════
            7. ACTION CTA
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-20 bg-[#0b233a] text-white">
-          <div className="max-w-[1440px] mx-auto px-6 md:px-16 text-center">
+        <section className="py-14 sm:py-20 bg-[#0b233a] text-white">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center">
             <div className="w-8 h-1 bg-[#FF8A00] mx-auto mb-4" />
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
               Explore how our disciplines integrate for your project
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-8 text-sm sm:text-base font-light leading-relaxed">
+            <p className="text-slate-300 max-w-xl mx-auto mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-light leading-relaxed">
               Connect directly with our multidisciplinary design leads in Mumbai and Chennai to review your technical scope and deliverable schedule.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
               <button
                 onClick={() => setConsultationOpen(true)}
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-8 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md shadow-[#FF8A00]/20"
+                className="w-full sm:w-auto bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#FF8A00]/20 min-h-[44px]"
               >
                 <span>Request Scope Review</span>
                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
               <Link
                 href="/projects"
-                className="border border-white/40 hover:bg-white/10 text-white px-8 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto border border-white/40 hover:bg-white/10 active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
               >
                 <span>View Delivered Projects</span>
               </Link>
@@ -1237,7 +1227,7 @@ export default function ExpertisePage() {
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
         onSelectDiscipline={(d) => setSelectedDiscipline(d)}
-        onSelectWhitepaper={() => {}}
+        onSelectWhitepaper={() => { }}
       />
       <DisciplineModal
         discipline={selectedDiscipline}
@@ -1247,4 +1237,5 @@ export default function ExpertisePage() {
     </div>
   );
 }
+
 

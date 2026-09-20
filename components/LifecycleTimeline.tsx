@@ -69,26 +69,26 @@ export default function LifecycleTimeline() {
   return (
     <section
       id="lifecycle"
-      className="py-20 md:py-28 bg-[#07131e] text-white relative overflow-hidden border-t border-white/10"
+      className="py-14 sm:py-20 md:py-28 bg-[#07131e] text-white relative overflow-hidden border-t border-white/10"
     >
       <div className="absolute inset-0 micro-grid opacity-15 pointer-events-none" />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
             Execution Methodology
           </div>
-          <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-white mb-3">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-2 sm:mb-3">
             Project Engineering Lifecycle
           </h2>
-          <p className="font-sans text-sm md:text-base text-slate-300 leading-relaxed font-light">
+          <p className="font-sans text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed font-light">
             Our ISO 9001:2015 quality process ensures every deliverable is verified, clash-free, and ready for site construction.
           </p>
         </div>
 
         {/* 4 Clean Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {stages.map((stage, idx) => {
             const isSelected = selectedPhase === idx;
 
@@ -97,7 +97,7 @@ export default function LifecycleTimeline() {
                 key={stage.step}
                 onClick={() => setSelectedPhase(isSelected ? null : idx)}
                 className={cn(
-                  "p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between",
+                  "p-4 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between",
                   isSelected
                     ? "bg-[#0b233a] border-[#FF8A00] shadow-xl"
                     : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07]"

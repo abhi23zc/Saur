@@ -60,31 +60,29 @@ export default function CaseStudyQuickModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 12 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl border border-slate-300 z-10 flex flex-col shadow-2xl"
+            className="relative w-full max-w-xl sm:max-w-2xl max-h-[90vh] bg-white rounded-2xl border border-slate-200 z-10 flex flex-col shadow-2xl overflow-hidden"
           >
-            {/* Header with Dark Navy Hero */}
-            <div className="relative bg-[#0b233a] text-white p-6 sm:p-8 shrink-0 overflow-hidden">
-              <div className="absolute inset-0 blueprint-grid opacity-15 pointer-events-none" />
-              
+            {/* Header (Clean Light Mode) */}
+            <div className="p-4 sm:p-5 sm:px-7 border-b border-slate-100 bg-white relative shrink-0">
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-lg bg-white/10 hover:bg-[#FF8A00] text-white flex items-center justify-center transition-colors border border-white/15 cursor-pointer"
+                className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors border border-slate-200 cursor-pointer active:scale-95"
                 aria-label="Close modal"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4 text-slate-700" />
               </button>
 
               {/* Badges */}
-              <div className="flex flex-wrap items-center gap-2 mb-3 relative z-10">
-                <span className="px-2.5 py-1 rounded bg-[#FF8A00] text-white font-mono text-[11px] font-bold">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00] text-white font-mono text-[10px] font-bold">
                   CASE STUDY {caseStudy.number}
                 </span>
-                <span className="px-2.5 py-1 rounded bg-white/10 text-amber-300 border border-white/20 font-mono text-[11px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#0b233a] text-white font-mono text-[10px] font-bold">
                   {caseStudy.endUser}
                 </span>
                 {caseStudy.client && (
-                  <span className="px-2.5 py-1 rounded bg-white/5 text-slate-300 border border-white/15 font-mono text-[11px] flex items-center gap-1.5">
+                  <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[10px] flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5 text-[#FF8A00]" />
                     <span>Client: {caseStudy.client}</span>
                   </span>
@@ -92,18 +90,18 @@ export default function CaseStudyQuickModal({
               </div>
 
               {/* Title */}
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-white leading-tight mb-2 relative z-10">
+              <h3 className="font-display text-lg sm:text-2xl font-extrabold text-[#0b233a] leading-tight mb-1 pr-10">
                 {caseStudy.title}
               </h3>
 
               {/* Scope Summary */}
-              <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed max-w-2xl relative z-10">
+              <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed pr-10">
                 {caseStudy.scope}
               </p>
             </div>
 
             {/* Content Body */}
-            <div className="p-5 sm:p-7 space-y-6">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5">
               
               {/* Telemetry Metric Strip */}
               <div className="bg-slate-50 border border-slate-200 rounded-lg grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200">

@@ -138,24 +138,24 @@ export default function TechnicalWhitepapers({
   );
 
   return (
-    <section id="whitepapers" className="py-20 md:py-28 bg-[#f8fafc] border-t border-slate-200">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16">
+    <section id="whitepapers" className="py-14 sm:py-20 md:py-28 bg-[#f8fafc] border-t border-slate-200">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-slate-200 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-10 pb-6 border-b border-slate-200 gap-4 sm:gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
               Saur Training &amp; Upskilling
             </div>
-            <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a]">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a]">
               Engineering Professional Courses
             </h2>
-            <p className="font-sans text-xs md:text-sm text-slate-600 mt-1">
+            <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
               &ldquo;We don&apos;t just teach. We prepare you to lead.&rdquo; Practical industry training conducted at our Chennai &amp; Mumbai centers.
             </p>
           </div>
 
           {/* Search bar inside section */}
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
             <div className="relative flex-1 md:w-72">
               <input
                 type="text"
@@ -170,7 +170,7 @@ export default function TechnicalWhitepapers({
             </div>
             <Link
               href="/training"
-              className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] shrink-0"
+              className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] shrink-0 text-center sm:text-left py-2 sm:py-0"
             >
               All Courses →
             </Link>
@@ -178,7 +178,7 @@ export default function TechnicalWhitepapers({
         </div>
 
         {/* 6 Courses Compact Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredPapers.map((paper) => (
             <div
               key={paper.id}

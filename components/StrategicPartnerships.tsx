@@ -24,14 +24,14 @@ export default function StrategicPartnerships() {
   ];
 
   return (
-    <section className="py-10 md:py-14 bg-white border-b border-slate-200 overflow-hidden relative">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 mb-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <section className="py-8 sm:py-12 md:py-14 bg-white border-b border-slate-200 overflow-hidden relative">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 mb-6 sm:mb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/20 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
               Industry Standard Platforms
             </div>
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-[#0b233a] tracking-tight">
+            <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-[#0b233a] tracking-tight">
               Specialized Engineering Software
             </h3>
             <p className="font-sans text-xs md:text-sm text-slate-500 mt-1">
@@ -39,18 +39,18 @@ export default function StrategicPartnerships() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4 text-xs font-mono text-slate-600">
-            <div className="border-l-2 border-[#FF8A00] pl-3">
-              <span className="text-slate-400 block text-[10px] uppercase">3D Plant</span>
-              <span className="font-bold text-slate-800">S3D / AVEVA E3D</span>
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 text-xs font-mono text-slate-600 pt-2 sm:pt-0">
+            <div className="border-l-2 border-[#FF8A00] pl-2.5 sm:pl-3">
+              <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase">3D Plant</span>
+              <span className="font-bold text-slate-800 text-xs sm:text-sm">S3D / AVEVA E3D</span>
             </div>
-            <div className="border-l-2 border-[#FF8A00] pl-3">
-              <span className="text-slate-400 block text-[10px] uppercase">E&I Design</span>
-              <span className="font-bold text-slate-800">SPI / SEL / ETAP</span>
+            <div className="border-l-2 border-[#FF8A00] pl-2.5 sm:pl-3">
+              <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase">E&amp;I Design</span>
+              <span className="font-bold text-slate-800 text-xs sm:text-sm">SPI / SEL / ETAP</span>
             </div>
-            <div className="border-l-2 border-[#FF8A00] pl-3">
-              <span className="text-slate-400 block text-[10px] uppercase">Stress & Analysis</span>
-              <span className="font-bold text-slate-800">CAESAR II / STAAD</span>
+            <div className="border-l-2 border-[#FF8A00] pl-2.5 sm:pl-3 col-span-2 sm:col-span-1">
+              <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase">Stress &amp; Analysis</span>
+              <span className="font-bold text-slate-800 text-xs sm:text-sm">CAESAR II / STAAD</span>
             </div>
           </div>
         </div>

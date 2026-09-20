@@ -28,25 +28,25 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
   ];
 
   return (
-    <section className="py-20 md:py-28 bg-[#f8fafc] border-t border-slate-200 relative">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="py-14 sm:py-20 md:py-28 bg-[#f8fafc] border-t border-slate-200 relative">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
               Manpower &amp; Workforce Solutions
             </div>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-4 tracking-tight text-[#0b233a] leading-tight">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 tracking-tight text-[#0b233a] leading-tight">
               Skilled Technical Workforce for Onshore, Yard &amp; Offshore
             </h2>
-            <p className="font-sans text-sm md:text-base text-slate-600 mb-6 leading-relaxed">
+            <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mb-6 leading-relaxed">
               We provide certified engineers, designers, and site technicians to support EPC contractors and plant owners during fabrication, installation, and commissioning.
             </p>
 
             {/* Core Capabilities List */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
               {capabilities.map((c, i) => (
-                <div key={i} className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+                <div key={i} className="p-3 sm:p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
                   <div className="flex items-center gap-2 text-[#0b233a] font-bold text-xs mb-1">
                     <span className="material-symbols-outlined text-[#FF8A00] text-base">check_circle</span>
                     <span>{c.title}</span>
@@ -58,17 +58,17 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
               <button
                 onClick={onOpenLeadership}
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-6 py-3 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md flex items-center gap-2"
+                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-6 py-3 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <span>Request Manpower Support</span>
                 <span className="material-symbols-outlined text-base">groups</span>
               </button>
               <Link
                 href="/services#manpower"
-                className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] transition-colors"
+                className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] transition-colors text-center sm:text-left py-2 sm:py-0"
               >
                 Explore Deputation Details →
               </Link>
@@ -80,7 +80,7 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
             <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-white relative">
               <img
                 alt="Engineering Field Execution"
-                className="w-full h-72 sm:h-80 object-cover"
+                className="w-full h-56 sm:h-72 sm:h-80 object-cover"
                 src="https://mystartupnews.in/_next/image?url=https://res.cloudinary.com/dfycb17sf/image/upload/v1781250211/writerProfiles/abti1vwpsmc6slhztdp7.webp&w=1920&q=75"
               />
 

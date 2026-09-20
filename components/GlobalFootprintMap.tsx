@@ -124,12 +124,12 @@ export default function GlobalFootprintMap() {
   return (
     <section
       id="global-footprint"
-      className="py-16 md:py-24 bg-white border-t border-slate-200 relative overflow-hidden"
+      className="py-14 sm:py-16 md:py-24 bg-white border-t border-slate-200 relative overflow-hidden"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
 
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
@@ -137,22 +137,22 @@ export default function GlobalFootprintMap() {
                 FIG. 08 — GLOBAL NETWORK &amp; HUBS
               </span>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
               Global Operations &amp; Office Locations
             </h2>
-            <p className="font-sans text-sm sm:text-base text-slate-600 mt-2.5 leading-relaxed font-light">
+            <p className="font-sans text-xs sm:text-base text-slate-600 mt-2 sm:mt-2.5 leading-relaxed font-light">
               Operating from registered headquarters in Navi Mumbai and our training center in Chennai, delivering multidisciplinary engineering across the Middle East, Europe, and SE Asia.
             </p>
           </div>
 
           {/* Legend Badges */}
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-mono font-semibold text-slate-700">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A00]" />
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-50 border border-slate-200 text-[10px] sm:text-xs font-mono font-semibold text-slate-700">
+              <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#FF8A00]" />
               <span>HQ &amp; Training Hubs</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-mono font-semibold text-slate-700">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#0b233a]" />
+            <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-50 border border-slate-200 text-[10px] sm:text-xs font-mono font-semibold text-slate-700">
+              <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#0b233a]" />
               <span>Project Execution</span>
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function GlobalFootprintMap() {
         {/* ══════════════════════════════════════════════════════════════════════
            Clean Dot-Matrix World Map Container (Pure Reference Aesthetic)
            ══════════════════════════════════════════════════════════════════════ */}
-        <div className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-3xl  overflow-hidden ">
+        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[2.2/1] rounded-2xl sm:rounded-3xl overflow-hidden">
 
           {/* Subtle Technical Dot Grid */}
           <div
@@ -200,7 +200,7 @@ export default function GlobalFootprintMap() {
                 {/* Circular Photo Bubble with Pure White Border & Drop Shadow */}
                 <div
                   className={cn(
-                    "relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border-[3px] border-white shadow-[0_12px_28px_-6px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-200",
+                    "relative w-7 h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full border-2 sm:border-[3px] border-white shadow-[0_8px_20px_-4px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-200",
                     isSelected && "ring-2 ring-slate-400 shadow-2xl"
                   )}
                 >
@@ -218,7 +218,7 @@ export default function GlobalFootprintMap() {
         {/* ══════════════════════════════════════════════════════════════════════
            Synchronized Hub Information Cards Below
            ══════════════════════════════════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-6">
           {hubs.slice(0, 6).map((hub) => {
             const isHQ = hub.type === "HQ";
             const isSelected = selectedHub?.id === hub.id;

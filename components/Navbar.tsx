@@ -46,10 +46,10 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
     >
       {/* Main Solid White Navbar */}
       <div className="w-full bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-xs py-2">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-16 flex justify-between items-center h-14">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 flex justify-between items-center h-14">
           {/* Brand Logo & Name */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="relative h-11 w-11 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300 shadow-xs border border-slate-200">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group">
+            <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 overflow-hidden rounded-lg group-hover:scale-105 transition-transform duration-300 shadow-xs border border-slate-200">
               <img
                 alt="Saur Engineering Logo"
                 className="h-full w-full object-cover"
@@ -57,10 +57,10 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-display text-lg font-extrabold tracking-tight uppercase transition-colors duration-300 leading-tight text-[#0b233a]">
+              <span className="font-display text-base sm:text-lg font-extrabold tracking-tight uppercase transition-colors duration-300 leading-tight text-[#0b233a]">
                 SAUR
               </span>
-              <span className="text-[10px] tracking-[0.16em] font-sans font-semibold uppercase leading-tight text-slate-600">
+              <span className="text-[9px] sm:text-[10px] tracking-[0.14em] sm:tracking-[0.16em] font-sans font-semibold uppercase leading-tight text-slate-600">
                 Engineering &amp; Consultancy
               </span>
             </div>
@@ -127,7 +127,7 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white border-b border-slate-200 shadow-xl overflow-hidden"
+            className="lg:hidden bg-white border-b border-slate-200 shadow-xl overflow-y-auto max-h-[calc(100vh-4.5rem)]"
           >
             <div className="px-6 py-6 space-y-4">
               {navLinks.map((link) => (

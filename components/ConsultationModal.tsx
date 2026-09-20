@@ -57,35 +57,35 @@ export default function ConsultationModal({
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        className="modal-surface bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-[#c3c5d9]/40 relative max-h-[90vh] overflow-y-auto"
+        className="modal-surface bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl border border-[#c3c5d9]/40 relative max-h-[88vh] overflow-y-auto"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
           aria-label="Close consultation modal"
-          className="absolute top-6 right-6 p-2 rounded-full text-[#737687] hover:text-[#1a1c1b] hover:bg-[#eeeeec] transition-colors"
+          className="absolute top-4 sm:top-6 right-4 sm:right-6 p-2 rounded-full text-[#737687] hover:text-[#1a1c1b] hover:bg-[#eeeeec] transition-colors"
         >
-          <span className="material-symbols-outlined text-2xl">close</span>
+          <span className="material-symbols-outlined text-xl sm:text-2xl">close</span>
         </button>
 
         {submitted ? (
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] flex items-center justify-center mx-auto text-3xl font-bold">
+          <div className="text-center py-6 sm:py-8 space-y-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF8A00]/10 text-[#FF8A00] flex items-center justify-center mx-auto text-2xl sm:text-3xl font-bold">
               ✓
             </div>
             <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block">
               Consultation Initialized
             </span>
-            <h3 className="font-display text-2xl font-bold text-[#1a1c1b]">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-[#1a1c1b]">
               Enterprise Request Received
             </h3>
-            <p className="font-sans text-sm text-[#424656] max-w-md mx-auto leading-relaxed">
+            <p className="font-sans text-xs sm:text-sm text-[#424656] max-w-md mx-auto leading-relaxed">
               Our Senior Principal Engineering Partner has been assigned to your profile. Reference Dispatch ID:
             </p>
-            <div className="font-mono text-base font-bold text-[#FF8A00] bg-[#eeeeec] py-3 px-6 rounded-xl inline-block tracking-wider">
+            <div className="font-mono text-sm sm:text-base font-bold text-[#FF8A00] bg-[#eeeeec] py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl inline-block tracking-wider">
               {refId}
             </div>
-            <div className="pt-4">
+            <div className="pt-2 sm:pt-4">
               <button
                 onClick={handleReset}
                 className="bg-[#FF8A00] text-white px-8 py-3 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors"
@@ -96,11 +96,11 @@ export default function ConsultationModal({
           </div>
         ) : (
           <div>
-            <div className="mb-6">
-              <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
+            <div className="mb-5 sm:mb-6 pr-6">
+              <span className="font-mono text-[10px] sm:text-xs text-[#FF8A00] font-bold uppercase tracking-widest block mb-1">
                 Saur Engagement Protocol
               </span>
-              <h3 className="font-display text-3xl font-bold text-[#1a1c1b]">
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-[#1a1c1b] leading-tight">
                 Initiate Technical Consultation
               </h3>
               <p className="font-sans text-xs text-[#424656] mt-1">
@@ -108,8 +108,8 @@ export default function ConsultationModal({
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="font-mono text-[10px] text-[#424656] font-bold uppercase block mb-1">
                     Full Name *
@@ -122,7 +122,7 @@ export default function ConsultationModal({
                       setFormData({ ...formData, name: e.target.value })
                     }
                     placeholder="e.g. Sarah Jenkins"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
                 <div>
@@ -137,12 +137,12 @@ export default function ConsultationModal({
                       setFormData({ ...formData, email: e.target.value })
                     }
                     placeholder="s.jenkins@enterprise.com"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="font-mono text-[10px] text-[#424656] font-bold uppercase block mb-1">
                     Organization / Govt Body *
@@ -155,7 +155,7 @@ export default function ConsultationModal({
                       setFormData({ ...formData, org: e.target.value })
                     }
                     placeholder="e.g. Vertex Dynamics"
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   />
                 </div>
                 <div>
@@ -167,7 +167,7 @@ export default function ConsultationModal({
                     onChange={(e) =>
                       setFormData({ ...formData, discipline: e.target.value })
                     }
-                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-4 py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
+                    className="w-full bg-[#f9f9f7] border border-[#c3c5d9]/50 rounded-xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-sans text-[#1a1c1b] focus:outline-none focus:border-[#FF8A00]"
                   >
                     <option value="Mechanical Systems">Mechanical Systems</option>
                     <option value="Subsea Engineering">Subsea Engineering</option>
@@ -187,7 +187,7 @@ export default function ConsultationModal({
                       type="button"
                       key={b}
                       onClick={() => setFormData({ ...formData, budget: b })}
-                      className={`py-2 rounded-xl text-xs font-sans font-semibold border transition-all ${
+                      className={`py-2 px-1 rounded-xl text-[11px] sm:text-xs font-sans font-semibold border transition-all truncate ${
                         formData.budget === b
                           ? "bg-[#FF8A00] text-white border-[#FF8A00]"
                           : "bg-[#f9f9f7] text-[#424656] border-[#c3c5d9]/40 hover:border-[#FF8A00]"

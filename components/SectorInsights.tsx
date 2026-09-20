@@ -64,7 +64,7 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
   }, [isPaused, industries.length]);
 
   return (
-    <section id="insights" className="py-12 md:py-16 bg-white text-slate-800 relative border-t border-slate-200 overflow-hidden">
+    <section id="insights" className="py-12 sm:py-16 md:py-20 bg-white text-slate-800 relative border-t border-slate-200 overflow-hidden">
       {/* Subtle Micro-Grid */}
       <div className="absolute inset-0 micro-grid opacity-25 pointer-events-none" />
 
@@ -74,7 +74,7 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
         style={{ top: `${activeIdx * 18 + 10}%` }}
       />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
           {/* Left Column: Heading & Trust Badges */}
@@ -96,38 +96,38 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
             </p>
 
             {/* Quick Metrics */}
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
-                <div className="font-display text-xl font-bold text-[#0b233a]">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
+              <div className="p-2.5 sm:p-3 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                <div className="font-display text-lg sm:text-xl font-bold text-[#0b233a]">
                   5+ Sectors
                 </div>
-                <div className="font-mono text-[9px] text-slate-500 uppercase tracking-wider mt-0.5">
+                <div className="font-mono text-[8px] sm:text-[9px] text-slate-500 uppercase tracking-wider mt-0.5">
                   Critical Industries
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
-                <div className="font-display text-xl font-bold text-[#FF8A00]">
+              <div className="p-2.5 sm:p-3 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                <div className="font-display text-lg sm:text-xl font-bold text-[#FF8A00]">
                   Zero Defect
                 </div>
-                <div className="font-mono text-[9px] text-slate-500 uppercase tracking-wider mt-0.5">
+                <div className="font-mono text-[8px] sm:text-[9px] text-slate-500 uppercase tracking-wider mt-0.5">
                   Quality Compliance
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 w-full sm:w-auto">
               <Link
                 href="/projects"
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow-md inline-flex items-center gap-1.5 group"
+                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow-md inline-flex items-center justify-center gap-1.5 group w-full sm:w-auto"
               >
                 <span>Explore Track Record</span>
                 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>
               <Link
                 href="/services"
-                className="bg-white hover:bg-slate-50 text-[#0b233a] px-4 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 border border-slate-300 shadow-2xs"
+                className="bg-white hover:bg-slate-50 text-[#0b233a] px-4 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 border border-slate-300 shadow-2xs text-center justify-center inline-flex w-full sm:w-auto"
               >
                 Our Services
               </Link>
@@ -139,6 +139,7 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
             className="lg:col-span-7 relative"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
           >
             {/* Visual Engineering Pipeline Line (Connecting the cards) */}
             <div className="absolute left-[22px] sm:left-[23px] top-5 bottom-5 w-[2px] bg-slate-200 z-0 rounded-full hidden sm:block">
