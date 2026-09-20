@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -30,6 +30,7 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
     { name: "Projects", href: "/projects" },
     { name: "Case Studies", href: "/case-studies" },
     { name: "Training", href: "/training" },
+    // { name: "Blog", href: "/blog" },
   ];
 
   const isActive = (href: string) => {

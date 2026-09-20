@@ -3,17 +3,18 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ArrowRight, 
-  Search, 
-  X, 
-  Check, 
-  Eye, 
-  RotateCcw, 
-  Cpu, 
-  ShieldCheck, 
-  FileText,
-  SlidersHorizontal
+import {
+  ArrowRight,
+  Search,
+  X,
+  Check,
+  Eye,
+  RotateCcw,
+  ShieldCheck,
+  SlidersHorizontal,
+  MapPin,
+  Clock,
+  Layers,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -33,7 +34,6 @@ export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState<string>("All Sectors");
   const [selectedOperator, setSelectedOperator] = useState<string>("All Operators");
-  const [selectedDiscipline, setSelectedDiscipline] = useState<string>("All Disciplines");
 
   // Sectors list
   const sectors = [
@@ -45,27 +45,14 @@ export default function ProjectsPage() {
     "Power & Industrial BIM",
   ];
 
-  // Operators list
+  // Operators list for direct filtering
   const operators = [
-    "All Operators",
-    "ADNOC",
-    "Saudi Aramco",
-    "EMARAT",
-    "Pertamina",
-    "Jindal Steel",
-  ];
-
-  // Disciplines list
-  const disciplines = [
-    "All Disciplines",
-    "Piping",
-    "Instrumentation",
-    "Electrical",
-    "Pipeline",
-    "3D Modelling",
-    "Process",
-    "Civil & Structural",
-    "Mechanical",
+    { name: "ADNOC", sub: "Abu Dhabi National Oil", loc: "UAE" },
+    { name: "Saudi Aramco", sub: "Offshore Programs", loc: "KSA" },
+    { name: "EMARAT", sub: "Petroleum Company", loc: "UAE" },
+    { name: "PT. Pertamina", sub: "EP / PGE / Gas", loc: "Indonesia" },
+    { name: "Jindal Steel", sub: "Industrial Gas Heaters", loc: "India" },
+    { name: "L&T Hydrocarbon", sub: "EPC Engineering", loc: "India / Gulf" },
   ];
 
   // Filtered Projects Logic
@@ -84,15 +71,7 @@ export default function ProjectsPage() {
         if (!matchesOperator) return false;
       }
 
-      // Discipline filter
-      if (selectedDiscipline !== "All Disciplines") {
-        const matchesDisc = project.disciplines.some((d) =>
-          d.toLowerCase().includes(selectedDiscipline.toLowerCase())
-        );
-        if (!matchesDisc) return false;
-      }
-
-      // Search Query filter
+      // Search Query filter (matches title, scope, client, endUser, location, disciplines, software)
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesSearch =
@@ -108,7 +87,7 @@ export default function ProjectsPage() {
 
       return true;
     });
-  }, [searchQuery, selectedSector, selectedOperator, selectedDiscipline]);
+  }, [searchQuery, selectedSector, selectedOperator]);
 
   // Flagship Spotlight Projects (Top 4 Multi-Thousand Hour Programs from PDF)
   const flagshipProjects = useMemo(() => {
@@ -148,7 +127,6 @@ export default function ProjectsPage() {
     return () => clearInterval(timer);
   }, [isPaused, quickViewProject, consultationOpen, searchOpen, flagshipProjects.length]);
 
-  const touchStartX = useState<number | null>(null)[0];
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -166,9 +144,11 @@ export default function ProjectsPage() {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
     if (distance > 50) {
-      handleNextFlagship();
+      setActiveFlagshipIndex((curr) => (curr + 1) % flagshipProjects.length);
+      setSlideProgress(0);
     } else if (distance < -50) {
-      handlePrevFlagship();
+      setActiveFlagshipIndex((curr) => (curr - 1 + flagshipProjects.length) % flagshipProjects.length);
+      setSlideProgress(0);
     }
     setTouchStart(null);
     setTouchEnd(null);
@@ -179,30 +159,26 @@ export default function ProjectsPage() {
     setSlideProgress(0);
   };
 
-  const handlePrevFlagship = () => {
-    setActiveFlagshipIndex((curr) => (curr - 1 + flagshipProjects.length) % flagshipProjects.length);
-    setSlideProgress(0);
-  };
-
-  const handleNextFlagship = () => {
-    setActiveFlagshipIndex((curr) => (curr + 1) % flagshipProjects.length);
-    setSlideProgress(0);
-  };
-
   const currentFlagship = flagshipProjects[activeFlagshipIndex] || flagshipProjects[0];
 
   const handleResetFilters = () => {
     setSearchQuery("");
     setSelectedSector("All Sectors");
     setSelectedOperator("All Operators");
-    setSelectedDiscipline("All Disciplines");
   };
 
   const hasActiveFilters =
     searchQuery !== "" ||
     selectedSector !== "All Sectors" ||
-    selectedOperator !== "All Operators" ||
-    selectedDiscipline !== "All Disciplines";
+    selectedOperator !== "All Operators";
+
+  const handleSelectOperator = (opName: string) => {
+    setSelectedOperator((curr) => (curr === opName ? "All Operators" : opName));
+    const directoryEl = document.getElementById("directory");
+    if (directoryEl) {
+      directoryEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-white text-slate-900 selection:bg-[#FF8A00] selection:text-white flex flex-col justify-between">
@@ -214,9 +190,9 @@ export default function ProjectsPage() {
 
       <main className="w-full">
         {/* ══════════════════════════════════════════════════════════════════════
-           1. HERO: Clean Corporate Diagonal Angle Split (Fully Responsive)
+           1. HERO: Clean Corporate Split Hero
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
+        <section className="relative w-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-8 sm:pb-12 bg-[#0b233a]">
           {/* Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -225,51 +201,51 @@ export default function ProjectsPage() {
               backgroundPosition: "center right",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
-            
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/85 sm:via-[#0b233a]/65 to-black/60 sm:to-black/40" />
+
             {/* Editorial Badge on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
-              <div className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
                 AUDITED EXECUTION TRACK RECORD
               </div>
-              <div className="font-display text-xs text-slate-300 font-light">
+              <div className="text-xs text-slate-300 font-normal">
                 UAE · Saudi Arabia · Indonesia · India
               </div>
             </div>
           </div>
 
-          {/* Left Navy Angle-Split Polygon (Desktop polygon / Mobile full width overlay) */}
+          {/* Left Navy Angle-Split Column */}
           <div
             className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
           >
             <div className="max-w-2xl">
-              
+
               {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-3 sm:mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-                <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
                   PROJECT PORTFOLIO &amp; TRACK RECORD
                 </span>
               </div>
 
               {/* Headline */}
-              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-3 sm:mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-4">
                 Engineering delivered for <br />
                 <span className="text-[#FF8A00]">critical industrial assets.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="font-sans text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-light mb-6 sm:mb-8 max-w-xl">
+              <p className="text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-normal mb-8 max-w-xl">
                 A verified track record of FEED verification, detailed engineering, 3D modelling, MTO
                 calculations, and site execution support for global energy and infrastructure majors.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-8">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md shadow-[#FF8A00]/20 flex items-center gap-2 cursor-pointer min-h-[44px]"
+                  className="w-full sm:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-[#0b233a] px-6 sm:px-7 py-3.5 rounded-lg text-xs uppercase tracking-wider font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Discuss a Project</span>
                   <ArrowRight className="w-4 h-4" />
@@ -277,29 +253,29 @@ export default function ProjectsPage() {
 
                 <a
                   href="#directory"
-                  className="w-full xs:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
+                  className="w-full sm:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-lg text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
                   <span>Explore 18 Projects</span>
                 </a>
               </div>
 
-              {/* Telemetry Strip */}
+              {/* Metrics Strip */}
               <div className="pt-5 sm:pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-white">
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">68,000+</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Man-Hours</div>
+                  <div className="text-xl sm:text-2xl font-bold text-[#FF8A00]">68,000+</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Man-Hours</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-white">18</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Major Works</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">18</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Major Works</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">4,000+</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Drawings</div>
+                  <div className="text-xl sm:text-2xl font-bold text-[#FF8A00]">4,000+</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Drawings</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-white">100%</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Clash Free</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">100%</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Clash Free</div>
                 </div>
               </div>
 
@@ -313,9 +289,9 @@ export default function ProjectsPage() {
         <TrustCredentialsStrip />
 
         {/* ══════════════════════════════════════════════════════════════════════
-           3. FLAGSHIP SPOTLIGHT (Continuously Animated Engineering Console)
+           3. FLAGSHIP SPOTLIGHT (Clean Modern Showcase with Micro-Animations)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section 
+        <section
           className="py-12 sm:py-16 bg-slate-50 border-b border-slate-200"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -324,42 +300,51 @@ export default function ProjectsPage() {
           onTouchEnd={handleTouchEnd}
         >
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            
+
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
-                <span className="font-mono text-[11px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-1">
-                  FLAGSHIP PROGRAMS
-                </span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#0b233a] tracking-tight">
+                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
+                  <span>FLAGSHIP PROGRAMS</span>
+                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b233a] tracking-tight">
                   High-Impact Capital Projects
                 </h2>
-                <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1 font-normal">
+                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-normal">
                   Multi-thousand manhour engineering engagements executed under ISO 9001:2015 QA governance.
                 </p>
               </div>
 
-              {/* Clean Segmented Tab Switcher with Subtle Progress Line */}
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-200/70 border border-slate-200 overflow-x-auto max-w-full scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-1">
+              {/* Clean Segmented Tab Switcher with Progress Line */}
+              <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-slate-200/80 border border-slate-200 overflow-x-auto max-w-full scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-1.5">
                 {flagshipProjects.map((fp, idx) => {
                   const isActive = activeFlagshipIndex === idx;
+                  const labelMap: Record<string, string> = {
+                    "southeast-onshore-wellhead": "ADNOC Wellheads",
+                    "emarat-natural-gas-pipeline": "EMARAT Pipeline",
+                    "aip5-onshore-wellhead": "AiP5 Well Pads",
+                    "chemical-injection-skid": "Injection Skids",
+                  };
                   return (
                     <button
                       key={fp.slug}
                       onClick={() => handleSelectFlagship(idx)}
                       className={cn(
-                        "relative px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all whitespace-nowrap cursor-pointer select-none overflow-hidden min-h-[36px]",
+                        "relative px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer select-none overflow-hidden min-h-[36px]",
                         isActive
-                          ? "bg-[#0b233a] text-white"
-                          : "text-slate-700 hover:text-[#0b233a] hover:bg-white/50"
+                          ? "bg-[#0b233a] text-white shadow-xs"
+                          : "text-slate-700 hover:text-[#0b233a] hover:bg-white/60"
                       )}
                     >
-                      <span className="relative z-10">0{idx + 1} · {fp.endUser.split(",")[0]}</span>
-                      
+                      <span className="relative z-10">
+                        0{idx + 1} · {labelMap[fp.slug] || fp.endUser.split(",")[0]}
+                      </span>
+
                       {/* Animated Progress Timer Line */}
                       {isActive && !isPaused && (
-                        <div 
-                          className="absolute bottom-0 left-0 h-[2px] bg-[#FF8A00] transition-all duration-75"
+                        <div
+                          className="absolute bottom-0 left-0 h-[2.5px] bg-[#FF8A00] transition-all duration-75"
                           style={{ width: `${slideProgress}%` }}
                         />
                       )}
@@ -369,37 +354,37 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            {/* Continuously Animated Card with AnimatePresence */}
-            <div className="relative min-h-[440px]">
+            {/* Clean Showcase Card with Framer Motion AnimatePresence */}
+            <div className="relative min-h-[420px]">
               <AnimatePresence mode="wait">
                 {currentFlagship && (
                   <motion.div
                     key={currentFlagship.slug}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
+                    exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="bg-white rounded-xl border border-slate-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12"
+                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow grid grid-cols-1 lg:grid-cols-12"
                   >
-                    {/* Left Visual Banner with Subtly Moving Photography */}
-                    <div className="lg:col-span-5 relative min-h-[300px] sm:min-h-[360px] lg:min-h-[420px] bg-slate-900 overflow-hidden">
+                    {/* Left Photographic Banner */}
+                    <div className="lg:col-span-5 relative min-h-[260px] sm:min-h-[320px] lg:min-h-[400px] bg-slate-900 overflow-hidden">
                       <motion.img
                         key={currentFlagship.image}
-                        initial={{ scale: 1.05 }}
+                        initial={{ scale: 1.04 }}
                         animate={{ scale: 1 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
                         src={currentFlagship.image || "/media/page-services-hero.png"}
                         alt={currentFlagship.title}
-                        className="w-full h-full object-cover object-center brightness-[0.9]"
+                        className="w-full h-full object-cover object-center brightness-[0.88]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a]/80 via-transparent to-black/20" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a]/85 via-transparent to-black/30" />
 
                       {/* Top Badges */}
                       <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2">
-                        <span className="px-2.5 py-1 rounded-md bg-white text-[#0b233a] font-mono text-[10px] font-bold border border-slate-200">
+                        <span className="px-3 py-1 rounded-md bg-white/95 backdrop-blur-xs text-[#0b233a] text-xs font-bold border border-white/20 shadow-xs">
                           {currentFlagship.endUser}
                         </span>
-                        <span className="px-2.5 py-1 rounded-md bg-black/70 text-white font-mono text-[10px] font-bold border border-white/20 flex items-center gap-1.5">
+                        <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-xs text-white text-xs font-bold border border-white/20 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
                           {currentFlagship.manHours} Man-Hours
                         </span>
@@ -407,78 +392,88 @@ export default function ProjectsPage() {
 
                       {/* Bottom Image Info */}
                       <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
-                        <span className="font-mono text-[10px] text-amber-300 uppercase font-semibold block mb-0.5">
-                          {currentFlagship.location}
-                        </span>
-                        <div className="font-display text-sm font-bold truncate">
+                        <div className="flex items-center gap-1 text-[11px] text-amber-300 font-semibold mb-0.5">
+                          <MapPin className="w-3 h-3" />
+                          <span>{currentFlagship.location}</span>
+                        </div>
+                        <div className="text-sm font-bold truncate">
                           {currentFlagship.deliverables} Deliverables Issued
                         </div>
                       </div>
                     </div>
 
-                    {/* Right Detailed Specs (7 cols) */}
-                    <div className="lg:col-span-7 p-5 sm:p-7 md:p-8 flex flex-col justify-between space-y-5">
+                    {/* Right Specific Details */}
+                    <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-5">
                       <div>
-                        <div className="flex items-center justify-between gap-4 font-mono text-[11px] text-slate-500 mb-1.5">
-                          <span className="text-[#FF8A00] font-bold">{currentFlagship.sector}</span>
-                          <span>YEAR: {currentFlagship.year}</span>
+                        {/* Sector Eyebrow */}
+                        <div className="flex items-center justify-between gap-4 text-xs text-slate-500 mb-2">
+                          <span className="text-[#FF8A00] font-bold uppercase tracking-wider">
+                            {currentFlagship.sector}
+                          </span>
+                          <span className="font-semibold text-slate-400">
+                            {currentFlagship.year}
+                          </span>
                         </div>
 
-                        <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] mb-2 leading-snug">
+                        {/* Title */}
+                        <h3 className="text-xl sm:text-2xl font-bold text-[#0b233a] mb-3 leading-snug">
                           {currentFlagship.title}
                         </h3>
 
-                        <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-normal mb-5">
+                        {/* Clean Scope */}
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal mb-5 line-clamp-3">
                           {currentFlagship.scope}
                         </p>
 
-                        {/* Highlights Grid */}
+                        {/* Specific Highlights Strip */}
                         {currentFlagship.highlights && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-5">
                             {currentFlagship.highlights.map((h, i) => (
                               <div
                                 key={i}
-                                className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-sans text-slate-800"
+                                className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-800"
                               >
                                 <Check className="w-3.5 h-3.5 text-[#FF8A00] shrink-0" />
-                                <span className="font-medium text-[11px] sm:text-xs">{h}</span>
+                                <span className="font-medium text-[11px] sm:text-xs truncate">{h}</span>
                               </div>
                             ))}
                           </div>
                         )}
 
-                        {/* Platforms & Software */}
-                        <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-slate-100">
-                          <span className="font-mono text-[10px] text-slate-400 uppercase font-bold mr-1.5">
-                            Platforms:
-                          </span>
-                          {currentFlagship.software?.map((s) => (
-                            <span
-                              key={s}
-                              className="px-2 py-0.5 rounded bg-orange-50 text-[#FF8A00] border border-orange-200 text-[11px] font-mono font-semibold"
-                            >
-                              {s}
+                        {/* Platforms & Tools */}
+                        {currentFlagship.software && currentFlagship.software.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-slate-100 text-xs">
+                            <span className="text-[11px] text-slate-400 uppercase font-bold mr-1">
+                              Platforms:
                             </span>
-                          ))}
-                        </div>
+                            {currentFlagship.software.map((s) => (
+                              <span
+                                key={s}
+                                className="px-2 py-0.5 rounded bg-orange-50 text-[#FF8A00] border border-orange-200 text-[11px] font-semibold"
+                              >
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       {/* Card Actions */}
-                      <div className="pt-4 border-t border-slate-200 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-3">
+                      <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <button
                           onClick={() => setQuickViewProject(currentFlagship)}
-                          className="w-full xs:w-auto justify-center px-4 py-2.5 rounded-xl bg-[#0b233a] hover:bg-[#143c61] active:scale-[0.98] text-white font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[42px]"
+                          className="px-5 py-2.5 rounded-lg bg-[#0b233a] hover:bg-[#143c61] active:scale-[0.98] text-white text-xs uppercase tracking-wider font-bold transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[42px]"
                         >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>Quick Inspect Scope</span>
+                          <Eye className="w-4 h-4" />
+                          <span>Quick View &amp; Specs</span>
                         </button>
 
                         <Link
                           href={`/projects/${currentFlagship.slug}`}
-                          className="w-full xs:w-auto justify-center px-4 py-2.5 rounded-xl border border-slate-300 hover:border-[#0b233a] active:scale-[0.98] text-slate-800 font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 min-h-[42px]"
+                          className="px-5 py-2.5 rounded-lg border border-slate-300 hover:border-[#0b233a] hover:bg-slate-50 active:scale-[0.98] text-slate-800 text-xs uppercase tracking-wider font-bold transition-all flex items-center justify-center gap-2 min-h-[42px]"
                         >
                           <span>Full Case Study</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
+                          <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>
                     </div>
@@ -492,67 +487,67 @@ export default function ProjectsPage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           4. GLOBAL OPERATORS & PARTNERS ROSTER
+           4. GLOBAL OPERATORS & PARTNERS ROSTER (Interactive Filter Trigger)
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-10 sm:py-12 bg-white border-b border-slate-200">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
             <div className="text-center max-w-xl mx-auto mb-6">
-              <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-0.5">
+              <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-1">
                 TRUSTED BY INDUSTRY MAJORS
               </span>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a]">
+              <h3 className="text-lg sm:text-xl font-bold text-[#0b233a]">
                 Global Operators &amp; EPC Client Partners
               </h3>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
-              {[
-                { name: "ADNOC", sub: "Abu Dhabi National Oil", loc: "UAE" },
-                { name: "Saudi Aramco", sub: "Offshore Programs", loc: "KSA" },
-                { name: "EMARAT", sub: "Petroleum Company", loc: "UAE" },
-                { name: "PT. Pertamina", sub: "EP / PGE / Gas", loc: "Indonesia" },
-                { name: "Jindal Steel", sub: "Industrial Gas Heaters", loc: "India" },
-                { name: "L&T Hydrocarbon", sub: "EPC Engineering", loc: "India / Gulf" },
-              ].map((partner, idx) => (
-                <div
-                  key={idx}
-                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center hover:border-slate-300 transition-colors flex flex-col justify-center"
-                >
-                  <span className="font-display text-sm font-bold text-[#0b233a] block">
-                    {partner.name}
-                  </span>
-                  <span className="font-sans text-[10px] text-slate-500 font-normal block truncate">
-                    {partner.sub}
-                  </span>
-                  <span className="font-mono text-[9px] text-[#FF8A00] uppercase font-bold mt-0.5 block">
-                    {partner.loc}
-                  </span>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {operators.map((partner, idx) => {
+                const isSelected = selectedOperator === partner.name;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleSelectOperator(partner.name)}
+                    className={cn(
+                      "p-3.5 rounded-xl border text-center transition-all flex flex-col justify-center cursor-pointer select-none group active:scale-98",
+                      isSelected
+                        ? "bg-[#0b233a] text-white border-[#0b233a] shadow-md"
+                        : "bg-slate-50 border-slate-200 hover:border-[#FF8A00]/50 hover:bg-white text-slate-800"
+                    )}
+                  >
+                    <span className={cn("text-sm font-bold block", isSelected ? "text-white" : "text-[#0b233a] group-hover:text-[#FF8A00]")}>
+                      {partner.name}
+                    </span>
+                    <span className={cn("text-[10px] font-normal block truncate", isSelected ? "text-slate-300" : "text-slate-500")}>
+                      {partner.sub}
+                    </span>
+                    <span className={cn("text-[9px] uppercase font-bold mt-0.5 block", isSelected ? "text-[#FF8A00]" : "text-[#FF8A00]")}>
+                      {partner.loc}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           5. INTERACTIVE PROJECT DIRECTORY (Flat, Realistic, Fully Responsive)
+           5. INTERACTIVE PROJECT DIRECTORY (Clean, Executive Cards with Specific Details)
            ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-12 sm:py-16 bg-white border-t border-slate-200" id="directory">
+        <section className="py-12 sm:py-16 bg-slate-50/50 border-t border-slate-200" id="directory">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            
+
             {/* Header & Search Row */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200">
               <div>
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#0b233a]/5 border border-[#0b233a]/10 mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
-                  <span className="font-mono text-[10px] text-[#0b233a] font-bold uppercase tracking-[0.15em]">
-                    AUDITED EXECUTION DATABASE
-                  </span>
+                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
+                  <span>AUDITED EXECUTION DATABASE</span>
+                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
                 </div>
-                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b233a] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b233a] tracking-tight">
                   All 18 Executed Projects
                 </h2>
-                <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1.5 max-w-2xl font-normal leading-relaxed">
-                  Search, filter, and inspect verified engineering deliverables, man-hour scopes, and 3D modeling packages across global energy assets.
+                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 max-w-2xl font-normal leading-relaxed">
+                  Search and inspect verified engineering deliverables, man-hour scopes, and 3D modeling packages across global energy assets.
                 </p>
               </div>
 
@@ -564,8 +559,8 @@ export default function ProjectsPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search project, operator, software..."
-                    className="w-full pl-10 pr-9 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-[#0b233a] focus:bg-white focus:outline-none text-xs sm:text-sm text-slate-900 transition-colors placeholder:text-slate-400 font-sans"
+                    placeholder="Search project, operator, platform..."
+                    className="w-full pl-10 pr-9 py-2.5 rounded-lg bg-white border border-slate-200 focus:border-[#0b233a] focus:outline-none text-xs sm:text-sm text-slate-900 transition-colors placeholder:text-slate-400 font-normal shadow-2xs"
                   />
                   {searchQuery && (
                     <button
@@ -579,13 +574,13 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="px-3 py-2.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-[#0b233a]">
+                  <span className="px-3.5 py-2.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-[#0b233a] shadow-2xs">
                     Showing <span className="text-[#FF8A00]">{filteredProjects.length}</span> of {projects.length}
                   </span>
                   {hasActiveFilters && (
                     <button
                       onClick={handleResetFilters}
-                      className="px-3 py-2.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-mono font-bold uppercase transition-colors flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-2.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold uppercase transition-colors flex items-center gap-1.5 cursor-pointer"
                       title="Reset all filters"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
@@ -596,267 +591,160 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            {/* Sector Tabs Navigation (Primary Classification - Flat & Scrollable) */}
-            <div className="pt-6 pb-4">
-              <div className="flex items-center justify-between gap-4 mb-2">
-                <span className="font-mono text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                  SECTOR CLASSIFICATION:
-                </span>
-                {selectedSector !== "All Sectors" && (
-                  <button
-                    onClick={() => setSelectedSector("All Sectors")}
-                    className="text-[11px] font-mono text-[#FF8A00] hover:underline cursor-pointer"
-                  >
-                    Clear sector
-                  </button>
-                )}
-              </div>
-
+            {/* Sector Tabs Navigation (Clean & Uncluttered) */}
+            <div className="pt-6 pb-6">
               <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-                {sectors.map((sector) => (
-                  <button
-                    key={sector}
-                    onClick={() => setSelectedSector(sector)}
-                    className={cn(
-                      "px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium whitespace-nowrap transition-colors cursor-pointer select-none shrink-0 border",
-                      selectedSector === sector
-                        ? "bg-[#0b233a] text-white border-[#0b233a]"
-                        : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                    )}
-                  >
-                    {sector}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Secondary Refinement Toolbar: Operator, Discipline & Active Chips */}
-            <div className="py-4 border-t border-b border-slate-200 mb-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                
-                {/* Left: Filter Controls */}
-                <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-                  
-                  {/* Operator Filter */}
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] uppercase font-bold text-slate-500 shrink-0">
-                      Operator:
-                    </span>
-                    <select
-                      value={selectedOperator}
-                      onChange={(e) => setSelectedOperator(e.target.value)}
-                      className={cn(
-                        "px-2.5 py-1.5 rounded-md border text-xs font-mono transition-colors focus:outline-none focus:border-[#0b233a] cursor-pointer",
-                        selectedOperator !== "All Operators"
-                          ? "bg-[#FF8A00]/10 border-[#FF8A00] text-[#0b233a] font-bold"
-                          : "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
-                      )}
-                    >
-                      {operators.map((op) => (
-                        <option key={op} value={op}>{op}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Discipline Filter */}
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] uppercase font-bold text-slate-500 shrink-0">
-                      Discipline:
-                    </span>
-                    <select
-                      value={selectedDiscipline}
-                      onChange={(e) => setSelectedDiscipline(e.target.value)}
-                      className={cn(
-                        "px-2.5 py-1.5 rounded-md border text-xs font-mono transition-colors focus:outline-none focus:border-[#0b233a] cursor-pointer",
-                        selectedDiscipline !== "All Disciplines"
-                          ? "bg-[#FF8A00]/10 border-[#FF8A00] text-[#0b233a] font-bold"
-                          : "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
-                      )}
-                    >
-                      {disciplines.map((d) => (
-                        <option key={d} value={d}>{d}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                </div>
-
-                {/* Right: Active Filter Dismiss Chips */}
-                {hasActiveFilters && (
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="font-mono text-[10px] text-slate-400 uppercase mr-1">Active:</span>
-                    {selectedSector !== "All Sectors" && (
-                      <button
-                        onClick={() => setSelectedSector("All Sectors")}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-mono border border-slate-200 cursor-pointer"
-                      >
-                        <span>{selectedSector}</span>
-                        <X className="w-3 h-3 text-slate-500" />
-                      </button>
-                    )}
-                    {selectedOperator !== "All Operators" && (
-                      <button
-                        onClick={() => setSelectedOperator("All Operators")}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#FF8A00]/10 hover:bg-[#FF8A00]/20 text-[#0b233a] text-[11px] font-mono border border-[#FF8A00]/30 font-semibold cursor-pointer"
-                      >
-                        <span>{selectedOperator}</span>
-                        <X className="w-3 h-3 text-[#FF8A00]" />
-                      </button>
-                    )}
-                    {selectedDiscipline !== "All Disciplines" && (
-                      <button
-                        onClick={() => setSelectedDiscipline("All Disciplines")}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#FF8A00]/10 hover:bg-[#FF8A00]/20 text-[#0b233a] text-[11px] font-mono border border-[#FF8A00]/30 font-semibold cursor-pointer"
-                      >
-                        <span>{selectedDiscipline}</span>
-                        <X className="w-3 h-3 text-[#FF8A00]" />
-                      </button>
-                    )}
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery("")}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-mono border border-slate-200 cursor-pointer"
-                      >
-                        <span className="truncate max-w-[120px]">"{searchQuery}"</span>
-                        <X className="w-3 h-3 text-slate-500" />
-                      </button>
-                    )}
+                {sectors.map((sector) => {
+                  const isActive = selectedSector === sector;
+                  return (
                     <button
-                      onClick={handleResetFilters}
-                      className="text-[11px] font-mono text-slate-500 hover:text-red-600 underline ml-2 cursor-pointer"
+                      key={sector}
+                      onClick={() => setSelectedSector(sector)}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 border min-h-[38px]",
+                        isActive
+                          ? "bg-[#0b233a] text-white border-[#0b233a] shadow-xs"
+                          : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                      )}
                     >
-                      Clear all
+                      {sector}
                     </button>
-                  </div>
-                )}
-
+                  );
+                })}
               </div>
+
+              {/* Active Operator Filter Notice if set */}
+              {selectedOperator !== "All Operators" && (
+                <div className="mt-3 flex items-center gap-2 text-xs">
+                  <span className="text-slate-500 font-medium">Filtering by Operator:</span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FF8A00]/15 text-[#0b233a] font-bold border border-[#FF8A00]/30">
+                    <span>{selectedOperator}</span>
+                    <button
+                      onClick={() => setSelectedOperator("All Operators")}
+                      className="hover:text-red-600 ml-1 cursor-pointer"
+                      aria-label="Remove operator filter"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Empty State */}
             {filteredProjects.length === 0 && (
-              <div className="border border-slate-200 rounded-xl p-10 text-center max-w-md mx-auto my-8 bg-slate-50">
+              <div className="border border-slate-200 rounded-2xl p-10 text-center max-w-md mx-auto my-8 bg-white shadow-sm">
                 <SlidersHorizontal className="w-8 h-8 text-slate-300 mx-auto mb-3" />
-                <h3 className="font-display text-base font-bold text-[#0b233a] mb-1">
+                <h3 className="text-base font-bold text-[#0b233a] mb-1">
                   No projects match your criteria
                 </h3>
-                <p className="font-sans text-xs text-slate-500 mb-4">
+                <p className="text-xs text-slate-500 mb-4 font-normal">
                   Try clearing the filters or searching a different term.
                 </p>
                 <button
                   onClick={handleResetFilters}
-                  className="px-4 py-2 rounded-lg bg-[#0b233a] text-white text-xs font-mono font-bold uppercase cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-[#0b233a] text-white text-xs font-bold uppercase cursor-pointer"
                 >
                   Reset All Filters
                 </button>
               </div>
             )}
 
-            {/* 18 Projects Grid (Flat, Clean 1px Hairline Borders, Taller Images & Lucide Icons) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
-              {filteredProjects.map((project) => (
-                <div
+            {/* 18 Project Cards: Clean, Specific, and Lightly Animated */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+              {filteredProjects.map((project, index) => (
+                <motion.div
                   key={project.slug}
-                  className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-[#0b233a] transition-colors flex flex-col justify-between group"
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4), ease: "easeOut" }}
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-[#FF8A00]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                  onClick={() => setQuickViewProject(project)}
                 >
                   <div>
-                    {/* Card Image Banner (Height 240px-260px for High Visual Impact) */}
-                    <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-slate-900">
+                    {/* Photographic Header Banner */}
+                    <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900">
                       <img
                         src={project.image || "/media/saur-industrial-hero.png"}
                         alt={project.title}
-                        className="w-full h-full object-cover object-center brightness-[0.9] group-hover:scale-102 transition-transform duration-500"
+                        className="w-full h-full object-cover object-center brightness-[0.88] group-hover:scale-105 group-hover:brightness-[0.98] transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a]/80 via-transparent to-black/30" />
 
-                      {/* Top Badges */}
+                      {/* Top Floating Badges */}
                       <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 z-10">
-                        <span className="px-2.5 py-0.5 rounded bg-white text-[#0b233a] font-mono text-[10px] font-bold truncate max-w-[150px] border border-slate-100">
+                        <span className="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur-xs text-[#0b233a] text-[10px] font-bold truncate max-w-[160px] shadow-xs border border-white/20">
                           {project.endUser}
                         </span>
 
-                        <span className="px-2.5 py-0.5 rounded-full bg-black/70 text-white font-mono text-[10px] font-bold border border-white/15 flex items-center gap-1 shrink-0">
+                        <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold border border-white/15 flex items-center gap-1.5 shrink-0">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
                           {project.manHours ? `${project.manHours} hrs` : project.year}
                         </span>
                       </div>
 
-                      {/* Bottom Banner Tag */}
-                      <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white z-10">
-                        <span className="px-2 py-0.5 rounded bg-[#FF8A00] text-[9px] font-mono font-bold">
+                      {/* Bottom Floating Tag */}
+                      <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white z-10 text-xs">
+                        <span className="px-2 py-0.5 rounded bg-[#FF8A00] text-[10px] font-bold text-[#0b233a]">
                           {project.deliverables ? `${project.deliverables} Deliverables` : "DED Package"}
                         </span>
-                        <span className="font-mono text-[10px] text-slate-300">
-                          {project.year}
+                        <span className="text-[10px] text-slate-200 font-semibold truncate max-w-[140px]">
+                          {project.location?.split(",")[0] || project.year}
                         </span>
                       </div>
                     </div>
 
                     {/* Card Body */}
-                    <div className="p-4 sm:p-5">
-                      {/* Sector Line */}
-                      <div className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider mb-1">
+                    <div className="p-5">
+                      {/* Sector Category */}
+                      <span className="text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider block mb-1">
                         {project.sector || "Detailed Engineering"}
-                      </div>
+                      </span>
 
-                      {/* Title */}
-                      <h3 className="font-display text-base sm:text-lg font-bold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors leading-snug mb-2 line-clamp-2">
+                      {/* Project Title */}
+                      <h3 className="text-base font-bold text-[#0b233a] group-hover:text-[#FF8A00] transition-colors leading-snug mb-2 line-clamp-2">
                         {project.title}
                       </h3>
 
-                      {/* Scope Summary */}
-                      <p className="font-sans text-xs text-slate-600 leading-relaxed font-normal line-clamp-3 mb-3.5">
+                      {/* Clean Concise Scope */}
+                      <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 mb-4">
                         {project.scope}
                       </p>
 
-                      {/* Discipline Chips */}
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {project.disciplines.slice(0, 3).map((disc) => (
-                          <span
-                            key={disc}
-                            className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-mono font-medium border border-slate-200/50"
-                          >
-                            {disc}
-                          </span>
-                        ))}
-                        {project.disciplines.length > 3 && (
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-mono border border-slate-200/50">
-                            +{project.disciplines.length - 3}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Software Tools Chips */}
-                      {project.software && project.software.length > 0 && (
-                        <div className="pt-2.5 border-t border-slate-100 flex items-center gap-1.5 overflow-hidden">
-                          <Cpu className="w-3 h-3 text-slate-400 shrink-0" />
-                          <span className="font-mono text-[10px] text-slate-500 truncate">
-                            {project.software.join(" · ")}
+                      {/* Specific Details Strip */}
+                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                        <div className="flex items-center gap-1.5 text-slate-500 text-[11px] truncate">
+                          <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <span className="truncate font-medium text-slate-700">
+                            {project.disciplines.slice(0, 3).join(" · ")}
                           </span>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
 
                   {/* Card Bottom Actions */}
-                  <div className="p-4 sm:p-5 pt-0 flex items-center justify-between gap-2 border-t border-slate-100 mt-2">
+                  <div
+                    className="p-5 pt-0 flex items-center justify-between gap-2 mt-auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <button
                       onClick={() => setQuickViewProject(project)}
-                      className="flex-1 justify-center px-3 py-2 rounded-lg bg-slate-100 hover:bg-[#0b233a] hover:text-white active:scale-[0.98] text-[#0b233a] font-mono text-[11px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200/60 min-h-[38px]"
+                      className="flex-1 justify-center px-3 py-2 rounded-lg bg-slate-100 hover:bg-[#0b233a] hover:text-white active:scale-[0.98] text-[#0b233a] text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200/60 min-h-[38px]"
                     >
                       <Eye className="w-3.5 h-3.5" />
-                      <span>Quick View</span>
+                      <span>View Specs</span>
                     </button>
 
                     <Link
                       href={`/projects/${project.slug}`}
-                      className="flex-1 justify-center px-3 py-2 rounded-lg border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] active:scale-[0.98] text-slate-700 font-mono text-[11px] font-bold uppercase transition-all flex items-center gap-1.5 min-h-[38px]"
+                      className="flex-1 justify-center px-3 py-2 rounded-lg border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] active:scale-[0.98] text-slate-700 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 min-h-[38px]"
                     >
-                      <span>Full Case</span>
+                      <span>Case Study</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -868,17 +756,17 @@ export default function ProjectsPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-12 sm:py-16 bg-white border-t border-slate-200">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              
+            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+
               <div className="lg:col-span-8">
-                <span className="font-mono text-[11px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-1">
+                <span className="text-[11px] text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-1">
                   ISO 9001:2015 ACCREDITED DELIVERY
                 </span>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] mb-2 flex items-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#0b233a] mb-2 flex items-center gap-2">
                   <ShieldCheck className="w-6 h-6 text-[#FF8A00] shrink-0" />
                   <span>Every deliverable audited for constructability &amp; safety</span>
                 </h3>
-                <p className="font-sans text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed max-w-2xl">
                   Accredium Certifications (GACB892020251128). Every calculation, 3D model, and drawing package
                   undergoes rigorous Lead Engineer verification, multi-discipline clash audits, and QA sign-off
                   before issuance.
@@ -888,13 +776,13 @@ export default function ProjectsPage() {
               <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-3 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-colors text-center cursor-pointer"
+                  className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-3 rounded-lg text-xs uppercase tracking-wider font-bold transition-colors text-center cursor-pointer shadow-xs"
                 >
                   <span>Request Project Proposal</span>
                 </button>
                 <Link
                   href="/company#certificates"
-                  className="border border-slate-300 hover:border-[#0b233a] text-[#0b233a] px-5 py-3 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-colors text-center"
+                  className="border border-slate-300 hover:border-[#0b233a] text-[#0b233a] px-5 py-3 rounded-lg text-xs uppercase tracking-wider font-bold transition-colors text-center"
                 >
                   <span>View Certifications</span>
                 </Link>
@@ -910,23 +798,23 @@ export default function ProjectsPage() {
         <section className="py-16 sm:py-20 bg-[#0b233a] text-white">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 text-center">
             <div className="w-8 h-0.5 bg-[#FF8A00] mx-auto mb-3" />
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
               Have an upcoming capital project or turnkey engineering requirement?
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-6 text-xs sm:text-sm md:text-base font-light leading-relaxed">
+            <p className="text-slate-300 max-w-xl mx-auto mb-6 text-xs sm:text-sm md:text-base font-normal leading-relaxed">
               Our multidisciplinary engineering teams in Navi Mumbai and Chennai integrate seamlessly with your project schedules, CAD databases, and software standards.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <button
                 onClick={() => setConsultationOpen(true)}
-                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-7 py-3 rounded-lg font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer"
+                className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-7 py-3 rounded-lg text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md"
               >
                 <span>Request Scope Consultation</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <Link
                 href="/expertise"
-                className="border border-white/30 hover:bg-white/10 text-white px-7 py-3 rounded-lg font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer"
+                className="border border-white/30 hover:bg-white/10 text-white px-7 py-3 rounded-lg text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 cursor-pointer"
               >
                 <span>Explore 11 Disciplines</span>
               </Link>
@@ -947,8 +835,8 @@ export default function ProjectsPage() {
       <SearchModal
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
-        onSelectDiscipline={() => {}}
-        onSelectWhitepaper={() => {}}
+        onSelectDiscipline={() => { }}
+        onSelectWhitepaper={() => { }}
       />
       <ProjectQuickModal
         project={quickViewProject}

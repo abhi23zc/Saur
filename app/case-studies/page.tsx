@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,129 +10,116 @@ import ConsultationModal from "@/components/ConsultationModal";
 import SearchModal from "@/components/SearchModal";
 import CaseStudyQuickModal from "@/components/CaseStudyQuickModal";
 import { caseStudies, CaseStudy } from "@/data/site";
-import { 
-  ShieldCheck, 
-  Clock, 
-  FileText, 
-  ArrowRight, 
-  Search, 
-  X, 
-  Building2, 
-  Eye, 
-  ChevronDown, 
-  ChevronUp, 
-  CheckCircle2, 
-  ArrowUpDown, 
-  FileSpreadsheet
+import {
+  ArrowRight,
+  Sparkles,
 } from "lucide-react";
+
+// Helper to assign relevant realistic engineering discipline photos from available assets
+function getCaseStudyImage(cs: CaseStudy): string {
+  const text = (cs.disciplines.join(" ") + " " + cs.title + " " + cs.scope).toLowerCase();
+
+  if (text.includes("telecom")) {
+    return "/images/telecom.png";
+  }
+  if (text.includes("electrical") || text.includes("power") || text.includes("heater")) {
+    return "/images/electrical.png";
+  }
+  if (text.includes("skid") || text.includes("mechanical") || text.includes("lifting") || text.includes("pump")) {
+    return "/images/mechanical.png";
+  }
+  if (text.includes("feed") || text.includes("mto") || text.includes("zakum")) {
+    return "/images/process.png";
+  }
+  if (text.includes("instrumentation") || text.includes("wellhead") || text.includes("aip5")) {
+    return "/media/page-services-hero.png";
+  }
+  return "/images/process.png";
+}
 
 export default function CaseStudiesPage() {
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [activeModalCaseStudy, setActiveModalCaseStudy] = useState<CaseStudy | null>(null);
-
-  // Filter & Sort State
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>("All");
-  const [selectedOperator, setSelectedOperator] = useState<string>("All");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [sortBy, setSortBy] = useState<"number" | "hours-desc" | "deliverables-desc" | "title-asc">("number");
+  const [showAllCards, setShowAllCards] = useState<boolean>(false);
 
-  // Helper to parse numeric hours for sorting
-  const parseHours = (manHoursStr: string): number => {
-    const clean = manHoursStr.replace(/[^0-9]/g, "");
-    return clean ? parseInt(clean, 10) : 0;
-  };
-
-  // Helper to parse numeric deliverables count
-  const parseDocs = (docStr: string): number => {
-    const clean = docStr.replace(/[^0-9]/g, "");
-    return clean ? parseInt(clean, 10) : 0;
-  };
-
-  // Extract Unique Disciplines & Operators
-  const allDisciplines = useMemo(() => {
-    const set = new Set<string>();
-    caseStudies.forEach((cs) => cs.disciplines.forEach((d) => set.add(d)));
-    return Array.from(set).sort();
+  // Spotlighted featured case study (defaults to the 9,000 man-hour multidisciplinary flagship from the PDF)
+  const defaultFeatured = useMemo(() => {
+    return (
+      caseStudies.find((c) => c.slug === "chemical-injection-skid-detail") ||
+      caseStudies[0]
+    );
   }, []);
 
-  const allOperators = useMemo(() => {
-    const set = new Set<string>();
-    caseStudies.forEach((cs) => {
-      if (cs.endUser) set.add(cs.endUser);
-    });
-    return Array.from(set).sort();
-  }, []);
+  const [featuredCaseStudy, setFeaturedCaseStudy] = useState<CaseStudy>(defaultFeatured);
 
-  // Filtered and Sorted Case Studies
+  // Discipline options reflecting Saur Engineering's real capabilities from the company profile PDF
+  const disciplineFilters = [
+    "All",
+    "Instrumentation",
+    "Telecom",
+    "Electrical",
+    "Process",
+    "Mechanical",
+    "Piping",
+  ];
+
+  // Filter the 13 real case studies from data/site.ts
   const filteredCaseStudies = useMemo(() => {
-    const result = caseStudies.filter((cs) => {
-      // Discipline filter
-      if (selectedDiscipline !== "All" && !cs.disciplines.includes(selectedDiscipline)) {
-        return false;
-      }
-      // Operator filter
-      if (selectedOperator !== "All" && cs.endUser !== selectedOperator) {
-        return false;
-      }
-      // Keyword search query
-      if (searchQuery.trim() !== "") {
-        const q = searchQuery.toLowerCase();
-        const matchesTitle = cs.title.toLowerCase().includes(q);
-        const matchesScope = cs.scope.toLowerCase().includes(q);
-        const matchesOperator = cs.endUser.toLowerCase().includes(q);
-        const matchesClient = cs.client ? cs.client.toLowerCase().includes(q) : false;
-        const matchesDiscipline = cs.disciplines.some((d) => d.toLowerCase().includes(q));
-        const matchesDeliverables = cs.deliverables.some((cat) =>
-          cat.category.toLowerCase().includes(q) || cat.items.some((it) => it.toLowerCase().includes(q))
-        );
-        if (!matchesTitle && !matchesScope && !matchesOperator && !matchesClient && !matchesDiscipline && !matchesDeliverables) {
-          return false;
-        }
-      }
-      return true;
+    if (selectedDiscipline === "All") {
+      return caseStudies;
+    }
+    const target = selectedDiscipline.toLowerCase();
+    return caseStudies.filter((cs) => {
+      return (
+        cs.disciplines.some((d) => d.toLowerCase().includes(target)) ||
+        cs.title.toLowerCase().includes(target) ||
+        cs.scope.toLowerCase().includes(target) ||
+        cs.deliverables.some((cat) => cat.category.toLowerCase().includes(target))
+      );
     });
+  }, [selectedDiscipline]);
 
-    // Sorting
-    return result.sort((a, b) => {
-      if (sortBy === "hours-desc") {
-        return parseHours(b.manHours) - parseHours(a.manHours);
-      }
-      if (sortBy === "deliverables-desc") {
-        return parseDocs(b.deliverableCount) - parseDocs(a.deliverableCount);
-      }
-      if (sortBy === "title-asc") {
-        return a.title.localeCompare(b.title);
-      }
-      // Default: By Case Study Number (01 -> 13)
-      return parseInt(a.number, 10) - parseInt(b.number, 10);
+  // If "All" is active and not expanded, show top 6 real case studies by default, with smooth expansion to all 13
+  const displayedCards = useMemo(() => {
+    if (selectedDiscipline === "All" && !showAllCards) {
+      return filteredCaseStudies.slice(0, 6);
+    }
+    return filteredCaseStudies;
+  }, [filteredCaseStudies, selectedDiscipline, showAllCards]);
+
+  // Extract top deliverables for the featured spotlight card
+  const featuredDeliverableBullets = useMemo(() => {
+    const list: string[] = [];
+    featuredCaseStudy.deliverables.forEach((cat) => {
+      cat.items.forEach((item) => {
+        if (list.length < 5) list.push(item);
+      });
     });
-  }, [selectedDiscipline, selectedOperator, searchQuery, sortBy]);
-
-  const hasActiveFilters = selectedDiscipline !== "All" || selectedOperator !== "All" || searchQuery.trim() !== "" || sortBy !== "number";
-
-  const clearAllFilters = () => {
-    setSelectedDiscipline("All");
-    setSelectedOperator("All");
-    setSearchQuery("");
-    setSortBy("number");
-  };
+    if (list.length === 0) {
+      list.push("Detailed engineering deliverables & vendor document review");
+      list.push("3D modelling & multi-discipline coordination");
+      list.push("Material take off (MTO / BOQ) and equipment schedules");
+      list.push("Construction and commissioning technical support");
+    }
+    return list;
+  }, [featuredCaseStudy]);
 
   return (
-    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-[#FF8A00] selection:text-white flex flex-col justify-between">
-      {/* Navigation */}
+    <div className="relative min-h-screen bg-white text-slate-900 flex flex-col justify-between selection:bg-[#FF8A00] selection:text-white">
+      {/* Top Header Navigation */}
       <Navbar
         onOpenSearch={() => setSearchModalOpen(true)}
         onOpenConsultation={() => setConsultationOpen(true)}
       />
 
       <main className="w-full">
-        
-        {/* ══════════════════════════════════════════════════════════════════════
-           1. EXECUTIVE HERO SECTION (Diagonal Angle Split & Responsive Scrim)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
-          {/* Photographic Background Layer */}
+        {/* ═══════════════════════════════════════════════════════════════
+           1. HERO: Clean Corporate Diagonal Angle Split (Matching Projects Page)
+           ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative w-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-8 sm:pb-12 bg-[#0b233a]">
+          {/* Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -140,85 +127,80 @@ export default function CaseStudiesPage() {
               backgroundPosition: "center right",
             }}
           >
-            {/* Gradient Scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/85 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
-            
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/85 sm:via-[#0b233a]/65 to-black/60 sm:to-black/40" />
+
             {/* Editorial Badge on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
-              <div className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
-                AUDITED CASE FILES
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
+                AUDITED EXECUTION TRACK RECORD
               </div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">
-                VERIFIED ENGINEERING DOSSIERS
+              <div className="text-xs text-slate-300 font-normal">
+                UAE · Saudi Arabia · Indonesia · India
               </div>
-            </div>
-
-            <div className="hidden xl:block absolute bottom-12 right-16 text-right text-white/80 font-mono text-[10px] uppercase tracking-[0.2em]">
-              ISO 9001:2015 CERTIFIED DELIVERY
             </div>
           </div>
 
-          {/* Left Navy Angle-Split Polygon (Desktop polygon / Mobile full width overlay) */}
+          {/* Left Navy Angle-Split Column */}
           <div
             className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
           >
             <div className="max-w-2xl">
-              
+
               {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-3 sm:mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-                <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
-                  AUDITED ENGINEERING CASE FILES
+                <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                  PROJECT PORTFOLIO &amp; CASE STUDIES
                 </span>
               </div>
 
               {/* Headline */}
-              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-3 sm:mb-4">
-                Multidisciplinary <br />
-                <span className="text-[#FF8A00]">Engineering Case Studies.</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-4">
+                Engineering work with <br />
+                <span className="text-[#FF8A00]">measurable outcomes.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="font-sans text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-light mb-6 sm:mb-8 max-w-xl">
-                Audited project deliverables, man-hour effort logs, and execution milestones demonstrating Saur Engineering&apos;s multidisciplinary capability across major Middle East, Southeast Asia, and Indian energy infrastructure.
+              <p className="text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-normal mb-8 max-w-xl">
+                Audited project deliverables, verified man-hour effort logs, and execution milestones demonstrating Saur Engineering&apos;s multidisciplinary capability across major Middle East, Southeast Asia, and Indian energy infrastructure.
               </p>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-8">
-                <a
-                  href="#directory"
-                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md shadow-[#FF8A00]/20 flex items-center gap-2 cursor-pointer min-h-[44px]"
-                >
-                  <span>Explore 13 Case Studies</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-8">
                 <button
                   onClick={() => setConsultationOpen(true)}
-                  className="w-full xs:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
+                  className="w-full sm:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-[#0b233a] px-6 sm:px-7 py-3.5 rounded-lg text-xs uppercase tracking-wider font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer min-h-[44px]"
                 >
-                  <span>Request Engineering Proposal</span>
+                  <span>Discuss a Case Study</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
+
+                <a
+                  href="#case-studies-grid"
+                  className="w-full sm:w-auto justify-center border border-white/30 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded-lg text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-2 cursor-pointer min-h-[44px]"
+                >
+                  <span>View Case Studies</span>
+                </a>
               </div>
 
-              {/* Telemetry Strip */}
+              {/* Telemetry / Metrics Strip */}
               <div className="pt-5 sm:pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-white">
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">13</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Case Dossiers</div>
+                  <div className="text-xl sm:text-2xl font-bold text-[#FF8A00]">68,000+</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Audited Hours</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-white">68,000+</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Man-Hours</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">13</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Deep Studies</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-[#FF8A00]">1,200+</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">Deliverables</div>
+                  <div className="text-xl sm:text-2xl font-bold text-[#FF8A00]">4,000+</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Deliverables</div>
                 </div>
                 <div>
-                  <div className="font-display text-xl sm:text-2xl font-bold text-white">ISO 9001</div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-slate-300 uppercase tracking-wider">QA Verified</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">100%</div>
+                  <div className="text-[10px] text-slate-300 uppercase tracking-wider font-bold mt-0.5">Clash Free</div>
                 </div>
               </div>
 
@@ -226,315 +208,380 @@ export default function CaseStudiesPage() {
           </div>
         </section>
 
-        {/* Trust Credentials Strip */}
+        {/* ═══════════════════════════════════════════════════════════════
+           2. TRUST CREDENTIALS STRIP
+           ═══════════════════════════════════════════════════════════════ */}
         <TrustCredentialsStrip />
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           2. INTERACTIVE CONTROL CONSOLE (Quick Filters, Search & Sort)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section id="directory" className="py-6 sm:py-7 bg-slate-50 border-b border-slate-200 scroll-mt-20">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 space-y-4">
-            
-            {/* Operator Quick Filter Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-              <span className="font-mono text-[10px] text-slate-500 uppercase font-bold tracking-wider mr-1 shrink-0">
-                OPERATOR:
-              </span>
-              <button
-                onClick={() => setSelectedOperator("All")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wider whitespace-nowrap transition-colors cursor-pointer border min-h-[36px] active:scale-[0.98] ${
-                  selectedOperator === "All"
-                    ? "bg-[#0b233a] text-white border-[#0b233a]"
-                    : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                All ({caseStudies.length})
-              </button>
-              {allOperators.map((op) => {
-                const count = caseStudies.filter((c) => c.endUser === op).length;
+        {/* ═══════════════════════════════════════════════════════════════
+           3. FILTER BY DISCIPLINE BAR (Exact Match to Reference UI)
+           ═══════════════════════════════════════════════════════════════ */}
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 pt-8 pb-4">
+          <div className="rounded-lg bg-slate-50 border border-slate-200/90 p-3 sm:p-4 flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="text-xs font-bold text-slate-800 mr-2 shrink-0">
+              Filter by discipline:
+            </span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {disciplineFilters.map((discipline) => {
+                const isActive = selectedDiscipline === discipline;
                 return (
                   <button
-                    key={op}
-                    onClick={() => setSelectedOperator(op)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wider whitespace-nowrap transition-colors cursor-pointer border min-h-[36px] active:scale-[0.98] ${
-                      selectedOperator === op
-                        ? "bg-[#0b233a] text-white border-[#0b233a]"
-                        : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
-                    }`}
+                    key={discipline}
+                    onClick={() => {
+                      setSelectedDiscipline(discipline);
+                      setShowAllCards(true); // show all matches for selected discipline
+                    }}
+                    className={
+                      (isActive
+                        ? "bg-[#FF8A00] text-white font-bold shadow-xs border-[#FF8A00]"
+                        : "bg-white text-slate-700 hover:bg-slate-100 hover:border-slate-300 font-medium border-slate-200") +
+                      " rounded-md border px-4 py-1.5 text-xs transition-all cursor-pointer min-w-[70px] text-center"
+                    }
                   >
-                    {op} ({count})
+                    {discipline}
                   </button>
                 );
               })}
             </div>
-
-            {/* Discipline Horizontal Filter Strip */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-              <span className="font-mono text-[10px] text-slate-500 uppercase font-bold tracking-wider mr-1 shrink-0">
-                DISCIPLINE:
-              </span>
-              <button
-                onClick={() => setSelectedDiscipline("All")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono uppercase font-medium tracking-wider whitespace-nowrap transition-colors cursor-pointer border min-h-[36px] active:scale-[0.98] ${
-                  selectedDiscipline === "All"
-                    ? "bg-[#FF8A00] text-white border-[#FF8A00]"
-                    : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                All Disciplines ({caseStudies.length})
-              </button>
-
-              {allDisciplines.map((d) => {
-                const count = caseStudies.filter((cs) => cs.disciplines.includes(d)).length;
-                return (
-                  <button
-                    key={d}
-                    onClick={() => setSelectedDiscipline(d)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono uppercase font-medium tracking-wider whitespace-nowrap transition-colors cursor-pointer border min-h-[36px] active:scale-[0.98] ${
-                      selectedDiscipline === d
-                        ? "bg-[#FF8A00] text-white border-[#FF8A00]"
-                        : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    {d} ({count})
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Search, Sort & Clear Toolbar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-200">
-              
-              {/* Search Bar */}
-              <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search deliverables, operator, scope..."
-                  className="w-full pl-9 pr-8 py-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-sans placeholder:text-slate-400 focus:outline-none focus:border-[#0b233a] transition-colors min-h-[42px]"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
-                    aria-label="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Sort & Filter Reset */}
-              <div className="flex items-center gap-3 self-stretch sm:self-auto justify-between sm:justify-start shrink-0">
-                
-                {/* Sort Selector */}
-                <div className="flex items-center gap-1.5 text-xs font-mono text-slate-600">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="font-semibold uppercase text-[10px] text-slate-500">SORT:</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="px-2.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono font-medium text-slate-800 focus:outline-none focus:border-[#0b233a] cursor-pointer min-h-[42px]"
-                  >
-                    <option value="number">Case Number (01 → 13)</option>
-                    <option value="hours-desc">Highest Effort (Man-Hours ↓)</option>
-                    <option value="deliverables-desc">Most Deliverables (Docs ↓)</option>
-                    <option value="title-asc">Alphabetical (A → Z)</option>
-                  </select>
-                </div>
-
-                {/* Reset Filters Button */}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer min-h-[42px]"
-                  >
-                    Reset
-                  </button>
-                )}
-              </div>
-
-            </div>
-
-            {/* Results Count Summary */}
-            <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-1">
-              <span>
-                Showing <strong className="text-[#0b233a]">{filteredCaseStudies.length}</strong> of {caseStudies.length} Audited Case Files
-              </span>
-              {hasActiveFilters && (
-                <span className="text-[#FF8A00] font-semibold">
-                  Filtered Results Active
-                </span>
-              )}
-            </div>
-
           </div>
-        </section>
+        </div>
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           3. 13 ENGINEERING DOSSIER CARDS (High Visibility, Crisp Depth & Tactile Actions)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-12 sm:py-16 bg-[#F4F6F9] min-h-[500px] border-b border-slate-200">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-            
-            {filteredCaseStudies.length === 0 ? (
-              /* Empty State */
-              <div className="text-center py-20 bg-white border border-slate-200 rounded-2xl max-w-lg mx-auto p-8 shadow-sm">
-                <FileSpreadsheet className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-                <h3 className="font-display text-lg font-bold text-[#0b233a] mb-2">No Matching Case Studies</h3>
-                <p className="text-xs text-slate-600 mb-5 leading-relaxed">
-                  No audited case files match your current search query or filter combination.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="px-5 py-2.5 bg-[#FF8A00] hover:bg-[#E67C00] text-white rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-md"
+        {/* ═══════════════════════════════════════════════════════════════
+           4. SELECTED CASE STUDIES SECTION (3-Column Clean Card Grid)
+           ═══════════════════════════════════════════════════════════════ */}
+        <section id="case-studies-grid" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-6 sm:py-8 space-y-6">
+          {/* Header Row */}
+          <div className="flex items-end justify-between border-b border-transparent pb-1">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b233a] tracking-tight">
+                Selected case studies
+              </h2>
+              <div className="w-12 h-1 bg-[#FF8A00] mt-2 rounded-full" />
+            </div>
+
+            {/* Toggle to view all 13 real case studies or reset */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  if (selectedDiscipline !== "All") {
+                    setSelectedDiscipline("All");
+                    setShowAllCards(true);
+                  } else {
+                    setShowAllCards(!showAllCards);
+                  }
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-[#FF8A00] transition-colors group cursor-pointer pb-1"
+              >
+                <span className="underline underline-offset-4 decoration-slate-300 group-hover:decoration-[#FF8A00]">
+                  {selectedDiscipline !== "All"
+                    ? "Reset filter & view all 13"
+                    : showAllCards
+                    ? "Show selected (6)"
+                    : "View all 13 case studies"}
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#FF8A00] group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
+          </div>
+
+          {/* 3-Column Card Grid with Real PDF Content */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            {displayedCards.map((cs) => {
+              const cardImage = getCaseStudyImage(cs);
+              const primaryDiscipline = cs.disciplines[0] || "ENGINEERING";
+
+              return (
+                <div
+                  key={cs.slug}
+                  className="bg-white border border-slate-200 rounded-lg overflow-hidden flex flex-col justify-between transition-all duration-200 hover:shadow-md hover:border-slate-300 group"
                 >
-                  Reset All Filters
-                </button>
-              </div>
-            ) : (
-              /* Grid View with Simple, Flat, High-Contrast Engineering Dossier Cards */
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
-                {filteredCaseStudies.map((cs) => (
-                  <article
-                    key={cs.slug}
-                    className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col justify-between"
-                  >
+                  {/* Card Image */}
+                  <div className="relative w-full h-52 sm:h-56 bg-slate-100 overflow-hidden">
+                    <Image
+                      src={cardImage}
+                      alt={cs.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+
+                    {/* Operator / End User Badge in Top Left */}
+                    <div className="absolute top-3 left-3 bg-[#0b233a]/85 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded tracking-wider uppercase">
+                      {cs.endUser}
+                    </div>
+
+                    {/* Quick Spotlight Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFeaturedCaseStudy(cs);
+                      }}
+                      title="Spotlight this case study below"
+                      className="absolute top-3 right-3 bg-white/90 hover:bg-white text-slate-700 hover:text-[#FF8A00] text-[10px] font-bold px-2 py-1 rounded shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Sparkles className="w-3 h-3 text-[#FF8A00]" />
+                      <span>Spotlight</span>
+                    </button>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
                     <div>
-                      {/* Crisp Top Dossier Header Bar */}
-                      <div className="bg-slate-50 px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="px-2.5 py-1 rounded bg-[#FF8A00] text-white font-mono text-[10px] font-extrabold uppercase tracking-wider">
-                            CASE FILE {cs.number}
+                      {/* Discipline Kicker */}
+                      <div className="text-[11px] font-bold tracking-wider text-slate-500 uppercase mb-2">
+                        {primaryDiscipline}
+                      </div>
+
+                      {/* Real Case Study Title from PDF */}
+                      <h3 className="text-base sm:text-lg font-bold text-[#0b233a] leading-snug min-h-[48px] mb-4">
+                        {cs.title}
+                      </h3>
+
+                      {/* Real Specs Rows (Exact UI presentation from Image 1) */}
+                      <div className="border-t border-slate-100 pt-3 space-y-2 mb-6">
+                        <div className="flex items-start justify-between text-xs gap-3">
+                          <span className="text-slate-500 font-medium shrink-0">
+                            Scope
                           </span>
-                          <span className="px-2.5 py-1 rounded bg-[#0b233a] text-white font-mono text-[11px] font-extrabold tracking-wide">
-                            {cs.endUser}
+                          <span
+                            className="text-slate-800 font-semibold text-right line-clamp-1"
+                            title={cs.scope}
+                          >
+                            {cs.scope}
+                          </span>
+                        </div>
+
+                        <div className="flex items-start justify-between text-xs gap-3">
+                          <span className="text-slate-500 font-medium shrink-0">
+                            Verified Effort
+                          </span>
+                          <span className="text-slate-800 font-semibold text-right">
+                            {cs.manHours.includes("Ongoing") ? cs.manHours : `${cs.manHours} hrs`}
+                          </span>
+                        </div>
+
+                        <div className="flex items-start justify-between text-xs gap-3">
+                          <span className="text-slate-500 font-medium shrink-0">
+                            Deliverables
+                          </span>
+                          <span className="text-slate-800 font-semibold text-right">
+                            {cs.deliverableCount} Docs
                           </span>
                         </div>
 
                         {cs.client && (
-                          <span className="text-[11px] font-mono text-slate-600 font-semibold bg-white px-2.5 py-1 rounded border border-slate-200 truncate max-w-[160px]" title={cs.client}>
-                            {cs.client}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Card Main Body */}
-                      <div className="p-5 sm:p-6 space-y-4">
-                        
-                        {/* Program Title */}
-                        <Link href={`/case-studies/${cs.slug}`} className="block">
-                          <h3 className="font-display text-lg sm:text-[19px] font-extrabold text-[#0b233a] hover:text-[#FF8A00] leading-snug tracking-tight min-h-[52px] line-clamp-2">
-                            {cs.title}
-                          </h3>
-                        </Link>
-
-                        {/* Scope Summary Narrative */}
-                        <p className="text-xs sm:text-[13px] text-slate-600 line-clamp-3 min-h-[54px] leading-relaxed font-normal">
-                          {cs.scope}
-                        </p>
-
-                        {/* High-Contrast 2-Column Telemetry Box */}
-                        <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
-                          <div className="grid grid-cols-2 gap-3 divide-x divide-slate-200">
-                            <div className="pr-2">
-                              <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">
-                                <Clock className="w-3.5 h-3.5 text-[#FF8A00]" />
-                                <span>Verified Effort</span>
-                              </div>
-                              <div className="font-display text-lg sm:text-xl font-extrabold text-[#FF8A00]">
-                                {cs.manHours ? `${cs.manHours} hrs` : "Turnkey"}
-                              </div>
-                            </div>
-                            <div className="pl-3">
-                              <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">
-                                <FileText className="w-3.5 h-3.5 text-[#0b233a]" />
-                                <span>Deliverables</span>
-                              </div>
-                              <div className="font-display text-lg sm:text-xl font-extrabold text-[#0b233a]">
-                                {cs.deliverableCount} Docs
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Engaged Disciplines Pills */}
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {cs.disciplines.map((d) => (
-                            <span
-                              key={d}
-                              className="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase bg-slate-100 text-slate-700 border border-slate-200 font-semibold tracking-wide"
-                            >
-                              {d}
+                          <div className="flex items-start justify-between text-xs gap-3">
+                            <span className="text-slate-500 font-medium shrink-0">
+                              Client
                             </span>
-                          ))}
-                        </div>
-
+                            <span className="text-slate-800 font-semibold text-right line-clamp-1">
+                              {cs.client}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    {/* Bottom Action Footer */}
-                    <div className="p-4 sm:p-5 pt-3 border-t border-slate-200 flex items-center justify-between gap-2.5 bg-slate-50">
+                    {/* Bottom Link Actions */}
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                       <button
                         onClick={() => setActiveModalCaseStudy(cs)}
-                        className="flex-1 justify-center px-3.5 py-2.5 rounded-lg bg-white hover:bg-slate-100 text-[#0b233a] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer border border-slate-300 min-h-[42px]"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FF8A00] hover:text-[#E67C00] transition-colors cursor-pointer group/link"
                       >
-                        <Eye className="w-4 h-4" />
-                        <span>Quick Modal</span>
+                        <span>View case study</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
                       </button>
 
                       <Link
                         href={`/case-studies/${cs.slug}`}
-                        className="flex-1 justify-center px-3.5 py-2.5 rounded-lg bg-[#0b233a] hover:bg-[#FF8A00] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 min-h-[42px]"
+                        className="text-[11px] font-medium text-slate-400 hover:text-slate-800 transition-colors"
                       >
-                        <span>Full Case</span>
-                        <ArrowRight className="w-4 h-4" />
+                        Full page →
                       </Link>
                     </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-                  </article>
-                ))}
+        {/* ═══════════════════════════════════════════════════════════════
+           5. FEATURED CASE STUDY SPOTLIGHT CARD (Real Flagship PDF Content)
+           ═══════════════════════════════════════════════════════════════ */}
+        <section className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-8">
+          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-xs">
+            <div className="grid grid-cols-1 lg:grid-cols-12">
+              {/* Left Column: Image with FEATURED CASE STUDY Badge */}
+              <div className="lg:col-span-5 relative min-h-[280px] sm:min-h-[340px] lg:min-h-full bg-slate-900">
+                <Image
+                  src={getCaseStudyImage(featuredCaseStudy)}
+                  alt={featuredCaseStudy.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  className="object-cover"
+                />
+                {/* Feature Tag Bar at bottom */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 sm:p-5 flex items-center gap-2">
+                  <span className="w-5 h-[3px] bg-[#FF8A00]" />
+                  <span className="text-white text-[11px] font-extrabold uppercase tracking-widest">
+                    FEATURED CASE STUDY • {featuredCaseStudy.endUser}
+                  </span>
+                </div>
               </div>
-            )}
 
+              {/* Middle Column: Details & Key Deliverables from PDF */}
+              <div className="lg:col-span-4 p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-200">
+                <div>
+                  <div className="text-[11px] font-bold tracking-wider text-slate-500 uppercase mb-2">
+                    {featuredCaseStudy.disciplines.join(" • ")}
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-[#0b233a] leading-tight mb-3">
+                    {featuredCaseStudy.title}
+                  </h3>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 font-normal">
+                    {featuredCaseStudy.scope}
+                  </p>
+
+                  <div>
+                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#0b233a] mb-3">
+                      KEY DELIVERABLES
+                    </h4>
+                    <ul className="space-y-2.5">
+                      {featuredDeliverableBullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 font-medium leading-normal">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] shrink-0 mt-1.5" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Project At A Glance Table (Audited PDF Data) */}
+              <div className="lg:col-span-3 bg-slate-50/50 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-800 mb-4 pb-2 border-b border-slate-200">
+                    PROJECT AT A GLANCE
+                  </h4>
+
+                  <div className="divide-y divide-slate-200 text-xs">
+                    <div className="py-2.5 flex items-start justify-between gap-2">
+                      <span className="text-slate-500 font-medium shrink-0">
+                        End User
+                      </span>
+                      <span className="text-slate-800 font-semibold text-right">
+                        {featuredCaseStudy.endUser}
+                      </span>
+                    </div>
+
+                    {featuredCaseStudy.client && (
+                      <div className="py-2.5 flex items-start justify-between gap-2">
+                        <span className="text-slate-500 font-medium shrink-0">
+                          Client
+                        </span>
+                        <span className="text-slate-800 font-semibold text-right">
+                          {featuredCaseStudy.client}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="py-2.5 flex items-start justify-between gap-2">
+                      <span className="text-slate-500 font-medium shrink-0">
+                        Verified Effort
+                      </span>
+                      <span className="text-slate-800 font-semibold text-right">
+                        {featuredCaseStudy.manHours.includes("Ongoing")
+                          ? featuredCaseStudy.manHours
+                          : `${featuredCaseStudy.manHours} hrs`}
+                      </span>
+                    </div>
+
+                    <div className="py-2.5 flex items-start justify-between gap-2">
+                      <span className="text-slate-500 font-medium shrink-0">
+                        Deliverables
+                      </span>
+                      <span className="text-slate-800 font-semibold text-right">
+                        {featuredCaseStudy.deliverableCount} Docs
+                      </span>
+                    </div>
+
+                    <div className="py-2.5 flex items-start justify-between gap-2">
+                      <span className="text-slate-500 font-medium shrink-0">
+                        Disciplines
+                      </span>
+                      <span className="text-slate-800 font-semibold text-right">
+                        {featuredCaseStudy.disciplines.slice(0, 3).join(", ")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-4 border-t border-slate-200 flex flex-col gap-2">
+                  <button
+                    onClick={() => setActiveModalCaseStudy(featuredCaseStudy)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FF8A00] hover:text-[#E67C00] transition-colors cursor-pointer group"
+                  >
+                    <span className="underline underline-offset-4 decoration-[#FF8A00]/40 group-hover:decoration-[#FF8A00]">
+                      View full case study
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <Link
+                    href={`/case-studies/${featuredCaseStudy.slug}`}
+                    className="text-[11px] font-medium text-slate-500 hover:text-slate-900 transition-colors"
+                  >
+                    Dedicated case page →
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           4. BOTTOM PROPOSAL & CONSULTATION MASTHEAD
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-20 bg-[#0b233a] text-white relative overflow-hidden">
-          <div className="absolute inset-0 blueprint-grid opacity-15 pointer-events-none" />
-          
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative z-10 text-center">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF8A00] font-bold block mb-2">
-              ENGINEERING ENGAGEMENT
-            </span>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4 max-w-2xl mx-auto">
-              Require Multidisciplinary Engineering Support?
-            </h2>
-            <p className="text-slate-300 text-xs sm:text-sm max-w-xl mx-auto mb-8 leading-relaxed font-light">
-              Our Navi Mumbai HQ and Chennai engineering teams integrate directly with your project schedules, CAD databases, and client specifications.
-            </p>
+        {/* ═══════════════════════════════════════════════════════════════
+           6. CONSULTATION CTA BANNER (Exact Match to Reference UI)
+           ═══════════════════════════════════════════════════════════════ */}
+        <section className="bg-[#0b233a] py-12 sm:py-16 mt-8">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+            <div className="flex items-center gap-2.5 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-4">
+              <span>LET&apos;S DISCUSS YOUR NEXT PROJECT</span>
+              <span className="w-8 h-[2px] bg-[#FF8A00]" />
+            </div>
 
-            <button
-              onClick={() => setConsultationOpen(true)}
-              className="w-full sm:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-8 py-3.5 rounded-xl font-sans text-xs uppercase tracking-wider font-bold transition-all shadow-md inline-flex items-center gap-2 cursor-pointer min-h-[44px]"
-            >
-              <span>Request Detailed Proposal</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              {/* Headline */}
+              <div className="max-w-2xl">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                  Looking for an experienced engineering partner?
+                </h2>
+              </div>
+
+              {/* Subtitle / Description & CTA Button */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-8">
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-sm font-normal">
+                  Tell us about your project and our team will get in touch to discuss how we can help.
+                </p>
+
+                <button
+                  onClick={() => setConsultationOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-[#0b233a] font-bold px-6 py-3.5 rounded-md text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-md cursor-pointer shrink-0"
+                >
+                  <span>REQUEST CONSULTATION</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </section>
-
       </main>
 
-      {/* Footer */}
+      {/* Standard Universal Footer */}
       <Footer />
 
-      {/* Modals */}
+      {/* Interactive Modals */}
       <ConsultationModal
         isOpen={consultationOpen}
         onClose={() => setConsultationOpen(false)}
@@ -542,7 +589,10 @@ export default function CaseStudiesPage() {
       <SearchModal
         isOpen={searchModalOpen}
         onClose={() => setSearchModalOpen(false)}
-        onSelectDiscipline={() => {}}
+        onSelectDiscipline={(disc) => {
+          setSelectedDiscipline(disc.title);
+          setShowAllCards(true);
+        }}
         onSelectWhitepaper={() => {}}
       />
       <CaseStudyQuickModal

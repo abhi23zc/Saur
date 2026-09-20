@@ -43,13 +43,10 @@ export default function DisciplineModal({
 
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
-            <span className="font-mono text-[9px] sm:text-[10px] font-bold bg-[#FF8A00] text-white px-2.5 py-0.5 rounded shadow-2xs">
-              {discipline.code}
-            </span>
-            <span className="font-mono text-[9px] sm:text-[10px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded border border-slate-200">
+            <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded border border-slate-200">
               {discipline.badge}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#FF8A00]">
               {discipline.category}
             </span>
           </div>
@@ -66,7 +63,7 @@ export default function DisciplineModal({
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 bg-white">
           {/* Description */}
           <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-light bg-slate-50 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
-            {discipline.description || (discipline as any).summary}
+            {discipline.description}
           </p>
 
           {/* Technical Specs 4-cell Grid */}

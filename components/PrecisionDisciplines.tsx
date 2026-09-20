@@ -26,7 +26,7 @@ export interface Discipline {
 export const disciplinesData: Discipline[] = [
   {
     id: "piping-mechanical",
-    code: "DISC-01",
+    code: "01",
     title: "Piping & Mechanical Engineering",
     category: "Piping & Mechanical",
     badge: "CAESAR II · SP3D / E3D",
@@ -54,7 +54,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "electrical-engineering",
-    code: "DISC-02",
+    code: "02",
     title: "Electrical Engineering",
     category: "Electrical",
     badge: "ETAP · Smart Electrical",
@@ -82,7 +82,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "instrumentation-control",
-    code: "DISC-03",
+    code: "03",
     title: "Instrumentation & Control",
     category: "Instrumentation",
     badge: "SmartPlant SPI · InstruCalc",
@@ -110,7 +110,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "process-engineering",
-    code: "DISC-04",
+    code: "04",
     title: "Process Engineering & Flow",
     category: "Process",
     badge: "SmartPID · Aspen HYSYS",
@@ -138,7 +138,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "plant-3d-modeling",
-    code: "DISC-05",
+    code: "05",
     title: "3D Plant Modeling & BIM",
     category: "3D Plant Modeling",
     badge: "Intergraph S3D · AVEVA E3D",
@@ -166,7 +166,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "civil-structural",
-    code: "DISC-06",
+    code: "06",
     title: "Civil & Structural Engineering",
     category: "Structural & Civil",
     badge: "STAAD.Pro · Tekla",
@@ -194,7 +194,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "telecommunication",
-    code: "DISC-07",
+    code: "07",
     title: "Telecommunication Engineering",
     category: "Telecom",
     badge: "PAGA · CCTV · Fiber",
@@ -222,7 +222,7 @@ export const disciplinesData: Discipline[] = [
   },
   {
     id: "pipeline-engineering",
-    code: "DISC-08",
+    code: "08",
     title: "Pipeline & Alignment Engineering",
     category: "Pipeline",
     badge: "CAESAR II · GIS Route",
@@ -263,7 +263,7 @@ interface PrecisionDisciplinesProps {
 export default function PrecisionDisciplines({
   onSelectDiscipline,
   sectionId = "disciplines",
-  preTitle = "FIG. 02 — CORE CAPABILITIES",
+  preTitle = "CORE CAPABILITIES",
   title = "Engineering Disciplines — Live Delivery",
   description = "Explore the 11 core engineering disciplines and technical deliverables we execute for global Oil & Gas, EPC, and heavy industrial assets.",
   viewAllHref,
@@ -366,7 +366,7 @@ export default function PrecisionDisciplines({
         {/* Top Header & Integrated Navigation Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
-            <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
+            <span className="text-xs text-[#FF8A00] font-bold uppercase tracking-wider block mb-2">
               {preTitle}
             </span>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
@@ -503,12 +503,6 @@ export default function PrecisionDisciplines({
                             {disc.badge}
                           </span>
                         </div>
-                      </div>
-
-                      {/* Meta Header Line */}
-                      <div className="flex items-center justify-between font-mono text-[11px] text-slate-400 font-bold uppercase tracking-wider mb-2">
-                        <span className="text-[#FF8A00]">{disc.code}</span>
-                        <span>SAURENGINEERING.IN</span>
                       </div>
 
                       {/* Discipline Title */}

@@ -97,21 +97,21 @@ export default function WhitepaperModal({
           </ul>
         </div>
 
-        {/* Action button */}
+        {/* Action button
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-100 pt-4">
           <div className="font-mono text-[11px] sm:text-xs text-slate-500 text-center sm:text-left">
             Delivery: Classroom &amp; Hands-on Software Labs
           </div>
-          <button
+         <button
             onClick={handleDownload}
             className="bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">
               {downloaded ? "check" : "download"}
-            </span>
+            </span> 
             {downloaded ? "Syllabus Downloaded!" : "Download Syllabus"}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

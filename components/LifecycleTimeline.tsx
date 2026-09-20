@@ -12,9 +12,9 @@ export default function LifecycleTimeline() {
       step: "01",
       title: "Basis of Design & FEED Verification",
       desc: "Reviewing process flow diagrams (PFD), site data, design criteria, and international codes (ASME, API, IEC) to establish a solid project baseline.",
-      kpiLabel: "STAGE GATE:",
+      kpiLabel: "Stage Gate",
       kpiVal: "Design Basis Approval",
-      duration: "PHASE 1",
+      duration: "Phase 1",
       deliverable: "FEED VERIFICATION & DESIGN BASIS REPORT",
       details: [
         "Process parameter & criteria confirmation",
@@ -26,9 +26,9 @@ export default function LifecycleTimeline() {
       step: "02",
       title: "Detailed Engineering & 3D Modeling",
       desc: "Creating multidisciplinary 3D models in Smart 3D (S3D) and AVEVA E3D, CAESAR II stress analysis, SLD, and SPI instrument databases.",
-      kpiLabel: "STANDARDS:",
+      kpiLabel: "Standards",
       kpiVal: "ASME / IEC / API Compliant",
-      duration: "PHASE 2",
+      duration: "Phase 2",
       deliverable: "3D PLANT MODEL & DETAILED CALCULATIONS",
       details: [
         "Smart 3D (S3D) & AVEVA E3D plant modeling",
@@ -40,9 +40,9 @@ export default function LifecycleTimeline() {
       step: "03",
       title: "Two-Tier Quality & Clash Check",
       desc: "Comprehensive multi-discipline clash detection across piping, structural, and E&I trays, with independent QA review by Discipline Leads.",
-      kpiLabel: "QUALITY:",
+      kpiLabel: "Quality Gate",
       kpiVal: "Zero-Clash Tolerance (ISO 9001)",
-      duration: "PHASE 3",
+      duration: "Phase 3",
       deliverable: "CLASH REPORT & QA CHECKLIST",
       details: [
         "Multi-discipline 3D clash check in Navisworks",
@@ -54,9 +54,9 @@ export default function LifecycleTimeline() {
       step: "04",
       title: "IFC Release & Site Commissioning",
       desc: "Issuance of Approved for Construction (IFC) drawings, vendor document review comments, procurement support, and site as-built updates.",
-      kpiLabel: "STATUS:",
+      kpiLabel: "Milestone",
       kpiVal: "Issued For Construction (IFC)",
-      duration: "FINAL STAGE",
+      duration: "Final Stage",
       deliverable: "IFC DRAWINGS & AS-BUILT PACKAGE",
       details: [
         "IFC drawing packages & fabrication isometrics",
@@ -69,14 +69,14 @@ export default function LifecycleTimeline() {
   return (
     <section
       id="lifecycle"
-      className="py-14 sm:py-20 md:py-28 bg-[#07131e] text-white relative overflow-hidden border-t border-white/10"
+      className="py-14 sm:py-20 md:py-28 bg-[#0b233a] text-white relative overflow-hidden border-t border-white/10"
     >
       <div className="absolute inset-0 micro-grid opacity-15 pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-[#FF8A00]/15 border border-[#FF8A00]/30 text-[#FF8A00] text-xs font-bold uppercase tracking-wider mb-3">
             Execution Methodology
           </div>
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-2 sm:mb-3">
@@ -97,18 +97,18 @@ export default function LifecycleTimeline() {
                 key={stage.step}
                 onClick={() => setSelectedPhase(isSelected ? null : idx)}
                 className={cn(
-                  "p-4 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between",
+                  "p-5 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between",
                   isSelected
-                    ? "bg-[#0b233a] border-[#FF8A00] shadow-xl"
-                    : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07]"
+                    ? "bg-[#07131e] border-[#FF8A00] shadow-xl"
+                    : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.08]"
                 )}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-2xl font-bold text-[#FF8A00]">
+                    <span className="text-2xl font-extrabold text-[#FF8A00]">
                       {stage.step}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-mono font-medium text-slate-300 uppercase">
+                    <span className="px-2.5 py-1 rounded bg-white/10 text-[11px] font-semibold text-slate-200">
                       {stage.duration}
                     </span>
                   </div>
@@ -123,9 +123,9 @@ export default function LifecycleTimeline() {
                 </div>
 
                 <div className="pt-4 border-t border-white/10 mt-auto">
-                  <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-[#FF8A00] font-bold">{stage.kpiLabel}</span>
-                    <span className="text-slate-200 text-right">{stage.kpiVal}</span>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-[#FF8A00] font-semibold">{stage.kpiLabel}:</span>
+                    <span className="text-slate-200 text-right font-medium">{stage.kpiVal}</span>
                   </div>
 
                   {isSelected && (

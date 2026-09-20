@@ -314,7 +314,7 @@ export default function ServicesPage() {
   const categories = [
     { id: "all", label: "All 6 Pillars" },
     { id: "Front-End Engineering", label: "FEED" },
-    { id: "Detail Engineering", label: "DED (11 Disc)" },
+    { id: "Detail Engineering", label: "Detail Engineering" },
     { id: "Digital Plant Modeling", label: "3D BIM" },
     { id: "Construction Engineering", label: "Fabrication" },
     { id: "Workforce Solutions", label: "Workforce" },
@@ -352,7 +352,7 @@ export default function ServicesPage() {
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
-            
+
             {/* Floating Editorial Badges on Right (Desktop) */}
             <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
@@ -431,7 +431,7 @@ export default function ServicesPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-12 sm:py-16 md:py-20 bg-slate-50 border-b border-slate-200">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-            
+
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
@@ -549,7 +549,7 @@ export default function ServicesPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-14 sm:py-20 md:py-24 bg-white" id="pillars">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-            
+
             {/* Header & Eyebrow */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
               <div className="max-w-2xl">
@@ -652,18 +652,7 @@ export default function ServicesPage() {
 
                     {/* Bottom Meta & Action */}
                     <div className="pt-4 border-t border-slate-100 space-y-3.5">
-                      
-                      {/* Software / Standards mini tags */}
-                      <div className="space-y-1.5 text-xs">
-                        <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-500 truncate">
-                          <span className="text-slate-400 font-bold uppercase shrink-0">Tools:</span>
-                          <span className="text-slate-700 truncate font-semibold">{pillar.software}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-500 truncate">
-                          <span className="text-slate-400 font-bold uppercase shrink-0">Codes:</span>
-                          <span className="text-[#FF8A00] truncate font-semibold">{pillar.standards}</span>
-                        </div>
-                      </div>
+
 
                       {/* Action Button */}
                       <button
@@ -706,7 +695,7 @@ export default function ServicesPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-14 sm:py-20 bg-white">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-            
+
             <div className="max-w-2xl mb-8 sm:mb-12">
               <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
                 DELIVERY GOVERNANCE
@@ -825,7 +814,7 @@ export default function ServicesPage() {
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
         onSelectDiscipline={(d) => setSelectedDiscipline(d)}
-        onSelectWhitepaper={() => {}}
+        onSelectWhitepaper={() => { }}
       />
       <DisciplineModal
         discipline={selectedDiscipline}
@@ -891,7 +880,7 @@ export default function ServicesPage() {
 
               {/* Modal Body (Light Mode) */}
               <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 bg-white text-slate-800">
-                
+
                 {/* Service Overview */}
                 <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4.5 border border-slate-200/80">
                   <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-[#FF8A00] tracking-wider block mb-1.5">
@@ -1003,7 +992,7 @@ export default function ServicesPage() {
                 >
                   Close Scope
                 </button>
-                
+
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
                   <Link
                     href="/projects"

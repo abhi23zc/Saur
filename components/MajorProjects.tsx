@@ -242,8 +242,8 @@ export default function MajorProjects() {
         {/* Section Header with Figure Pre-Title & Navigation Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
-            <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
-              FIG. 03 — FEATURED PROJECTS &amp; TRACK RECORD
+            <span className="text-xs text-[#FF8A00] font-bold uppercase tracking-wider block mb-2">
+              FEATURED PROJECTS &amp; TRACK RECORD
             </span>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
               Major Projects Executed — Proven Delivery

@@ -133,8 +133,8 @@ export default function GlobalFootprintMap() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-              <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
-                FIG. 08 — GLOBAL NETWORK &amp; HUBS
+              <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-wider">
+                GLOBAL NETWORK &amp; HUBS
               </span>
             </div>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">

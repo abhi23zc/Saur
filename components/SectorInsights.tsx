@@ -82,8 +82,8 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-                <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.18em]">
-                  FIG. 04 — SECTOR MATRIX
+                <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-wider">
+                  INDUSTRIES &amp; SECTOR MATRIX
                 </span>
               </div>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
@@ -192,12 +192,12 @@ export default function SectorInsights({ onOpenCaseStudy }: SectorInsightsProps)
                       <div className="flex flex-wrap items-center justify-between gap-1.5 mb-0.5">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`font-mono text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${isActive
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded transition-colors ${isActive
                                 ? "bg-[#FF8A00]/15 text-[#FF8A00]"
                                 : "bg-slate-200/70 text-slate-500"
                               }`}
                           >
-                            {ind.code}
+                            0{idx + 1}
                           </span>
                           <h3
                             className={`font-display text-sm sm:text-base font-bold transition-colors ${isActive ? "text-[#0b233a]" : "text-slate-700"

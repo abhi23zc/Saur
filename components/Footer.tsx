@@ -1,20 +1,6 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setEmail("");
-    }
-  };
-
   return (
     <footer className="bg-[#05080c] relative w-full overflow-hidden border-t border-white/10">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-12 sm:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
@@ -39,35 +25,6 @@ export default function Footer() {
             Reliable Engineering. Sustainable Design. Proven Results. IMS Certified (ISO 9001 · 14001 · 45001) &amp; DPIIT Recognized.
           </p>
 
-          {/* Newsletter Input */}
-          <div className="max-w-md">
-            <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-wider block mb-2">
-              Subscribe to Saur Technical Dispatch
-            </span>
-            {subscribed ? (
-              <div className="bg-[#FF8A00]/10 border border-[#FF8A00] text-[#FF8A00] px-4 py-2.5 rounded-xl font-sans text-xs font-semibold">
-                ✓ Subscribed to quarterly engineering whitepapers.
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="enter enterprise email..."
-                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-sans text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF8A00]"
-                />
-                <button
-                  type="submit"
-                  className="bg-[#FF8A00] text-white px-5 py-2 rounded-xl font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#ffaa44] transition-colors shrink-0"
-                >
-                  Join
-                </button>
-              </form>
-            )}
-          </div>
-
           <p className="font-sans text-xs text-white/40 mt-6 sm:mt-8">
             © {new Date().getFullYear()} Saur Engineering &amp; Consultancy. All rights reserved.
           </p>
@@ -84,6 +41,7 @@ export default function Footer() {
                 { label: "About Us", href: "/company" },
                 { label: "Case Studies", href: "/case-studies" },
                 { label: "Projects", href: "/projects" },
+                { label: "Blog", href: "/blog" },
                 { label: "Contact", href: "/contact" },
               ].map((item) => (
                 <li key={item.label}>

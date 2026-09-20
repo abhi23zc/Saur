@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Saur Engineering & Consultancy
 
-## Getting Started
+Marketing site and protected content hub built with Next.js 16, React 19, Tailwind CSS, Supabase and Tiptap.
 
-First, run the development server:
+## Local development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Copy `.env.example` to `.env.local` and set the site, SMTP and Supabase variables.
+2. Install dependencies with `npm install`.
+3. Run `npm run dev` and open `http://localhost:3000`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Blog and admin setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Create a Supabase project and add its URL and anonymous key to `.env.local` and Vercel.
+2. Run [20260920_blog.sql](supabase/migrations/20260920_blog.sql) in Supabase SQL Editor.
+3. Run [seed.sql](supabase/seed.sql) to add the three launch articles.
+4. In Supabase Auth, create each administrator with email/password. Then run `update public.profiles set role = 'admin' where id = '<auth-user-uuid>';` for each authorized account.
+5. Configure Supabase Auth redirect URLs for your production domain and `http://localhost:3000` during development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Public articles are available at `/blog`; administrators sign in at `/admin/login`. New articles start as drafts and must be explicitly published. Cover images are stored in the public `blog-media` bucket created by the migration.
 
-## Learn More
+## Validation
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run lint`
+- `npm run build`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy to Vercel with all values from `.env.example` configured for Production, Preview, and Development as appropriate. Configure custom SMTP in Supabase before relying on password recovery emails, and configure the existing site SMTP variables for contact enquiries.

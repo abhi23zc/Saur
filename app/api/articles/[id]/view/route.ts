@@ -1,0 +1,2 @@
+import { createPublicClient } from "@/lib/supabase/server";
+export async function POST(request: Request, context: RouteContext<"/api/articles/[id]/view">) { const { id } = await context.params; let host = "direct"; try { const referrer = request.headers.get("referer"); if (referrer) host = new URL(referrer).hostname || "direct"; } catch {} await createPublicClient().rpc("record_article_view", { p_article_id: id, p_referrer_host: host }); return new Response(null, { status: 204 }); }
