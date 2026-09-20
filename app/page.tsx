@@ -8,7 +8,7 @@ import StrategicPartnerships from "@/components/StrategicPartnerships";
 import MajorProjects from "@/components/MajorProjects";
 import SectorInsights from "@/components/SectorInsights";
 import LifecycleTimeline from "@/components/LifecycleTimeline";
-import TechnicalWhitepapers, { Whitepaper } from "@/components/TechnicalWhitepapers";
+import type { Whitepaper } from "@/components/TechnicalWhitepapers";
 import HumanCapital from "@/components/HumanCapital";
 import GlobalFootprintMap from "@/components/GlobalFootprintMap";
 import ConsultationCTA from "@/components/ConsultationCTA";
@@ -74,15 +74,10 @@ export default function Home() {
         {/* 7. Manpower & Workforce Solutions */}
         <HumanCapital onOpenLeadership={() => setLeadershipOpen(true)} />
 
-        {/* 8. Professional Courses & Training */}
-        <TechnicalWhitepapers
-          onSelectWhitepaper={(whitepaper) => setSelectedWhitepaper(whitepaper)}
-        />
-
-        {/* 9. Global Footprint & Delivery Centers */}
+        {/* 8. Global Footprint & Delivery Centers */}
         <GlobalFootprintMap />
 
-        {/* 10. Direct Consultation CTA */}
+        {/* 9. Direct Consultation CTA */}
         <ConsultationCTA onOpenConsultation={() => setConsultationOpen(true)} />
       </main>
 

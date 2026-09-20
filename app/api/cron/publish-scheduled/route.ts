@@ -1,2 +1,0 @@
-import { createPublicClient } from "@/lib/supabase/server";
-export async function GET(request: Request) { const secret = process.env.CRON_SECRET; if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) return Response.json({ error: "Unauthorized" }, { status: 401 }); const { data, error } = await createPublicClient().rpc("publish_due_posts"); return error ? Response.json({ error: "Unable to publish scheduled posts" }, { status: 500 }) : Response.json({ published: data ?? 0 }); }
