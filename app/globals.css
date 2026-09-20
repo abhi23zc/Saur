@@ -327,3 +327,33 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Services delivery flow */
+.service-flow-line {
+  filter: drop-shadow(0 2px 2px rgba(255, 78, 43, 0.12));
+}
+@keyframes service-node-sequence {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(255, 78, 43, 0.15);
+    transform: scale(1);
+  }
+  8%, 20% {
+    box-shadow: 0 0 0 12px rgba(255, 78, 43, 0.06), 0 0 22px rgba(255, 78, 43, 0.35);
+    transform: scale(1.18);
+  }
+  28% {
+    box-shadow: 0 0 0 4px rgba(255, 78, 43, 0.15);
+    transform: scale(1);
+  }
+}
+.service-flow-node-0,
+.service-flow-node-1,
+.service-flow-node-2,
+.service-flow-node-3 {
+  animation: service-node-sequence 8s ease-in-out infinite;
+}
+.service-flow-node-0 { animation-delay: 0s; }
+.service-flow-node-1 { animation-delay: 2s; }
+.service-flow-node-2 { animation-delay: 4s; }
+.service-flow-node-3 { animation-delay: 6s; }

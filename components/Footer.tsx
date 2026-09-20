@@ -62,18 +62,15 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 sm:space-y-4">
               {[
-                { label: "FEED & Detail Engineering", href: "/services" },
-                { label: "Workforce Solutions", href: "/digital-workforce#workforce" },
-                { label: "Domain & SME Support", href: "/digital-workforce#domain" },
-                { label: "Training & Development", href: "/training" },
-              ].map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="font-sans text-xs sm:text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
-                  >
-                    {item.label}
-                  </Link>
+                "FEED & Detail Engineering",
+                "Workforce Solutions",
+                "Domain & SME Support",
+                "Training & Development",
+              ].map((label) => (
+                <li key={label}>
+                  <span className="font-sans text-xs sm:text-sm text-white/60 block cursor-default">
+                    {label}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -85,18 +82,15 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 sm:space-y-4">
               {[
-                { label: "Engineering Expertise", href: "/expertise" },
-                { label: "Technology & Software", href: "/technology" },
-                { label: "OT Security (IEC 62443)", href: "/digital-workforce#ot-security" },
-                { label: "Company Profile (PDF)", href: "/media/saur-company-profile.pdf" },
-              ].map((item) => (
-                <li key={item.label}>
-                  <Link
-                    href={item.href}
-                    className="font-sans text-xs sm:text-sm text-white/60 hover:text-[#FF8A00] transition-colors block"
-                  >
-                    {item.label}
-                  </Link>
+                "Engineering Expertise",
+                "Technology & Software",
+                "OT Security (IEC 62443)",
+                "Company Profile (PDF)",
+              ].map((label) => (
+                <li key={label}>
+                  <span className="font-sans text-xs sm:text-sm text-white/60 block cursor-default">
+                    {label}
+                  </span>
                 </li>
               ))}
             </ul>

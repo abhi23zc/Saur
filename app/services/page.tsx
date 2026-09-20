@@ -1,1021 +1,194 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ConsultationModal from "@/components/ConsultationModal";
-import SearchModal from "@/components/SearchModal";
-import DisciplineModal from "@/components/DisciplineModal";
-import PrecisionDisciplines, { type Discipline } from "@/components/PrecisionDisciplines";
-import { cn } from "@/lib/utils";
 
-// ══════════════════════════════════════════════════════════════════════════════
-// DATA: Engagement Commercial Frameworks
-// ══════════════════════════════════════════════════════════════════════════════
-const engagementModels = [
+const services = [
   {
-    id: "turnkey-ded",
-    code: "MODEL 01",
-    badge: "FIXED SCOPE / MILESTONE",
-    title: "Turnkey DED & Package Delivery",
-    subtitle: "Complete Engineering Packages with Full Deliverable Accountability",
-    desc: "Fixed-price or milestone-based execution of FEED verification, detailed multidisciplinary engineering, 3D modeling, and IFC drawing packages under strict ISO 9001 QA/QC.",
-    icon: "inventory_2",
-    benefits: [
-      "Guaranteed schedule & milestone delivery",
-      "Two-tier QA check with verified MTOs & BOMs",
-      "Zero-clash 3D model integration across all 11 disciplines",
-      "Full technical comment (TQ) resolution through IFC release",
-    ],
-    idealFor: "EPC Contractors, Package Vendors & Equipment Fabricators",
+    number: "01",
+    icon: "architecture",
+    title: "Plan the right project",
+    description: "We turn early ideas into a clear, practical engineering plan—so you can make decisions with confidence before work begins.",
+    outcomes: ["Feasibility and FEED studies", "Clear scope, cost and risk inputs"],
   },
   {
-    id: "dedicated-odc",
-    code: "MODEL 02",
-    badge: "OFFSHORE DELIVERY CENTER",
-    title: "Dedicated Engineering Teams (ODC)",
-    subtitle: "Scalable Multidisciplinary Engineering Cell for Ongoing Programs",
-    desc: "Dedicated project leads, senior discipline engineers, stress analysts, and 3D modelers working as a direct seamless extension of your in-house engineering and project office.",
-    icon: "hub",
-    benefits: [
-      "Custom team composition (Lead + Sr. Eng + Modelers)",
-      "Direct integration with client CAD servers & SPI/E3D databases",
-      "Flexible scaling up or down with project cycle demands",
-      "Significant reduction in overhead and engineering unit cost",
-    ],
-    idealFor: "Global Engineering Consultancies, EPCs & Major Operators",
+    number: "02",
+    icon: "account_tree",
+    title: "Design it for delivery",
+    description: "Our multidisciplinary team develops coordinated engineering and 3D models that are ready for procurement, fabrication and construction.",
+    outcomes: ["Detailed engineering packages", "Coordinated 3D plant models"],
   },
   {
-    id: "manpower-deputation",
-    code: "MODEL 03",
-    badge: "SITE & OFFICE DEPUTATION",
-    title: "Specialized Manpower Deputation",
-    subtitle: "Rapid Placement of Certified Technical Specialists",
-    desc: "Deployment of certified discipline engineers, CAESAR II stress analysts, Smart 3D modelers, and QA/QC checkers directly at client design offices, fabrication yards, and project sites.",
-    icon: "badge",
-    benefits: [
-      "Pre-vetted personnel with proven Oil & Gas / EPC track record",
-      "Rapid mobilization across India, UAE, and Middle East",
-      "Flexible short-term or long-term deployment agreements",
-      "Full compliance, payroll, and technical governance support",
-    ],
-    idealFor: "Fabrication Yards, Shutdown Operations & Project Peaks",
+    number: "03",
+    icon: "precision_manufacturing",
+    title: "Support fabrication and site work",
+    description: "We help yards and project teams resolve issues quickly, keep work moving and hand over reliable, buildable information.",
+    outcomes: ["Fabrication drawings and support", "Site queries and as-built updates"],
+  },
+  {
+    number: "04",
+    icon: "groups",
+    title: "Extend your engineering team",
+    description: "Bring in experienced engineers, analysts and modelers when your project needs additional specialist capacity.",
+    outcomes: ["Dedicated engineering teams", "Flexible specialist deployment"],
   },
 ];
 
-// ══════════════════════════════════════════════════════════════════════════════
-// DATA: 6 Primary Service Pillars (Authentic to Company Profile PDF)
-// ══════════════════════════════════════════════════════════════════════════════
-interface ServicePillar {
-  id: string;
-  number: string;
-  code: string;
-  title: string;
-  category: string;
-  tagline: string;
-  overview: string;
-  software: string;
-  standards: string;
-  image: string;
-  deliverables: string[];
-  capabilities: { title: string; desc: string }[];
-  caseReference: string;
-}
+const engagementModels = [
+  { icon: "assignment_turned_in", title: "Defined project scope", description: "A complete package for a clearly defined outcome, delivered to agreed milestones.", bestFor: "Best for one-off packages and fixed deliverables." },
+  { icon: "hub", title: "Dedicated team", description: "A scalable engineering team that works as an extension of your in-house project office.", bestFor: "Best for ongoing programmes and changing workloads." },
+  { icon: "badge", title: "Specialist support", description: "Experienced technical professionals placed where your project needs them most.", bestFor: "Best for site needs, specialist roles and project peaks." },
+];
 
-const servicePillars: ServicePillar[] = [
-  {
-    id: "feed-concept",
-    number: "01",
-    code: "SRV-FEED",
-    title: "FEED & Conceptual Engineering",
-    category: "Front-End Engineering",
-    tagline: "Front-End Engineering Design & Feasibility Studies",
-    overview:
-      "We scale proven projects and investments to achieve sustainable growth and maximize long-term asset value. Our FEED studies establish project feasibility, define technical philosophies, optimize CAPEX/OPEX, and verify process and safety baselines before capital commitment.",
-    software: "Aspen HYSYS · SmartPID · AVEVA PID · FlareNet · CAESAR II",
-    standards: "API 520/521/2000 · ISO 10418 · ASME B31.3 · Shell DEP",
-    image: "/images/process.png",
-    deliverables: [
-      "Design Basis Memorandums (DBM) & Process Philosophies",
-      "Heat & Mass Balance (HMB) Calculations",
-      "Process Flow Diagrams (PFD) & Utility Distribution Schematics",
-      "Piping & Instrumentation Diagrams (P&ID) Development",
-      "Equipment Process Datasheets & Pump NPSH Sizing",
-      "Technical Bid Evaluation (TBE) for Long-Lead Items",
-    ],
-    capabilities: [
-      {
-        title: "Feasibility & Concept Selection",
-        desc: "Comparative economic and technical evaluation of plant configurations, pipeline routing corridors, and equipment selection.",
-      },
-      {
-        title: "FEED Verification & Audits",
-        desc: "Independent peer review of existing FEED packages (e.g. CRPO 116, Ruwais Refinery) to identify design gaps, stress risks, and cost savings.",
-      },
-      {
-        title: "Safety & Relief Analysis",
-        desc: "Flare network sizing, pressure relief valve (PRV) capacity calculations, and Emergency Shutdown (ESD) cause & effect formulation.",
-      },
-    ],
-    caseReference: "CRPO 116 (Saudi Aramco / L&T) & Lower Zakum Phase 1 (ADNOC)",
-  },
-  {
-    id: "detail-engineering",
-    number: "02",
-    code: "SRV-DED",
-    title: "Multidisciplinary Detail Engineering (DED)",
-    category: "Detail Engineering",
-    tagline: "Complete Drawing & Calculation Packages Across 11 Disciplines",
-    overview:
-      "Comprehensive detailed engineering design translating concept packages into fabrication-ready, clash-free, and Issued-For-Construction (IFC) packages. Covering Piping, Mechanical, Electrical, Instrumentation, Civil/Structural, Telecom, and Pipeline disciplines.",
-    software: "Smart 3D (S3D) · AVEVA E3D · CAESAR II · STAAD.Pro · ETAP · SmartPlant SPI",
-    standards: "ASME B31.3/B31.1/B31.8 · API 650 · IEC 61850 · AISC 360 · NFPA 70",
-    image: "/media/saur-fabrication-projects.png",
-    deliverables: [
-      "Piping General Arrangement Drawings (GAD) & Isometrics",
-      "CAESAR II Pipe Stress & Flexibility Analysis Reports",
-      "Single Line Diagrams (SLD) & ETAP Power System Studies",
-      "SmartPlant SPI Loop, Wiring & Junction Box Schedules",
-      "STAAD.Pro Equipment Foundation & Pipe Rack Framing Calculations",
-      "Verified Material Take-Off (MTO) & Bill of Materials (BOM)",
-    ],
-    capabilities: [
-      {
-        title: "100% Inter-Discipline Coordination (IDC)",
-        desc: "Rigorous cross-checking between mechanical, electrical, structural, and instrumentation teams ensures zero dimensional clashes on site.",
-      },
-      {
-        title: "Rigorous Stress & Structural Analysis",
-        desc: "Finite element analysis, high-temperature pipe stress runs, dynamic compressor foundations, and wind/seismic load calculations.",
-      },
-      {
-        title: "Complete Procurement Support",
-        desc: "Material requisitions (MR), technical bid evaluations (TBE), vendor drawing reviews (VDR), and technical query (TQ) resolution.",
-      },
-    ],
-    caseReference: "EMARAT 6km Gas Pipeline & Tanjung Miring Gas Station DED",
-  },
-  {
-    id: "3d-plant-bim",
-    number: "03",
-    code: "SRV-3D",
-    title: "3D Plant Modeling & BIM Coordination",
-    category: "Digital Plant Modeling",
-    tagline: "Intelligent 3D Modeling, Clash Management & Laser Scan Reconciliation",
-    overview:
-      "End-to-end multi-discipline 3D plant design and BIM integration using Intergraph Smart 3D (S3D) and AVEVA E3D/PDMS. We create intelligent, data-centric plant models that eliminate physical rework during yard fabrication and onsite assembly.",
-    software: "Intergraph Smart 3D (S3D) · AVEVA E3D / PDMS · Navisworks · Revit · AutoCAD Plant 3D",
-    standards: "ISO 19650 (BIM) · Client 3D CAD Specifications",
-    image: "/media/saur-engineering-coordination.png",
-    deliverables: [
-      "Comprehensive Multi-Discipline 3D Plant Model in S3D / E3D",
-      "Automated Isometric & General Arrangement Drawing Extraction",
-      "Navisworks Clash Detection Matrix & Resolution Audit Logs",
-      "Point Cloud Laser Scan As-Built Reconciliation Models",
-      "BIM Level 2 Coordination & Yard Fabrication Models",
-      "Material Take-Off (MTO) Extraction Directly from 3D Model",
-    ],
-    capabilities: [
-      {
-        title: "Multi-Discipline Clash Elimination",
-        desc: "Piping, equipment, structural steel, cable trays, HVAC ducts, and telecom equipment integrated in a single master federated model.",
-      },
-      {
-        title: "Automated 2D Extraction",
-        desc: "Batch extraction of piping isometrics with spool splits, cut-pipe lists, and GAD layout extractions with 100% database synchronization.",
-      },
-      {
-        title: "As-Built Laser Scan Conversion",
-        desc: "Reconciling 3D laser scan point clouds against brownfield drawings to generate true, verified as-built digital assets.",
-      },
-    ],
-    caseReference: "Novargi Process Gas Heater (Jindal Steel) & ADNOC AiP5 132 Well Pads",
-  },
-  {
-    id: "yard-fabrication",
-    number: "04",
-    code: "SRV-FAB",
-    title: "Yard Fabrication & Construction Support",
-    category: "Construction Engineering",
-    tagline: "BIM from IFC, Spool Drawings & Rigging Heavy Lifting Studies",
-    overview:
-      "Direct technical engineering support for fabrication yards, modular skid builders, and construction sites. We translate engineering IFC drawings into practical fabrication spools, erection sequences, rigging studies, and rapid technical query (TQ) solutions.",
-    software: "Tekla Structures · AutoCAD Plant 3D · STAAD.Pro · Navisworks · CAESAR II",
-    standards: "AISC 360 · AWS D1.1 · API RP 2A · ASME Sec VIII Div 1",
-    image: "/media/page-services-hero.png",
-    deliverables: [
-      "Piping Spool Fabrication Drawings & Weld Schedules",
-      "Structural Steel Shop Fabrication Drawings & Cut Sheets (BBS)",
-      "Heavy Lifting & Rigging Arrangement Study Reports",
-      "Modular Skid Erection & Transportation Analysis",
-      "Site Technical Query (TQ) & Deviation Resolution Packages",
-      "Final As-Built Redline Mark-Up Incorporation",
-    ],
-    capabilities: [
-      {
-        title: "Spool & Shop Drawings",
-        desc: "Precise pipe spool drawings with weld IDs, hydro-test limits, paint boundaries, and field weld margins for rapid shop assembly.",
-      },
-      {
-        title: "Rigging & Heavy Lift Engineering",
-        desc: "Crane capacity verification, spreader bar design, center of gravity (CoG) calculations, and lift trajectory simulation.",
-      },
-      {
-        title: "Site Engineering Assistance",
-        desc: "Dedicated site engineers handling fit-up issues, nozzle alignment checks, and immediate redline mark-up validation.",
-      },
-    ],
-    caseReference: "ADNOC Ruwais Reflux Pumps Lifting System & 109 Chemical Injection Skids",
-  },
-  {
-    id: "manpower-solutions",
-    number: "05",
-    code: "SRV-HR",
-    title: "Technical Manpower & Workforce Deputation",
-    category: "Workforce Solutions",
-    tagline: "High-Caliber Engineering Personnel for Offices, Yards & Offshore Sites",
-    overview:
-      "Building on our engineering and safety excellence, our specialized technical manpower division provides certified engineers, 3D modelers, and discipline leads for design office deputation, fabrication yards, and offshore project sites.",
-    software: "All Licensed Industry CAD/CAE Platforms",
-    standards: "ISO 9001:2015 · ISO 45001:2018 (Safety Certified)",
-    image: "/media/page-digital-workforce-hero.png",
-    deliverables: [
-      "Discipline Lead & Principal Engineers (Piping, E&I, Struct, Process)",
-      "CAESAR II Pipe Stress & Flexibility Analysts",
-      "Certified Smart 3D (S3D) & AVEVA E3D/PDMS Modelers",
-      "SmartPlant SPI / INtools Instrumentation Specialists",
-      "QA/QC Inspection & Welding Engineering Personnel",
-      "Onsite Technical Query (TQ) Resolvers & Field Coordinators",
-    ],
-    capabilities: [
-      {
-        title: "Pre-Screened Technical Rigor",
-        desc: "Every deputed engineer is technically assessed by Saur's Discipline Leads on live CAD/CAE tools before client presentation.",
-      },
-      {
-        title: "Flexible Deployment Framework",
-        desc: "Short-term project surge staffing, long-term multi-year contracts, and offshore shutdown deputation options.",
-      },
-      {
-        title: "Complete Administrative Governance",
-        desc: "Full statutory compliance, payroll management, and international mobility support for Middle East and SE Asia deployments.",
-      },
-    ],
-    caseReference: "50,000+ Engineering Hours Delivered for Tier-1 EPC Clients",
-  },
-  {
-    id: "it-domain-sme",
-    number: "06",
-    code: "SRV-IT",
-    title: "IT & Digital Engineering Domain / SME Support",
-    category: "Digital Transformation",
-    tagline: "Subject Matter Expertise for IT Firms & Industrial Software Vendors",
-    overview:
-      "Empowering IT firms and industrial software vendors through deep Oil & Gas, petrochemical, and power engineering domain knowledge. We assist technology companies in building digital twins, configuring CAD catalogs, and digitizing complex legacy plant data.",
-    software: "SmartPlant Suite · AVEVA NET · Intergraph Smart 3D · Python / SQL · BIM",
-    standards: "ISO 15926 (Plant Data) · CFIHOS · ISO 19650",
-    image: "/media/ot-security-control-room.png",
-    deliverables: [
-      "P&ID Intelligent Digitization & Database Tagging",
-      "Smart 3D & AVEVA E3D Piping Catalog & Spec Customization",
-      "SmartPlant Instrumentation (SPI) Database Schema Configuration",
-      "Digital Twin Asset Data Verification & Attribute Populating",
-      "Engineering Domain Rules Validation for Software Applications",
-      "Legacy 2D MicroStation / AutoCAD to Smart 3D Migration",
-    ],
-    capabilities: [
-      {
-        title: "Domain Knowledge Injection",
-        desc: "Providing software development teams with real-world EPC engineering context, calculation validation, and user workflow guidance.",
-      },
-      {
-        title: "Catalog & Specification Engineering",
-        desc: "Creating and verifying piping material specifications (PMS), valve catalogs, and branch tables for Smart 3D and AVEVA E3D.",
-      },
-      {
-        title: "Intelligent Data Extraction",
-        desc: "Automated conversion of static PDF / TIFF drawings into structured intelligent engineering databases and asset hierarchies.",
-      },
-    ],
-    caseReference: "SME Consulting for Global IT Services Firms in Energy Domain",
-  },
+const deliveryStages = [
+  { number: "01", title: "Understand", description: "We align on priorities, scope and project constraints.", nodePosition: "left-[24.4%] top-[74%]", copyPosition: "left-[17%] top-[78%]" },
+  { number: "02", title: "Plan", description: "We set out the right team, information and delivery approach.", nodePosition: "left-[43.5%] top-[55%]", copyPosition: "left-[36%] top-[59%]" },
+  { number: "03", title: "Deliver", description: "We develop coordinated packages and resolve issues early.", nodePosition: "left-[63.5%] top-[37%]", copyPosition: "left-[57%] top-[41%]" },
+  { number: "04", title: "Support", description: "We stay available through handover, fabrication and site activity.", nodePosition: "left-[89%] top-[18%]", copyPosition: "left-[78%] top-[22%]" },
 ];
 
 export default function ServicesPage() {
-  const [selectedPillar, setSelectedPillar] = useState<ServicePillar | null>(null);
-  const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
   const [consultationOpen, setConsultationOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [expandedModel, setExpandedModel] = useState<string | null>(null);
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>("all");
-
-  const categories = [
-    { id: "all", label: "All 6 Pillars" },
-    { id: "Front-End Engineering", label: "FEED" },
-    { id: "Detail Engineering", label: "Detail Engineering" },
-    { id: "Digital Plant Modeling", label: "3D BIM" },
-    { id: "Construction Engineering", label: "Fabrication" },
-    { id: "Workforce Solutions", label: "Workforce" },
-    { id: "Digital Transformation", label: "IT / SME" },
-  ];
-
-  const filteredPillars =
-    activeCategoryFilter === "all"
-      ? servicePillars
-      : servicePillars.filter((p) => p.category === activeCategoryFilter);
-
-  const toggleModelExpand = (id: string) => {
-    setExpandedModel((prev) => (prev === id ? null : id));
-  };
 
   return (
-    <div className="relative min-h-screen bg-white text-slate-900 selection:bg-[#FF8A00] selection:text-white flex flex-col justify-between">
-      {/* Navbar */}
-      <Navbar
-        onOpenSearch={() => setSearchOpen(true)}
-        onOpenConsultation={() => setConsultationOpen(true)}
-      />
-
-      <main className="w-full">
-        {/* ══════════════════════════════════════════════════════════════════════
-           1. HERO: Classical Geometric Diagonal Angle Split (Mobile Optimized)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
-          {/* Full-bleed Industrial Plant Photographic Background */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/media/page-services-hero.png')",
-              backgroundPosition: "center right",
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/80 sm:via-[#0b233a]/60 to-black/60 sm:to-black/40" />
-
-            {/* Floating Editorial Badges on Right (Desktop) */}
-            <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
-              <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
-              <div className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
-                MULTIDISCIPLINARY EXECUTION
-              </div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">
-                CONCEPT TO COMMISSIONING
-              </div>
-            </div>
-
-            <div className="hidden xl:block absolute bottom-12 right-16 text-right text-white/80 font-mono text-[10px] uppercase tracking-[0.2em]">
-              ISO 9001:2015 CERTIFIED DELIVERY
-            </div>
+    <div className="flex min-h-screen flex-col bg-white text-slate-900">
+      <Navbar onOpenConsultation={() => setConsultationOpen(true)} />
+      <main className="flex-1">
+        <section className="relative flex min-h-[500px] w-full items-stretch overflow-hidden bg-[#0b233a] pb-6 pt-20 sm:min-h-[540px] sm:pt-22 lg:min-h-[580px] lg:pt-24">
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/media/page-services-hero.png')", backgroundPosition: "center right" }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0b233a]/95 via-[#0b233a]/90 to-[#0b233a] lg:bg-gradient-to-r lg:from-transparent lg:via-black/20 lg:to-black/50" />
+            <div className="absolute right-16 top-12 hidden text-right text-white xl:block"><div className="mb-2 ml-auto h-0.5 w-8 bg-[#FF8A00]" /><p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">FROM SCOPE TO SITE</p><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">END-TO-END ENGINEERING</p></div>
+            <p className="absolute bottom-12 right-16 hidden text-right font-mono text-[10px] uppercase tracking-[0.2em] text-white/80 xl:block">CLEAR. COORDINATED. BUILDABLE.</p>
           </div>
-
-          {/* Left Angle Polygonal Navy Container */}
-          <div className="relative z-10 w-full lg:w-[60%] xl:w-[54%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
+          <div className="relative z-10 flex w-full flex-col justify-center bg-transparent px-4 py-8 sm:px-8 sm:py-10 md:px-16 lg:w-[60%] lg:bg-[#0b233a] lg:py-14 xl:w-[54%] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
             <div className="max-w-xl">
-              {/* Eyebrow */}
-              <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
-                <div className="w-5 sm:w-6 h-0.5 bg-[#FF8A00]" />
-                <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
-                  SERVICES &amp; EXECUTION CAPABILITIES
-                </span>
+              <div className="mb-3 flex items-center gap-2.5 sm:mb-4"><div className="h-0.5 w-5 bg-[#FF8A00] sm:w-6" /><span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px] sm:tracking-[0.2em]">ENGINEERING SERVICES</span></div>
+              <h1 className="mb-3 font-display text-2xl font-extrabold leading-[1.15] tracking-tight text-white sm:mb-5 sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[3.25rem]">Engineering Services <br className="hidden sm:inline" /><span className="text-white">That Take Projects</span>{" "}<span className="text-[#FF8A00]">From Idea to Reality.</span></h1>
+              <p className="mb-6 max-w-lg font-sans text-xs font-light leading-relaxed text-slate-200 sm:mb-7 sm:text-sm md:text-base">From early planning and detailed design to fabrication, site support and flexible engineering teams, we help complex industrial projects move forward with clarity.</p>
+              <div className="mb-6 flex w-full flex-col items-stretch gap-3 sm:mb-8 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
+                <button onClick={() => setConsultationOpen(true)} className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF8A00] px-6 py-3 font-sans text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all duration-200 hover:bg-[#E67C00] hover:shadow sm:w-auto sm:rounded sm:px-7 sm:py-3.5"><span>Discuss Your Project</span><span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span></button>
+                <a href="#services" className="inline-flex w-full items-center justify-center rounded-lg border border-white/40 px-6 py-3 text-center font-sans text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/10 sm:w-auto sm:rounded sm:px-7 sm:py-3.5">Explore Services</a>
               </div>
-
-              {/* Main Headline */}
-              <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-[1.15] sm:leading-[1.12] mb-4 sm:mb-5">
-                Engineering Services <br />
-                <span className="text-white">Built for Critical</span>{" "}
-                <span className="text-[#FF8A00]">Industrial Assets.</span>
-              </h1>
-
-              {/* Description */}
-              <p className="font-sans text-xs xs:text-sm sm:text-base text-slate-200 leading-relaxed mb-6 sm:mb-8 max-w-lg font-light">
-                From conceptual FEED and multidisciplinary detailed engineering to 3D plant modeling, fabrication support, technical manpower deputation, and IT engineering domain solutions.
-              </p>
-
-              {/* CTAs */}
-              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <button
-                  onClick={() => setConsultationOpen(true)}
-                  className="w-full xs:w-auto justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all duration-200 shadow-sm hover:shadow inline-flex items-center gap-2 group min-h-[44px]"
-                >
-                  <span>Request Service Proposal</span>
-                  <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
-                </button>
-
-                <a
-                  href="#pillars"
-                  className="w-full xs:w-auto justify-center border border-white/40 hover:bg-white/10 active:scale-[0.98] text-white px-6 sm:px-7 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-colors inline-flex items-center gap-2 min-h-[44px]"
-                >
-                  <span>Explore 6 Pillars</span>
-                </a>
-              </div>
-
-              {/* Bottom Telemetry Line */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.16em] sm:tracking-[0.2em] text-slate-300 pt-4 sm:pt-5 border-t border-white/15">
-                <span>FEED &amp; DED</span>
-                <span className="text-white/30">•</span>
-                <span>3D MODELING</span>
-                <span className="text-white/30">•</span>
-                <span>WORKFORCE</span>
-                <span className="text-white/30">•</span>
-                <span className="text-[#FF8A00] font-bold">100% ISO 9001 QA</span>
-              </div>
+              <div className="flex flex-wrap items-center gap-2 border-t border-white/15 pt-4 font-mono text-[9px] uppercase tracking-[0.16em] text-slate-300 sm:gap-3 sm:pt-5 sm:text-[10px] sm:tracking-[0.2em] sm:text-slate-400"><span>PLAN</span><span className="text-white/30">•</span><span>DESIGN</span><span className="text-white/30">•</span><span>DELIVER</span><span className="text-white/30">•</span><span className="font-bold text-amber-400">SITE SUPPORT</span></div>
             </div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           2. COMMERCIAL ENGAGEMENT MODELS (How We Work With Clients)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-12 sm:py-16 md:py-20 bg-slate-50 border-b border-slate-200">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
+        <section className="border-b border-slate-200 bg-slate-50">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-1 divide-y divide-slate-200 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8 md:px-16">
+            {[["One engineering partner", "From concept through construction"], ["Built around your project", "Defined scope, teams or specialists"], ["Quality-led delivery", "Coordinated, practical project outputs"]].map(([title, detail]) => (
+              <div key={title} className="py-5 sm:px-6 sm:py-6 first:sm:pl-0 last:sm:pr-0"><p className="font-display text-sm font-bold text-[#0b233a]">{title}</p><p className="mt-1 text-xs leading-relaxed text-slate-500">{detail}</p></div>
+            ))}
+          </div>
+        </section>
 
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-                  <span className="font-mono text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
-                    FLEXIBLE COMMERCIAL FRAMEWORKS
-                  </span>
-                </div>
-                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
-                  Commercial Engagement Models
-                </h2>
-                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
-                  Tailored collaboration structures designed for international EPC contractors, plant operators, and engineering consultancies.
-                </p>
-              </div>
-
-              <button
-                onClick={() => setConsultationOpen(true)}
-                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#FF8A00] hover:text-[#E67C00] transition-colors self-start md:self-auto py-1"
-              >
-                <span>Discuss Custom Engagement</span>
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
+        <section id="services" className="scroll-mt-24 bg-white py-16 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-16">
+            <div className="max-w-2xl">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px]">What we do</p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0b233a] sm:text-4xl">The support your project needs, without the noise.</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">We focus on the engineering activities that help you make sound decisions, deliver buildable designs and keep projects progressing.</p>
             </div>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
+              {services.map((service) => (
+                <article key={service.number} className="group rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-1 hover:border-[#FF8A00]/60 hover:shadow-lg sm:p-6">
+                  <div className="flex items-start justify-between"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0b233a] text-white transition-colors group-hover:bg-[#FF8A00]"><span className="material-symbols-outlined text-xl">{service.icon}</span></div><span className="font-mono text-xs font-bold text-slate-300">{service.number}</span></div>
+                  <h3 className="mt-5 font-display text-lg font-bold text-[#0b233a]">{service.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{service.description}</p>
+                  <ul className="mt-5 space-y-2 border-t border-slate-100 pt-4">{service.outcomes.map((outcome) => <li key={outcome} className="flex gap-2 text-xs leading-snug text-slate-700"><span className="material-symbols-outlined text-sm text-[#FF8A00]">check_circle</span>{outcome}</li>)}</ul>
+                </article>
+              ))}
+            </div>
+            <p className="mt-7 max-w-3xl rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600">Need digital engineering or domain expertise? We also support industrial software, intelligent plant data and digital transformation initiatives.</p>
+          </div>
+        </section>
 
-            {/* 3 High-Impact Cards with Mobile Tap-to-Expand option */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-              {engagementModels.map((model) => {
-                const isExpanded = expandedModel === model.id;
+        <section className="bg-slate-50 py-16 sm:py-20">
+          <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-16">
+            <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div className="max-w-2xl"><p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px]">How we work</p><h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0b233a] sm:text-4xl">Choose the engagement that fits.</h2><p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">We can deliver a complete package, become part of your project office, or provide the specialist support you need.</p></div><button onClick={() => setConsultationOpen(true)} className="inline-flex items-center gap-2 self-start text-xs font-bold uppercase tracking-wider text-[#e67c00] hover:text-[#0b233a] md:self-auto">Help me choose <span className="material-symbols-outlined text-base">arrow_forward</span></button></div>
+            <div className="mt-9 grid gap-4 md:grid-cols-3 sm:gap-5">{engagementModels.map((model) => <article key={model.title} className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-7"><span className="material-symbols-outlined text-3xl text-[#FF8A00]">{model.icon}</span><h3 className="mt-4 font-display text-xl font-bold text-[#0b233a]">{model.title}</h3><p className="mt-2 text-sm leading-relaxed text-slate-600">{model.description}</p><p className="mt-5 border-t border-slate-100 pt-4 text-xs font-semibold leading-relaxed text-slate-700">{model.bestFor}</p></article>)}</div>
+          </div>
+        </section>
 
-                return (
-                  <div
-                    key={model.id}
-                    className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200 shadow-xs hover:shadow-xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between group active:scale-[0.99]"
-                  >
-                    <div>
-                      {/* Top Metadata */}
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider bg-[#FF8A00]/10 px-2.5 py-1 rounded">
-                          {model.badge}
-                        </span>
-                        <span className="font-mono text-xs text-slate-400 font-semibold">
-                          {model.code}
-                        </span>
-                      </div>
-
-                      {/* Icon & Title */}
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0b233a] mb-4 group-hover:bg-[#FF8A00] group-hover:text-white group-hover:border-[#FF8A00] transition-colors shadow-2xs">
-                        <span className="material-symbols-outlined text-2xl">{model.icon}</span>
-                      </div>
-
-                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a] mb-1 group-hover:text-[#FF8A00] transition-colors">
-                        {model.title}
-                      </h3>
-                      <p className="font-mono text-xs text-slate-500 mb-3.5 font-medium leading-snug">
-                        {model.subtitle}
-                      </p>
-
-                      <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed mb-4 sm:mb-6 font-light">
-                        {model.desc}
-                      </p>
-
-                      {/* Mobile Expand Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleModelExpand(model.id)}
-                        className="sm:hidden w-full mb-4 py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 font-mono text-[11px] font-bold flex items-center justify-between cursor-pointer"
-                      >
-                        <span>{isExpanded ? "Hide Scope & Benefits" : "View Scope & Key Benefits"}</span>
-                        <span
-                          className={cn(
-                            "material-symbols-outlined text-sm text-[#FF8A00] transition-transform duration-200",
-                            isExpanded && "rotate-180"
-                          )}
-                        >
-                          expand_more
-                        </span>
-                      </button>
-
-                      {/* Value Bullet List (Always visible on desktop/tablet, toggleable on mobile) */}
-                      <div
-                        className={cn(
-                          "space-y-2 pt-3 sm:pt-4 border-t border-slate-100 mb-4 sm:mb-6",
-                          isExpanded ? "block" : "hidden sm:block"
-                        )}
-                      >
-                        {model.benefits.map((b, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
-                            <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
-                              check_circle
-                            </span>
-                            <span className="leading-snug">{b}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bottom Ideal For Badge */}
-                    <div className="pt-3.5 sm:pt-4 border-t border-slate-100 mt-2">
-                      <div className="text-[11px] font-mono text-slate-500">
-                        <span className="text-slate-400 block uppercase text-[9px] font-bold">Best Suited For:</span>
-                        <span className="font-bold text-slate-800">{model.idealFor}</span>
-                      </div>
-                    </div>
+        <section className="bg-white py-16 sm:py-20 lg:py-24">
+          <div className="mx-auto grid max-w-[1440px] gap-8 px-5 sm:px-8 md:grid-cols-[0.9fr_1.1fr] md:items-center md:px-16 lg:gap-16">
+            <div className="rounded-2xl bg-[#0b233a] p-7 text-white sm:p-9">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px]">What you receive</p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Clear information your team can act on.</h2>
+              <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">The value is not just in the design work. It is in making the next project decision or construction step easier and safer for everyone involved.</p>
+              <Link href="/expertise" className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#FF8A00] hover:text-white">Explore our expertise <span className="material-symbols-outlined text-base">arrow_forward</span></Link>
+            </div>
+            <div className="space-y-4">
+              <div className="relative h-44 overflow-hidden rounded-2xl bg-[#0b233a] sm:h-52">
+                <Image src="/media/saur-engineering-coordination.png" alt="Engineering team coordinating a plant design" fill sizes="(min-width: 768px) 55vw, 100vw" className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0b233a]/85 via-[#0b233a]/25 to-transparent" />
+                <p className="absolute bottom-4 left-5 max-w-[13rem] font-display text-lg font-bold leading-tight text-white">Coordination that turns design into action.</p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  ["fact_check", "Coordinated outputs", "Information that works across engineering disciplines, suppliers and site teams."],
+                  ["view_in_ar", "Buildable design", "Practical drawings and models that support procurement, fabrication and construction."],
+                  ["support_agent", "Responsive support", "A team that helps resolve questions as the project develops."],
+                ].map(([icon, title, detail]) => (
+                  <div key={title} className="rounded-xl border border-slate-200 p-5">
+                    <span className="material-symbols-outlined text-2xl text-[#FF8A00]">{icon}</span>
+                    <h3 className="mt-4 font-display text-base font-bold text-[#0b233a]">{title}</h3>
+                    <p className="mt-2 text-xs leading-relaxed text-slate-600">{detail}</p>
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
-
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           3. CORE SERVICE PILLARS: 3x2 Bento Grid Showcase with Filter Chips
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-14 sm:py-20 md:py-24 bg-white" id="pillars">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-
-            {/* Header & Eyebrow */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
-              <div className="max-w-2xl">
-                <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
-                  TECHNICAL DEPTH &amp; OFFERINGS
-                </span>
-                <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
-                  Our Six Core Service Pillars
-                </h2>
-                <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-light leading-relaxed">
-                  Explore our end-to-end multidisciplinary engineering capabilities, licensed CAD/CAE platforms, verified deliverables, and international compliance benchmarks.
-                </p>
+        <section className="border-y border-slate-200 bg-slate-50 py-16 sm:py-20">
+          <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-16">
+            <div className="relative mt-2 hidden min-h-[530px] overflow-hidden rounded-[28px] border border-slate-200 bg-white lg:block">
+              <div className="absolute -right-20 -top-20 h-[520px] w-[520px] rounded-full bg-slate-50" />
+              <div className="absolute left-12 top-11 z-10 max-w-[340px]">
+                <h2 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#0b233a]">How we work with your project.</h2>
+                <p className="mt-5 text-sm leading-relaxed text-slate-600">We make the path forward clear early, so your project team can focus on the decisions that matter and move with confidence.</p>
               </div>
-
-            </div>
-
-            {/* Quick Interactive Category Filter Bar for Mobile & Desktop */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 sm:mb-8 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategoryFilter(cat.id)}
-                  className={cn(
-                    "px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 min-h-[38px] border",
-                    activeCategoryFilter === cat.id
-                      ? "bg-[#0b233a] text-white border-[#0b233a] shadow-xs"
-                      : "bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200"
-                  )}
-                >
-                  {cat.label}
-                </button>
+              <button onClick={() => setConsultationOpen(true)} className="absolute left-[4%] top-[48%] z-20 inline-flex items-center gap-2 rounded-full bg-[#FF4E2B] px-6 py-3 text-xs font-bold text-white shadow-[0_10px_22px_rgba(255,78,43,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#e64121]">Start a project <span className="material-symbols-outlined text-sm">arrow_forward</span></button>
+              <svg viewBox="0 0 1200 530" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+                <path d="M-20 230 C80 230 116 258 156 286 C210 346 247 392 293 392 C408 392 449 291 522 291 C626 291 681 204 762 204 C886 204 966 105 1068 105 C1137 105 1186 82 1220 72" fill="none" stroke="#FF4E2B" strokeWidth="3" strokeLinecap="round" className="service-flow-line" />
+              </svg>
+              {deliveryStages.map((stage, index) => (
+                <span key={stage.number} className={`service-flow-node service-flow-node-${index} absolute z-10 h-4 w-4 rounded-full border-[3px] border-white bg-[#FF4E2B] shadow-[0_0_0_4px_rgba(255,78,43,0.15)] ${stage.nodePosition}`} aria-hidden="true" />
+              ))}
+              {deliveryStages.map((stage) => (
+                <article key={stage.title} className={`absolute z-10 w-[220px] ${stage.copyPosition}`}>
+                  <span className="pointer-events-none absolute -left-7 -top-14 font-display text-[6rem] font-extrabold leading-none tracking-tight text-slate-100">{stage.number.replace("0", "")}</span>
+                  <h3 className="relative font-display text-lg font-bold text-[#0b233a]">{stage.title}</h3>
+                  <p className="relative mt-2 text-sm leading-relaxed text-slate-600">{stage.description}</p>
+                </article>
               ))}
             </div>
 
-            {/* 3x2 Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-              {filteredPillars.map((pillar) => (
-                <div
-                  key={pillar.id}
-                  onClick={() => setSelectedPillar(pillar)}
-                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#FF8A00]/60 transition-all duration-300 flex flex-col justify-between cursor-pointer active:scale-[0.99]"
-                >
-                  {/* Top Image Banner */}
-                  <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 shrink-0">
-                    <img
-                      src={pillar.image}
-                      alt={pillar.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-80"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a] via-[#0b233a]/40 to-transparent" />
-
-                    {/* Top Badges */}
-                    <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between">
-                      <span className="font-mono text-[10px] font-bold bg-[#FF8A00] text-white px-2.5 py-0.5 rounded shadow">
-                        PILLAR {pillar.number}
-                      </span>
-                      <span className="font-mono text-[10px] font-semibold bg-[#0b233a]/85 backdrop-blur-xs text-slate-200 px-2.5 py-0.5 rounded border border-white/20">
-                        {pillar.code}
-                      </span>
-                    </div>
-
-                    {/* Bottom Title on Image */}
-                    <div className="absolute bottom-3.5 left-3.5 right-3.5">
-                      <span className="font-mono text-[10px] uppercase font-bold text-[#FF8A00] tracking-wider block mb-1">
-                        {pillar.category}
-                      </span>
-                      <h3 className="font-display text-lg sm:text-xl font-bold text-white leading-tight drop-shadow">
-                        {pillar.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-5 sm:space-y-6">
-                    <div className="space-y-4">
-                      <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-light line-clamp-3">
-                        {pillar.overview}
-                      </p>
-
-                      {/* Key Deliverables Highlights */}
-                      <div className="space-y-2 pt-2 border-t border-slate-100">
-                        <span className="font-mono text-[9px] uppercase font-bold text-slate-400 block mb-1">
-                          Key Deliverables:
-                        </span>
-                        {pillar.deliverables.slice(0, 3).map((deliv, dIdx) => (
-                          <div key={dIdx} className="flex items-start gap-2 text-xs text-slate-700">
-                            <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
-                              check_circle
-                            </span>
-                            <span className="leading-snug line-clamp-1">{deliv}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bottom Meta & Action */}
-                    <div className="pt-4 border-t border-slate-100 space-y-3.5">
-
-
-                      {/* Action Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedPillar(pillar);
-                        }}
-                        className="w-full py-3 rounded-xl bg-slate-50 hover:bg-[#0b233a] hover:text-white text-[#0b233a] border border-slate-200 hover:border-[#0b233a] font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer group-hover:border-[#FF8A00]/50 min-h-[44px]"
-                      >
-                        <span>Explore Full Scope &amp; Deliverables</span>
-                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                      </button>
-
-                    </div>
-
-                  </div>
-                </div>
-              ))}
+            <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-6 lg:hidden">
+              <h2 className="max-w-sm font-display text-3xl font-bold leading-tight tracking-tight text-[#0b233a]">How we work with your project.</h2>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">We make the path forward clear early, so your project team can move with confidence.</p>
+              <button onClick={() => setConsultationOpen(true)} className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#FF4E2B] px-5 py-2.5 text-xs font-bold text-white">Start a project <span className="material-symbols-outlined text-sm">arrow_forward</span></button>
+              <div className="relative mt-8 space-y-0 border-l-2 border-[#FF4E2B]/30 pl-7">
+                {deliveryStages.map((stage, index) => (
+                  <article key={stage.number} className="relative pb-8 last:pb-0"><span className={`service-flow-node service-flow-node-${index} absolute -left-[35px] top-1 h-4 w-4 rounded-full border-[3px] border-white bg-[#FF4E2B] shadow-[0_0_0_4px_rgba(255,78,43,0.15)]`} /><span className="font-mono text-xs font-bold text-[#FF4E2B]">{stage.number}</span><h3 className="mt-1 font-display text-lg font-bold text-[#0b233a]">{stage.title}</h3><p className="mt-1 text-sm leading-relaxed text-slate-600">{stage.description}</p></article>
+                ))}
+              </div>
             </div>
-
+            <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-slate-200 bg-white px-5 py-4 sm:flex-row sm:items-center"><p className="max-w-2xl text-sm leading-relaxed text-slate-600">Want to see the type of projects we support? Explore selected work across engineering, fabrication and industrial delivery.</p><Link href="/projects" className="inline-flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#e67c00] hover:text-[#0b233a]">View selected projects <span className="material-symbols-outlined text-base">arrow_forward</span></Link></div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════════════════
-           4. DELIVERABLES MATRIX: Flowing Animated Disciplines Showcase
-           ══════════════════════════════════════════════════════════════════════ */}
-        <PrecisionDisciplines
-          sectionId="deliverables-matrix"
-          preTitle="VERIFIED OUTPUTS & DRAWINGS"
-          title="Deliverables & Engineering Matrix"
-          description="Standard technical deliverables generated, audited, and issued for construction (IFC) across major engineering disciplines."
-          onSelectDiscipline={(discipline) => setSelectedDiscipline(discipline)}
-          viewAllHref="/expertise"
-          viewAllText="Explore All 11 Disciplines"
-        />
-
-        {/* ══════════════════════════════════════════════════════════════════════
-           5. PROJECT EXECUTION LIFECYCLE (Step-by-Step Delivery Flow)
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-14 sm:py-20 bg-white">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-
-            <div className="max-w-2xl mb-8 sm:mb-12">
-              <span className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-[0.2em] block mb-2">
-                DELIVERY GOVERNANCE
-              </span>
-              <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0b233a] tracking-tight">
-                Project Execution Lifecycle
-              </h2>
-              <p className="font-sans text-xs sm:text-sm text-slate-600 mt-2 font-light leading-relaxed">
-                How our multidisciplinary design offices in Navi Mumbai and Chennai execute project scopes from kickoff to site handover.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {[
-                {
-                  step: "01",
-                  title: "Scope & Basis Alignment",
-                  subtitle: "Code & Standards Setup",
-                  desc: "Kickoff review of client design criteria, P&ID limits, international standards (ASME/API/IEC), and software database configurations.",
-                  icon: "description",
-                },
-                {
-                  step: "02",
-                  title: "3D Modeling & Stress Runs",
-                  subtitle: "Integrated Engineering",
-                  desc: "Detailed multi-discipline modeling in Smart 3D / E3D, CAESAR II stress analysis, and structural framing with real-time clash resolution.",
-                  icon: "view_in_ar",
-                },
-                {
-                  step: "03",
-                  title: "Two-Tier QA Review Gate",
-                  subtitle: "IDC & Lead SME Check",
-                  desc: "Inter-discipline checks (IDC) and Senior Discipline Lead sign-offs on all calculations, layouts, and material take-offs (MTO).",
-                  icon: "verified_user",
-                },
-                {
-                  step: "04",
-                  title: "IFC Release & Site Support",
-                  subtitle: "Fabrication Handover",
-                  desc: "Issuance of certified Issued-For-Construction (IFC) drawings, spool sheets, and continuous technical query (TQ) resolution during fabrication.",
-                  icon: "task_alt",
-                },
-              ].map((item) => (
-                <div
-                  key={item.step}
-                  className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 hover:border-[#FF8A00]/50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group active:scale-[0.99]"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs font-bold text-[#FF8A00] bg-[#FF8A00]/10 px-2.5 py-0.5 rounded">
-                        STAGE {item.step}
-                      </span>
-                      <span className="material-symbols-outlined text-2xl text-slate-400 group-hover:text-[#FF8A00] transition-colors">
-                        {item.icon}
-                      </span>
-                    </div>
-
-                    <h3 className="font-display text-base sm:text-lg font-bold text-[#0b233a] mb-1">
-                      {item.title}
-                    </h3>
-                    <p className="font-mono text-[11px] text-slate-500 font-medium mb-2.5 sm:mb-3">
-                      {item.subtitle}
-                    </p>
-                    <p className="font-sans text-xs text-slate-600 leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
+        <section className="bg-white py-16 sm:py-20">
+          <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-16"><div className="rounded-2xl bg-[#0b233a] px-6 py-9 text-white sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between lg:gap-12"><div className="max-w-2xl"><p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px]">Start a conversation</p><h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Tell us what your project needs.</h2><p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">We’ll help you identify the most useful engineering support and the best way to engage our team.</p></div><div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-0 lg:shrink-0"><button onClick={() => setConsultationOpen(true)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-[#FF8A00] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e67c00]">Request consultation <span className="material-symbols-outlined text-base">arrow_forward</span></button><Link href="/projects" className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/30 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/10">View projects</Link></div></div></div>
         </section>
-
-        {/* ══════════════════════════════════════════════════════════════════════
-           6. ACTIONABLE CONSULTATION CTA
-           ══════════════════════════════════════════════════════════════════════ */}
-        <section className="py-14 sm:py-20 bg-[#0b233a] text-white">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center">
-            <div className="w-8 h-1 bg-[#FF8A00] mx-auto mb-4" />
-            <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
-              Need multidisciplinary engineering execution?
-            </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-light leading-relaxed">
-              Connect with our Navi Mumbai HQ and Chennai engineering leads to review your project scope, deliverable schedule, and dedicated team staffing.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
-              <button
-                onClick={() => setConsultationOpen(true)}
-                className="w-full sm:w-auto bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 shadow-sm min-h-[44px]"
-              >
-                <span>Request Project Proposal</span>
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </button>
-              <Link
-                href="/projects"
-                className="w-full sm:w-auto border border-white/40 hover:bg-white/10 active:scale-[0.98] text-white px-7 sm:px-8 py-3.5 rounded font-sans text-xs uppercase tracking-wider font-bold transition-all inline-flex items-center justify-center gap-2 min-h-[44px]"
-              >
-                <span>Inspect Major Projects</span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
       </main>
-
-      {/* Footer */}
       <Footer />
-
-      {/* Modals */}
-      <ConsultationModal
-        isOpen={consultationOpen}
-        onClose={() => setConsultationOpen(false)}
-      />
-      <SearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        onSelectDiscipline={(d) => setSelectedDiscipline(d)}
-        onSelectWhitepaper={() => { }}
-      />
-      <DisciplineModal
-        discipline={selectedDiscipline}
-        onClose={() => setSelectedDiscipline(null)}
-        onOpenConsultation={() => setConsultationOpen(true)}
-      />
-
-      {/* ══════════════════════════════════════════════════════════════════════
-         PILLAR DETAILED SCOPE MODAL (Clean Light Mode Engineering Scope)
-         ══════════════════════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {selectedPillar && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedPillar(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            />
-
-            {/* Modal Dialog (Light Mode) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 20 }}
-              className="relative w-full max-w-xl sm:max-w-2xl max-h-[92vh] sm:max-h-[86vh] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col z-10 overscroll-contain"
-            >
-              {/* Modal Header (Light Mode) */}
-              <div className="bg-white px-5 sm:px-7 py-4 sm:py-5 border-b border-slate-100 shrink-0 relative">
-                {/* Close Button */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedPillar(null)}
-                  aria-label="Close modal"
-                  className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer border border-slate-200 active:scale-95"
-                >
-                  <span className="material-symbols-outlined text-base sm:text-lg">close</span>
-                </button>
-
-                {/* Badges */}
-                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
-                  <span className="font-mono text-[9px] sm:text-[10px] font-bold bg-[#FF8A00] text-white px-2 sm:px-2.5 py-0.5 rounded shadow-2xs">
-                    PILLAR {selectedPillar.number}
-                  </span>
-                  <span className="font-mono text-[9px] sm:text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 sm:px-2.5 py-0.5 rounded border border-slate-200">
-                    {selectedPillar.code}
-                  </span>
-                  <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                    {selectedPillar.category}
-                  </span>
-                </div>
-
-                {/* Title & Tagline */}
-                <h2 className="font-display text-lg sm:text-2xl font-extrabold text-[#0b233a] tracking-tight leading-tight pr-10">
-                  {selectedPillar.title}
-                </h2>
-                <p className="font-sans text-[11px] sm:text-xs text-[#FF8A00] font-bold uppercase tracking-wider mt-0.5">
-                  {selectedPillar.tagline}
-                </p>
-              </div>
-
-              {/* Modal Body (Light Mode) */}
-              <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 bg-white text-slate-800">
-
-                {/* Service Overview */}
-                <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4.5 border border-slate-200/80">
-                  <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-[#FF8A00] tracking-wider block mb-1.5">
-                    SERVICE OVERVIEW
-                  </span>
-                  <p className="font-sans text-xs sm:text-sm text-slate-700 leading-relaxed font-light">
-                    {selectedPillar.overview}
-                  </p>
-                </div>
-
-                {/* 3 Execution Capabilities */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider">
-                      EXECUTION CAPABILITIES &amp; SPECIALIZATIONS
-                    </span>
-                    <div className="flex-1 h-px bg-slate-200" />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                    {selectedPillar.capabilities.map((cap, cIdx) => (
-                      <div key={cIdx} className="p-3 sm:p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 hover:bg-white hover:border-[#FF8A00]/50 hover:shadow-2xs transition-all flex flex-col justify-between">
-                        <div>
-                          <div className="w-6 h-6 rounded-md bg-orange-50 text-[#FF8A00] flex items-center justify-center font-mono text-[10px] font-bold mb-2 border border-orange-200/60">
-                            0{cIdx + 1}
-                          </div>
-                          <h4 className="font-display text-xs font-bold text-[#0b233a] mb-1 leading-snug">
-                            {cap.title}
-                          </h4>
-                          <p className="font-sans text-[11px] text-slate-600 font-light leading-relaxed">
-                            {cap.desc}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Standard Verified Deliverables Checklist */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="font-mono text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider">
-                      STANDARD VERIFIED DELIVERABLES
-                    </span>
-                    <div className="flex-1 h-px bg-slate-200" />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {selectedPillar.deliverables.map((deliv, dIdx) => (
-                      <div
-                        key={dIdx}
-                        className="flex items-start gap-2 text-xs text-slate-700 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-white hover:border-[#FF8A00]/40 transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
-                          check_circle
-                        </span>
-                        <span className="leading-snug font-medium text-slate-800 text-[11px] sm:text-xs">{deliv}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tools & Standards Box */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                  <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 shadow-2xs">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="material-symbols-outlined text-[#FF8A00] text-xs">terminal</span>
-                      <span className="font-mono text-[9px] text-slate-400 uppercase tracking-wider font-bold">
-                        Licensed Software Suite
-                      </span>
-                    </div>
-                    <div className="font-mono text-xs text-slate-900 font-bold">
-                      {selectedPillar.software}
-                    </div>
-                  </div>
-
-                  <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 shadow-2xs">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="material-symbols-outlined text-slate-400 text-xs">verified</span>
-                      <span className="font-mono text-[9px] text-slate-400 uppercase tracking-wider font-bold">
-                        Governing Standards
-                      </span>
-                    </div>
-                    <div className="font-mono text-xs text-[#0b233a] font-bold">
-                      {selectedPillar.standards}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Case Citation */}
-                <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[#FF8A00] text-xl shrink-0">
-                    history_edu
-                  </span>
-                  <div>
-                    <span className="font-bold block text-[#0b233a] text-[10px] uppercase font-mono tracking-wider">
-                      Case Study Benchmark:
-                    </span>
-                    <span className="font-medium text-slate-700 text-[11px] sm:text-xs mt-0.5 block">{selectedPillar.caseReference}</span>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Modal Footer Actions (Light Mode) */}
-              <div className="p-3.5 sm:p-4 sm:px-6 bg-slate-50 border-t border-slate-200 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setSelectedPillar(null)}
-                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-mono font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors cursor-pointer text-center min-h-[40px]"
-                >
-                  Close Scope
-                </button>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
-                  <Link
-                    href="/projects"
-                    onClick={() => setSelectedPillar(null)}
-                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-[#0b233a] hover:border-[#0b233a] transition-colors text-center min-h-[40px] flex items-center justify-center"
-                  >
-                    View Projects →
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPillar(null);
-                      setConsultationOpen(true);
-                    }}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white text-xs font-mono font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px]"
-                  >
-                    <span>Request Proposal</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                  </button>
-                </div>
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <ConsultationModal isOpen={consultationOpen} onClose={() => setConsultationOpen(false)} />
     </div>
   );
 }
-
-
