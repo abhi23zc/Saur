@@ -564,11 +564,6 @@ export default function ServicesPage() {
                 </p>
               </div>
 
-              {/* Status Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200 shadow-xs text-xs font-mono text-slate-600 self-start md:self-auto">
-                <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
-                <span>6 Core Pillars // 100% ISO 9001 QA</span>
-              </div>
             </div>
 
             {/* Quick Interactive Category Filter Bar for Mobile & Desktop */}
