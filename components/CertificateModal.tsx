@@ -108,7 +108,7 @@ export default function CertificateModal({
                 <ul className="space-y-2">
                   {certificate.scope.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
-                      <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0 mt-0.5">
+                      <span className="material-symbols-outlined text-sm text-emerald-600 shrink-0 mt-0.5">
                         check_circle
                       </span>
                       <span>{item}</span>

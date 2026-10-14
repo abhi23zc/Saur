@@ -248,6 +248,90 @@ export const disciplinesData: Discipline[] = [
       { label: "CODES", value: "ASME B31.4/8", color: "text-slate-900" },
     ],
   },
+  {
+    id: "subsea-engineering",
+    code: "09",
+    title: "Subsea & Marine Engineering",
+    category: "Offshore & Marine",
+    badge: "DNV · Subsea Tiedowns",
+    kpi: "OFFSHORE ASSETS",
+    description:
+      "Offshore wellhead platforms, topside tie-in engineering, subsea clamp designs, marine transportation, and sea-fastening calculations.",
+    detailedSpecs: {
+      tolerances: "STAAD.Pro, AutoCAD, Mathcad",
+      materials: "High-Strength Structural Steel, Marine Anti-Corrosion Coatings",
+      standards: "DNV Standards, API RP 2A, ISO 19902",
+      efficiency: "Offshore Marine Rigor & Certified Constructability",
+      deliverables: [
+        "Offshore Platform Tie-In Engineering Packages",
+        "Subsea Clamps & Riser Protector Details",
+        "Topside Equipment Skid Calculations",
+        "Marine Transportation & Sea-Fastening Analysis",
+        "Offshore Constructability & Installation Plans",
+      ],
+    },
+    image: "/media/page-company-hero.png",
+    metrics: [
+      { label: "OFFSHORE", value: "DNV Compliant", color: "text-[#FF8A00]" },
+      { label: "PLATFORMS", value: "Tie-In / Wellhead", color: "text-slate-900" },
+    ],
+  },
+  {
+    id: "flow-assurance",
+    code: "10",
+    title: "Flow Assurance & Thermal Hydraulics",
+    category: "Process & Flow",
+    badge: "Hydraulics · Surge",
+    kpi: "TRANSIENT HYDRAULICS",
+    description:
+      "Steady-state and transient hydraulic analysis, surge pressure verification, insulation optimization, and slug catcher sizing.",
+    detailedSpecs: {
+      tolerances: "Aspen HYSYS, Hydraulic Solvers, Mathcad",
+      materials: "Multiphase Flow, Condensate, High-Pressure Hydrocarbons",
+      standards: "API RP 14E, ASME B31.3, Client Criteria",
+      efficiency: "Elimination of Hydraulic Surges & Slugging Risks",
+      deliverables: [
+        "Steady-State Pressure Drop & Flow Profiles",
+        "Water Hammer & Surge Analysis Calculation Reports",
+        "Hydrate & Wax Deposition Mitigation Studies",
+        "Thermal Insulation Thickness Calculations",
+        "Slug Catcher Volume & Sizing Reports",
+      ],
+    },
+    image: "/images/process.png",
+    metrics: [
+      { label: "ANALYSIS", value: "Hydraulics", color: "text-[#FF8A00]" },
+      { label: "RISK", value: "Zero Surge", color: "text-slate-900" },
+    ],
+  },
+  {
+    id: "yard-fabrication",
+    code: "11",
+    title: "Yard Fabrication & Modular Skids",
+    category: "Fabrication & Yard",
+    badge: "Spoolgen · LOD 400",
+    kpi: "SHOP-READY SPOOLS",
+    description:
+      "Shop fabrication isometrics, modular skid detailing, pipe support fabrication shop drawings, and lifting rig designs.",
+    detailedSpecs: {
+      tolerances: "Spoolgen, Tekla Structures, AutoCAD",
+      materials: "Carbon Steel, Duplex, Structural Steel, Modular Skids",
+      standards: "ASME Sec IX, AWS D1.1, Fabrication Yard Specs",
+      efficiency: "LOD 400 Shop-Ready Drawings for Zero Site Rework",
+      deliverables: [
+        "Fabrication Shop Isometrics with Cut-Length Spool Splits",
+        "Chemical & Utility Injection Skid Shop Drawings",
+        "Pipe Support Fabrication Details & Weld Schedules",
+        "Lifting Lug Calculations & Spreader Beam Details",
+        "Fabrication As-Built Redline Integration",
+      ],
+    },
+    image: "/images/mechanical.png",
+    metrics: [
+      { label: "LOD LEVEL", value: "LOD 400", color: "text-[#FF8A00]" },
+      { label: "FABRICATION", value: "Shop Ready", color: "text-slate-900" },
+    ],
+  },
 ];
 
 interface PrecisionDisciplinesProps {
@@ -319,6 +403,24 @@ export default function PrecisionDisciplines({
     return () => clearInterval(timer);
   }, [isPaused]);
 
+  const lastWheelTimeRef = useRef<number>(0);
+  const handleWheel = (e: React.WheelEvent) => {
+    const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    const delta = isHorizontal ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+    if (Math.abs(delta) < 20) return;
+
+    const now = Date.now();
+    if (now - lastWheelTimeRef.current < 400) return;
+    lastWheelTimeRef.current = now;
+
+    pauseAutoCycle();
+    if (delta > 0) {
+      handleNext();
+    } else {
+      handlePrev();
+    }
+  };
+
   const handlePrev = () => {
     setIsResetting(false);
     setCurrentIndex((prev) => prev - 1);
@@ -363,41 +465,21 @@ export default function PrecisionDisciplines({
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         
-        {/* Top Header & Integrated Navigation Controls */}
+        {/* Top Header & Discipline Counter */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
-          <div className="max-w-2xl">
-            <span className="text-xs text-[#FF8A00] font-bold uppercase tracking-wider block mb-2">
-              {preTitle}
-            </span>
-            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
+          <div className="flex-1 min-w-0 pr-4 sm:pr-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.35rem] xl:text-[2.65rem] font-bold tracking-tight text-[#0b233a] leading-tight lg:whitespace-nowrap">
               {title}
             </h2>
-            <p className="font-sans text-xs sm:text-base text-slate-600 mt-2 sm:mt-3 leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-slate-600 mt-2.5 leading-relaxed max-w-3xl">
               {description}
             </p>
           </div>
 
-          {/* Navigation Controls on Right */}
-          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+          {/* Header Controls on Right: Counter & All Disciplines Link */}
+          <div className="flex items-center gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
             <div className="font-mono text-xs text-slate-500 font-semibold">
-              <span className="text-[#FF8A00] font-bold">0{activeDisciplineIndex + 1}</span> / 0{disciplinesData.length} Disciplines
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrev}
-                aria-label="Previous discipline"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] text-slate-700 flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
-              >
-                <span className="material-symbols-outlined text-base sm:text-lg">arrow_back</span>
-              </button>
-              <button
-                onClick={handleNext}
-                aria-label="Next discipline"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0b233a] hover:bg-[#FF8A00] text-white flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
-              >
-                <span className="material-symbols-outlined text-base sm:text-lg">arrow_forward</span>
-              </button>
+              <span className="text-[#FF8A00] font-bold">{String(activeDisciplineIndex + 1).padStart(2, "0")}</span> / {String(disciplinesData.length).padStart(2, "0")} Disciplines
             </div>
 
             {viewAllHref && (
@@ -413,7 +495,7 @@ export default function PrecisionDisciplines({
         </div>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           Center-Stage Elevated Carousel (Ultra-Smooth Infinite Sliding Track)
+           Center-Stage Elevated Carousel with Side-Scroll & Direct Card Arrows
            ══════════════════════════════════════════════════════════════════════ */}
         <div
           ref={containerRef}
@@ -421,6 +503,7 @@ export default function PrecisionDisciplines({
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={pauseAutoCycle}
+          onWheel={handleWheel}
         >
           {/* Continuous Sliding Horizontal Track with GPU acceleration & Touch Pan */}
           <div className="w-full py-4">
@@ -473,19 +556,19 @@ export default function PrecisionDisciplines({
                     }}
                     transition={transitionConfig}
                     className={cn(
-                      "shrink-0 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-shadow duration-500 cursor-pointer flex flex-col justify-between select-none min-h-[440px] sm:min-h-[460px]",
+                      "shrink-0 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-all duration-500 cursor-pointer flex flex-col justify-between select-none min-h-[440px] sm:min-h-[460px] relative group/card",
                       isCenter
                         ? "border-slate-300 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/80 z-20"
-                        : "border-slate-200 shadow-sm hover:opacity-80 z-10"
+                        : "border-slate-200 shadow-sm hover:opacity-90 z-10"
                     )}
                   >
                     {/* Top Image Frame with Floating Badge */}
                     <div>
-                      <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-900 mb-5 shadow-xs group">
+                      <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-900 mb-5 shadow-xs">
                         <img
                           src={disc.image}
                           alt={disc.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
 
@@ -506,11 +589,8 @@ export default function PrecisionDisciplines({
                       </div>
 
                       {/* Discipline Title */}
-                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] leading-tight mb-2 flex items-center justify-between group">
-                        <span>{disc.title}</span>
-                        <span className="material-symbols-outlined text-lg text-slate-400 group-hover:text-[#FF8A00] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
-                          north_east
-                        </span>
+                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] leading-tight mb-2">
+                        {disc.title}
                       </h3>
 
                       {/* Plain English Description */}
@@ -532,10 +612,17 @@ export default function PrecisionDisciplines({
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between text-xs font-bold text-[#FF8A00] pt-1">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectDiscipline(disc);
+                        }}
+                        className="flex items-center justify-between text-xs font-bold text-[#FF8A00] hover:text-[#E67C00] pt-1 w-full text-left cursor-pointer"
+                      >
                         <span>Inspect Full Specification</span>
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                      </div>
+                      </button>
                     </div>
                   </motion.div>
                 );

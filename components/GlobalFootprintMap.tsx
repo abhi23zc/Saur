@@ -131,16 +131,10 @@ export default function GlobalFootprintMap() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/20 mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
-              <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-wider">
-                GLOBAL NETWORK &amp; HUBS
-              </span>
-            </div>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
               Global Operations &amp; Office Locations
             </h2>
-            <p className="font-sans text-xs sm:text-base text-slate-600 mt-2 sm:mt-2.5 leading-relaxed font-light">
+            <p className="font-sans text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
               Operating from registered headquarters in Navi Mumbai and our training center in Chennai, delivering multidisciplinary engineering across the Middle East, Europe, and SE Asia.
             </p>
           </div>

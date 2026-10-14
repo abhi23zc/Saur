@@ -137,7 +137,7 @@ export default function CourseSyllabusModal({
               {course.modules.map((mod, idx) => (
                 <div
                   key={idx}
-                  className="border border-slate-200 rounded-xl p-3 bg-white hover:border-[#0b233a]/30 transition-colors"
+                  className="border border-slate-200 rounded-xl p-3 bg-white"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
                     <span className="font-mono text-[10px] font-bold text-[#FF8A00] bg-[#FF8A00]/10 px-1.5 py-0.5 rounded">

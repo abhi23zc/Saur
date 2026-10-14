@@ -88,7 +88,7 @@ export default function WhitepaperModal({
           <ul className="space-y-1.5">
             {whitepaper.takeaways.map((t, idx) => (
               <li key={idx} className="flex items-start gap-2 font-sans text-xs text-slate-700">
-                <span className="material-symbols-outlined text-[#FF8A00] text-sm mt-0.5 shrink-0">
+                <span className="material-symbols-outlined text-emerald-600 text-sm mt-0.5 shrink-0">
                   check_circle
                 </span>
                 <span>{t}</span>

@@ -27,10 +27,10 @@ export default function DisciplineModal({
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        className="bg-white text-slate-900 rounded-t-3xl sm:rounded-3xl max-w-xl sm:max-w-2xl w-full shadow-2xl border border-slate-200 relative max-h-[92vh] sm:max-h-[86vh] flex flex-col overflow-hidden overscroll-contain"
+        className="bg-white text-slate-900 rounded-t-3xl sm:rounded-3xl max-w-xl sm:max-w-2xl md:max-w-3xl w-full shadow-2xl border border-slate-200 relative max-h-[92vh] sm:max-h-[88vh] flex flex-col overflow-hidden overscroll-contain"
       >
         {/* Modal Header (Light Mode) */}
-        <div className="p-4 sm:p-5 sm:px-7 border-b border-slate-100 bg-white relative shrink-0">
+        <div className="p-4 sm:p-5 sm:px-6 border-b border-slate-100 bg-white relative shrink-0">
           {/* Close Button */}
           <button
             type="button"
@@ -60,57 +60,57 @@ export default function DisciplineModal({
         </div>
 
         {/* Modal Body (Light Mode) */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 bg-white">
+        <div className="flex-1 p-4 sm:p-5 sm:px-6 overflow-y-auto space-y-3.5 sm:space-y-4 bg-white">
           {/* Description */}
-          <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-light bg-slate-50 p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
+          <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed font-light bg-slate-50 p-3 sm:p-3.5 rounded-xl border border-slate-200/80">
             {discipline.description}
           </p>
 
-          {/* Technical Specs 4-cell Grid */}
-          <div className="bg-slate-50/80 rounded-2xl p-3.5 sm:p-4.5 border border-slate-200">
-            <div className="font-mono text-xs text-[#FF8A00] font-bold uppercase tracking-wider mb-2.5 flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">settings_suggest</span>
+          {/* Technical Specifications Sheet */}
+          <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200">
+            <div className="font-mono text-xs text-[#0b233a] font-bold uppercase tracking-wider mb-2.5 flex items-center gap-2">
+              <span className="material-symbols-outlined text-sm text-[#FF8A00]">settings_suggest</span>
               <span>Technical Specifications &amp; Tools</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-sans">
-              <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200/80 shadow-2xs">
-                <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase font-mono font-bold mb-0.5">Software Tools:</span>
-                <span className="text-slate-900 font-medium">{discipline.detailedSpecs.tolerances}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-xs font-sans">
+              <div className="space-y-0.5">
+                <span className="text-slate-500 block text-[10px] uppercase font-mono font-bold">Software Tools</span>
+                <span className="text-slate-900 font-medium block">{discipline.detailedSpecs.tolerances}</span>
               </div>
-              <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200/80 shadow-2xs">
-                <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase font-mono font-bold mb-0.5">Materials / Scope:</span>
-                <span className="text-slate-900 font-medium">{discipline.detailedSpecs.materials}</span>
+              <div className="space-y-0.5">
+                <span className="text-slate-500 block text-[10px] uppercase font-mono font-bold">Materials / Scope</span>
+                <span className="text-slate-900 font-medium block">{discipline.detailedSpecs.materials}</span>
               </div>
-              <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200/80 shadow-2xs">
-                <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase font-mono font-bold mb-0.5">Applicable Standards:</span>
-                <span className="text-slate-900 font-medium">{discipline.detailedSpecs.standards}</span>
+              <div className="space-y-0.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200/80">
+                <span className="text-slate-500 block text-[10px] uppercase font-mono font-bold">Applicable Standards</span>
+                <span className="text-slate-900 font-medium block">{discipline.detailedSpecs.standards}</span>
               </div>
-              <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200/80 shadow-2xs">
-                <span className="text-slate-400 block text-[9px] sm:text-[10px] uppercase font-mono font-bold mb-0.5">Quality Standard:</span>
-                <span className="text-[#FF8A00] font-semibold">{discipline.detailedSpecs.efficiency}</span>
+              <div className="space-y-0.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200/80">
+                <span className="text-slate-500 block text-[10px] uppercase font-mono font-bold">Quality Standard</span>
+                <span className="text-[#0b233a] font-semibold block">{discipline.detailedSpecs.efficiency}</span>
               </div>
             </div>
           </div>
 
-          {/* Key Deliverables */}
+          {/* Key Deliverables - Open Checklist without Button Boxes */}
           <div>
-            <div className="font-mono text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
+            <div className="font-mono text-xs text-[#0b233a] font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
               <span className="material-symbols-outlined text-sm text-[#FF8A00]">task_alt</span>
-              <span>Key Engineering Deliverables:</span>
+              <span>Key Engineering Deliverables</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
               {discipline.detailedSpecs.deliverables.map((item, idx) => (
-                <div
+                <li
                   key={idx}
-                  className="bg-slate-50 border border-slate-200/80 px-3 py-2 rounded-xl flex items-center gap-2 text-xs text-slate-700 hover:bg-white hover:border-[#FF8A00]/40 transition-colors"
+                  className="flex items-start gap-2 py-1.5 border-b border-slate-100 last:border-b-0 text-slate-800 text-xs font-sans leading-snug"
                 >
-                  <span className="material-symbols-outlined text-[#FF8A00] text-sm shrink-0">
+                  <span className="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">
                     check_circle
                   </span>
-                  <span className="font-medium text-[11px] sm:text-xs text-slate-800">{item}</span>
-                </div>
+                  <span className="font-medium text-slate-800">{item}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
 

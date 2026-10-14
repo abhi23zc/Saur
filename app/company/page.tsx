@@ -411,10 +411,6 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-3xl mb-8 sm:mb-12"
             >
-              <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                OUR PURPOSE
-              </span>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Engineering excellence built for complex industrial assets
               </h2>
@@ -689,10 +685,6 @@ export default function AboutPage() {
               className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4"
             >
               <div className="max-w-2xl">
-                <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-                <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                  QUALITY ASSURANCE &amp; METHODOLOGY
-                </span>
                 <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                   ISO 9001:2015 Quality Governance Process
                 </h2>
@@ -825,14 +817,10 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-3xl mb-8 sm:mb-12"
             >
-              <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                ACCREDITATIONS &amp; REGULATORY COMPLIANCE
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight mb-2 sm:mb-3 leading-tight">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight mb-3 leading-tight">
                 Official Certifications &amp; Registrations
               </h2>
-              <p className="text-slate-600 leading-relaxed text-xs sm:text-sm md:text-base font-light">
+              <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
                 Saur Engineering &amp; Consultancy operates an accredited Integrated Management System (IMS) covering
                 Quality (ISO 9001:2015), Environmental Safety (ISO 14001:2015), Occupational Health &amp; Safety (ISO 45001:2018),
                 and is officially recognized by the Government of India Department for Promotion of Industry and Internal Trade (DPIIT).
@@ -925,10 +913,6 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-2xl mb-8 sm:mb-12"
             >
-              <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                DELIVERY INFRASTRUCTURE
-              </span>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Two Delivery Centers in India
               </h2>
@@ -1043,10 +1027,6 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-2xl mb-8 sm:mb-12"
             >
-              <div className="w-8 h-1 bg-[#FF8A00] mb-3" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-slate-500 font-bold block mb-1">
-                OPERATING PRINCIPLES
-              </span>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Our Core Values
               </h2>
@@ -1087,11 +1067,10 @@ export default function AboutPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-14 sm:py-20 bg-[#0b233a] text-white relative overflow-hidden">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center relative z-10">
-            <div className="w-8 h-1 bg-[#FF8A00] mx-auto mb-3 sm:mb-4" />
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
               Ready to start your next engineering project?
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-light leading-relaxed">
+            <p className="text-slate-300 max-w-xl mx-auto mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">
               Talk to our team about engineering design, 3D plant modeling, project manpower, or corporate training.
             </p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto max-w-md sm:max-w-none mx-auto">

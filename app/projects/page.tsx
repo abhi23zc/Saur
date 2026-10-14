@@ -304,14 +304,10 @@ export default function ProjectsPage() {
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
-                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>FLAGSHIP PROGRAMS</span>
-                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
-                </div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b233a] tracking-tight">
                   High-Impact Capital Projects
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-normal">
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal leading-relaxed">
                   Multi-thousand manhour engineering engagements executed under ISO 9001:2015 QA governance.
                 </p>
               </div>
@@ -364,7 +360,7 @@ export default function ProjectsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow grid grid-cols-1 lg:grid-cols-12"
+                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm grid grid-cols-1 lg:grid-cols-12"
                   >
                     {/* Left Photographic Banner */}
                     <div className="lg:col-span-5 relative min-h-[260px] sm:min-h-[320px] lg:min-h-[400px] bg-slate-900 overflow-hidden">
@@ -539,14 +535,10 @@ export default function ProjectsPage() {
             {/* Header & Search Row */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200">
               <div>
-                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>AUDITED EXECUTION DATABASE</span>
-                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
-                </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b233a] tracking-tight">
                   All 18 Executed Projects
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 max-w-2xl font-normal leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-600 mt-2 max-w-2xl font-normal leading-relaxed">
                   Search and inspect verified engineering deliverables, man-hour scopes, and 3D modeling packages across global energy assets.
                 </p>
               </div>
@@ -797,11 +789,10 @@ export default function ProjectsPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-20 bg-[#0b233a] text-white">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16 text-center">
-            <div className="w-8 h-0.5 bg-[#FF8A00] mx-auto mb-3" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
               Have an upcoming capital project or turnkey engineering requirement?
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-6 text-xs sm:text-sm md:text-base font-normal leading-relaxed">
+            <p className="text-slate-300 max-w-xl mx-auto mb-6 text-base sm:text-lg font-normal leading-relaxed">
               Our multidisciplinary engineering teams in Navi Mumbai and Chennai integrate seamlessly with your project schedules, CAD databases, and software standards.
             </p>
             <div className="flex flex-wrap justify-center gap-3">

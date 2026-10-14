@@ -53,11 +53,10 @@ export default function TechnologyPage() {
       <section className="py-24 md:py-32">
         <div className="max-w-[1440px] mx-auto px-6 md:px-16">
           <div className="max-w-2xl mb-12">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-3 block">Engineering Software & Platforms</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-[#1a1c1b] tracking-tight mb-4">
               Smart Plant & 3D design platforms.
             </h2>
-            <p className="text-[#424656] leading-relaxed">
+            <p className="text-[#424656] text-base sm:text-lg leading-relaxed">
               Our engineering teams work with best-in-class intelligent plant design, P&ID, and instrumentation platforms from Hexagon, AVEVA, Bentley, and Autodesk.
             </p>
           </div>
@@ -73,12 +72,12 @@ export default function TechnologyPage() {
               <motion.div
                 key={tool}
                 variants={itemVariants}
-                className="group bg-white border border-[#e2e3e1] rounded-xl px-5 py-5 hover:border-[#FF8A00]/40 hover:shadow-[0_8px_32px_rgba(255,138,0,0.08)] transition-all duration-500 text-center"
+                className="bg-white border border-[#e2e3e1] rounded-xl px-5 py-5 text-center shadow-xs"
               >
-                <span className="material-symbols-outlined text-2xl text-[#c3c5d9] group-hover:text-[#FF8A00] transition-colors duration-300 mb-2 block">
+                <span className="material-symbols-outlined text-2xl text-[#FF8A00] mb-2 block">
                   view_in_ar
                 </span>
-                <span className="font-sans text-xs font-bold text-[#1a1c1b] group-hover:text-[#FF8A00] transition-colors duration-300 leading-tight block">
+                <span className="font-sans text-xs font-bold text-[#1a1c1b] leading-tight block">
                   {tool}
                 </span>
               </motion.div>
@@ -91,11 +90,10 @@ export default function TechnologyPage() {
       <section className="py-24 md:py-32 bg-[#f4f4f2]">
         <div className="max-w-[1440px] mx-auto px-6 md:px-16">
           <div className="max-w-2xl mb-12">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-3 block">Industry-Specific Tools</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-[#1a1c1b] tracking-tight mb-4">
               Specialist calculation & analysis software.
             </h2>
-            <p className="text-[#424656] leading-relaxed">
+            <p className="text-[#424656] text-base sm:text-lg leading-relaxed">
               Purpose-built tools for stress analysis, vessel design, electrical studies, lighting calculations, structural analysis, and 3D coordination.
             </p>
           </div>
@@ -111,12 +109,12 @@ export default function TechnologyPage() {
               <motion.div
                 key={tool}
                 variants={itemVariants}
-                className="group bg-white border border-[#e2e3e1] rounded-xl px-4 py-5 hover:border-[#FF8A00]/40 hover:shadow-[0_4px_16px_rgba(255,138,0,0.06)] transition-all duration-500 text-center"
+                className="bg-white border border-[#e2e3e1] rounded-xl px-4 py-5 text-center shadow-xs"
               >
-                <span className="material-symbols-outlined text-2xl text-[#c3c5d9] group-hover:text-[#FF8A00] transition-colors duration-300 mb-2 block">
+                <span className="material-symbols-outlined text-2xl text-[#FF8A00] mb-2 block">
                   calculate
                 </span>
-                <span className="font-sans text-xs font-bold text-[#1a1c1b] group-hover:text-[#FF8A00] transition-colors duration-300 block">
+                <span className="font-sans text-xs font-bold text-[#1a1c1b] block">
                   {tool}
                 </span>
               </motion.div>

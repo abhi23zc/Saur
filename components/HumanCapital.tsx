@@ -33,13 +33,10 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-3">
-              Manpower &amp; Workforce Solutions
-            </div>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 tracking-tight text-[#0b233a] leading-tight">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight text-[#0b233a] leading-tight">
               Skilled Technical Workforce for Onshore, Yard &amp; Offshore
             </h2>
-            <p className="font-sans text-xs sm:text-sm md:text-base text-slate-600 mb-6 leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-slate-600 mb-6 leading-relaxed">
               We provide certified engineers, designers, and site technicians to support EPC contractors and plant owners during fabrication, installation, and commissioning.
             </p>
 

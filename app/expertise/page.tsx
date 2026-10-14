@@ -659,14 +659,10 @@ export default function ExpertisePage() {
             {/* Header & Filter Row */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
               <div>
-                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>DISCIPLINE DIRECTORY</span>
-                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
-                </div>
                 <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0b233a] tracking-tight">
                   Comprehensive Engineering Expertise
                 </h2>
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-normal leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal leading-relaxed">
                   Standard technical deliverables generated, audited, and issued for construction across all 11 disciplines.
                 </p>
               </div>
@@ -737,16 +733,9 @@ export default function ExpertisePage() {
                         DISCIPLINE {item.number} · {item.category.toUpperCase()}
                       </span>
 
-                      <div className="flex items-center justify-between gap-3">
-                        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                          {item.title}
-                        </h3>
-
-                        {/* Orange Arrow Button */}
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[#FF8A00] group-hover:bg-[#E67C00] flex items-center justify-center text-[#0b233a] shrink-0 group-hover:scale-105 transition-all shadow-md">
-                          <ArrowRight className="w-4 h-4" />
-                        </div>
-                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+                        {item.title}
+                      </h3>
                     </div>
 
                     {/* Expandable Details Area (Visible on Hover & Tap Drilldown) */}
@@ -807,14 +796,10 @@ export default function ExpertisePage() {
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
               <div className="max-w-2xl">
-                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>INTEGRATED DELIVERY GOVERNANCE</span>
-                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
-                </div>
                 <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0b233a] tracking-tight">
                   Inter-Discipline Coordination (IDC) &amp; QA
                 </h2>
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-normal leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal leading-relaxed">
                   How our 11 disciplines collaborate concurrently to eliminate dimensional clashes, avoid site rework, and guarantee constructability.
                 </p>
               </div>
@@ -846,7 +831,7 @@ export default function ExpertisePage() {
               ].map((item) => (
                 <div
                   key={item.stage}
-                  className="bg-slate-50 border border-slate-200 rounded-lg p-5 sm:p-6 hover:border-slate-300 hover:bg-white hover:shadow-sm transition-all flex flex-col justify-between"
+                  className="bg-slate-50 border border-slate-200 rounded-lg p-5 sm:p-6 flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -878,14 +863,10 @@ export default function ExpertisePage() {
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
               <div className="max-w-2xl">
-                <div className="flex items-center gap-2 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>CLIENT ENVIRONMENT COMPATIBILITY</span>
-                  <span className="w-6 h-[2px] bg-[#FF8A00]" />
-                </div>
                 <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0b233a] tracking-tight">
                   Specialized Software &amp; Engineering Tools
                 </h2>
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 mt-2 font-normal leading-relaxed">
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal leading-relaxed">
                   Enterprise-licensed CAD, CAE, and analytical platforms deployed across our Mumbai HQ and Chennai engineering hub.
                 </p>
               </div>
@@ -902,7 +883,7 @@ export default function ExpertisePage() {
               {softwareEcosystem.map((suite, sIdx) => (
                 <div
                   key={sIdx}
-                  className="bg-white border border-slate-200 rounded-lg p-5 sm:p-6 flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all group"
+                  className="bg-white border border-slate-200 rounded-lg p-5 sm:p-6 flex flex-col justify-between shadow-xs"
                 >
                   <div>
                     {/* Header */}
@@ -1002,7 +983,7 @@ export default function ExpertisePage() {
               {governingStandards.map((std, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 hover:border-[#FF8A00] transition-colors"
+                  className="px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700"
                 >
                   {std}
                 </span>
@@ -1016,11 +997,6 @@ export default function ExpertisePage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="bg-[#0b233a] py-12 sm:py-16">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-            <div className="flex items-center gap-2.5 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-4">
-              <span>LET&apos;S DISCUSS YOUR NEXT PROJECT</span>
-              <span className="w-8 h-[2px] bg-[#FF8A00]" />
-            </div>
-
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
               <div className="max-w-2xl">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
@@ -1029,7 +1005,7 @@ export default function ExpertisePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-8">
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-sm font-normal">
+                <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-sm font-normal">
                   Connect with our Discipline Leads in Mumbai and Chennai to discuss scope, standards, and delivery schedules.
                 </p>
 

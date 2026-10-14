@@ -396,7 +396,7 @@ export default function CaseStudiesPage() {
                         href={`/case-studies/${cs.slug}`}
                         className="text-[11px] font-medium text-slate-400 hover:text-slate-800 transition-colors"
                       >
-                        Full page →
+                        Full page
                       </Link>
                     </div>
                   </div>
@@ -546,11 +546,6 @@ export default function CaseStudiesPage() {
            ═══════════════════════════════════════════════════════════════ */}
         <section className="bg-[#0b233a] py-12 sm:py-16 mt-8">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16">
-            <div className="flex items-center gap-2.5 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-4">
-              <span>LET&apos;S DISCUSS YOUR NEXT PROJECT</span>
-              <span className="w-8 h-[2px] bg-[#FF8A00]" />
-            </div>
-
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
               {/* Headline */}
               <div className="max-w-2xl">
@@ -561,7 +556,7 @@ export default function CaseStudiesPage() {
 
               {/* Subtitle / Description & CTA Button */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-8">
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-sm font-normal">
+                <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-sm font-normal">
                   Tell us about your project and our team will get in touch to discuss how we can help.
                 </p>
 

@@ -13,31 +13,31 @@ const industries = [
 
 export default function SectorInsights() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let frameId: number | null = null;
 
     const updateActiveCard = () => {
       frameId = null;
-      const focusLine = window.innerHeight / 2;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
+      if (!sectionRef.current) return;
 
-      cardRefs.current.forEach((card, index) => {
-        if (!card) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
 
-        const { top, height } = card.getBoundingClientRect();
-        const distance = Math.abs(top + height / 2 - focusLine);
+      // As the user scrolls down, advance active card through the 5 industries
+      const enterPoint = viewportHeight * 0.65;
+      const exitPoint = viewportHeight * 0.15 - rect.height;
+      const scrollDistance = enterPoint - exitPoint;
+      const scrolled = enterPoint - rect.top;
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
+      if (scrollDistance <= 0) return;
+
+      const progress = Math.max(0, Math.min(0.999, scrolled / scrollDistance));
+      const targetIndex = Math.floor(progress * industries.length);
 
       setActiveIdx((currentIndex) =>
-        currentIndex === closestIndex ? currentIndex : closestIndex,
+        currentIndex === targetIndex ? currentIndex : targetIndex,
       );
     };
 
@@ -48,6 +48,7 @@ export default function SectorInsights() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    updateActiveCard();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -55,26 +56,44 @@ export default function SectorInsights() {
     };
   }, []);
 
-  const previewCard = (index: number) => {
-    setActiveIdx((currentIndex) =>
-      currentIndex === index ? currentIndex : index,
-    );
+  const selectCard = (index: number) => {
+    setActiveIdx(index);
   };
 
   return (
-    <section id="insights" className="relative overflow-hidden border-t border-slate-200 bg-white py-12 text-slate-800 sm:py-16 md:py-20">
+    <section
+      id="insights"
+      ref={sectionRef}
+      className="relative overflow-hidden border-t border-slate-200 bg-white py-12 text-slate-800 sm:py-16 md:py-20"
+    >
       <div className="pointer-events-none absolute inset-0 micro-grid opacity-25" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-6 md:px-16">
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="space-y-4 lg:col-span-5">
             <div>
-              <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#FF8A00]/20 bg-[#FF8A00]/10 px-2.5 py-0.5"><span className="h-1.5 w-1.5 rounded-full bg-[#FF8A00]" /><span className="text-[10px] font-bold uppercase tracking-wider text-[#FF8A00]">Industries &amp; sector matrix</span></div>
-              <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#0b233a] sm:text-3xl md:text-4xl">Powering Critical Global Infrastructure</h2>
+              <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#0b233a] sm:text-3xl md:text-4xl">
+                Powering Critical Global Infrastructure
+              </h2>
             </div>
-            <p className="font-sans text-xs font-light leading-relaxed text-slate-600 sm:text-sm">We combine deep technical expertise and international standards (ASME, API, IEC, ISO) to deliver cost-effective engineering solutions for operators and EPC contractors.</p>
+            <p className="font-sans text-base sm:text-lg leading-relaxed text-slate-600">
+              We combine deep technical expertise and international standards (ASME, API, IEC, ISO) to deliver cost-effective engineering solutions for operators and EPC contractors.
+            </p>
             <div className="flex w-full flex-col items-stretch gap-3 pt-2 sm:w-auto sm:flex-row sm:items-center">
-              <Link href="/projects" className="group inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#FF8A00] px-5 py-2.5 font-sans text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-colors hover:bg-[#E67C00] hover:shadow-md sm:w-auto"><span>Explore track record</span><span className="material-symbols-outlined text-xs transition-transform group-hover:translate-x-1">arrow_forward</span></Link>
-              <Link href="/services" className="inline-flex w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-center font-sans text-xs font-bold uppercase tracking-wider text-[#0b233a] shadow-2xs transition-colors hover:bg-slate-50 sm:w-auto">Our services</Link>
+              <Link
+                href="/projects"
+                className="group inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#FF8A00] px-5 py-2.5 font-sans text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-colors hover:bg-[#E67C00] hover:shadow-md sm:w-auto"
+              >
+                <span>Explore track record</span>
+                <span className="material-symbols-outlined text-xs transition-transform group-hover:translate-x-1">
+                  arrow_forward
+                </span>
+              </Link>
+              <Link
+                href="/services"
+                className="inline-flex w-full items-center justify-center rounded-lg bg-[#0b233a] hover:bg-[#143c61] px-5 py-2.5 text-center font-sans text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:shadow sm:w-auto"
+              >
+                Our services
+              </Link>
             </div>
           </div>
 
@@ -86,25 +105,48 @@ export default function SectorInsights() {
                 return (
                   <button
                     key={industry.title}
-                    ref={(card) => {
-                      cardRefs.current[index] = card;
-                    }}
                     type="button"
-                    onMouseEnter={() => previewCard(index)}
-                    onFocus={() => previewCard(index)}
-                    onClick={() => previewCard(index)}
+                    onClick={() => selectCard(index)}
                     aria-pressed={isActive}
-                    className={`relative flex w-full cursor-pointer items-start gap-3 rounded-xl border p-3 text-left transition-all duration-200 motion-reduce:transform-none motion-reduce:transition-none sm:gap-4 sm:p-3.5 ${isActive ? "z-10 -translate-x-1 border-[#FF8A00] bg-white shadow-xl shadow-orange-500/10 sm:-translate-x-2" : "border-slate-200 bg-slate-50/90 opacity-85"}`}
+                    className={`relative flex w-full cursor-pointer items-start gap-3 rounded-xl border p-3 text-left transition-all duration-300 ease-out sm:gap-4 sm:p-3.5 ${
+                      isActive
+                        ? "z-10 -translate-x-1 sm:-translate-x-2 border-[#FF8A00] bg-white shadow-lg shadow-orange-500/10 ring-1 ring-[#FF8A00]/25"
+                        : "border-slate-200 bg-slate-50/70 opacity-60"
+                    }`}
                   >
-                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors duration-200 motion-reduce:transition-none sm:h-10 sm:w-10 ${isActive ? "border-[#FF8A00] bg-orange-50 text-[#FF8A00]" : "border-slate-200 bg-white text-slate-500"}`}>
-                      <span className="material-symbols-outlined text-lg sm:text-xl">{industry.icon}</span>
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors duration-300 sm:h-10 sm:w-10 ${
+                        isActive
+                          ? "border-[#FF8A00] bg-orange-50 text-[#FF8A00]"
+                          : "border-slate-200 bg-white text-slate-500"
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-lg sm:text-xl">
+                        {industry.icon}
+                      </span>
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="mb-0.5 flex items-center gap-2">
-                        <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold transition-colors duration-200 motion-reduce:transition-none ${isActive ? "bg-[#FF8A00]/15 text-[#FF8A00]" : "bg-slate-200/70 text-slate-500"}`}>0{index + 1}</span>
-                        <h3 className={`font-display text-sm font-bold transition-colors duration-200 motion-reduce:transition-none sm:text-base ${isActive ? "text-[#0b233a]" : "text-slate-700"}`}>{industry.title}</h3>
+                        <span
+                          className={`rounded px-1.5 py-0.5 text-[10px] font-bold transition-colors duration-300 ${
+                            isActive
+                              ? "bg-[#FF8A00]/15 text-[#FF8A00]"
+                              : "bg-slate-200/70 text-slate-500"
+                          }`}
+                        >
+                          0{index + 1}
+                        </span>
+                        <h3
+                          className={`font-display text-sm font-bold transition-colors duration-300 sm:text-base ${
+                            isActive ? "text-[#0b233a]" : "text-slate-700"
+                          }`}
+                        >
+                          {industry.title}
+                        </h3>
                       </div>
-                      <p className="font-sans text-xs font-light leading-snug text-slate-600">{industry.desc}</p>
+                      <p className="font-sans text-xs font-light leading-snug text-slate-600">
+                        {industry.desc}
+                      </p>
                     </div>
                   </button>
                 );

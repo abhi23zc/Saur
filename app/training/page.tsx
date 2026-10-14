@@ -152,10 +152,9 @@ export default function TrainingPage() {
           <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-16">
             <div className="grid gap-7 border-b border-slate-300 pb-8 lg:grid-cols-[.75fr_1.25fr] lg:items-end">
               <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#c87510]">Our courses</p>
-                <h2 className="mt-3 max-w-md font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-5xl">Choose an engineering path.</h2>
+                <h2 className="font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-5xl">Choose an engineering path.</h2>
               </div>
-              <p className="max-w-2xl text-base leading-relaxed text-slate-600">
+              <p className="max-w-2xl text-lg leading-relaxed text-slate-600">
                 Six focused course areas designed to build practical engineering knowledge across core disciplines and design software.
               </p>
             </div>
@@ -164,7 +163,7 @@ export default function TrainingPage() {
               {learningPaths.map(({ number, title, icon: Icon, tone, detail }, index) => (
                 <article
                   key={title}
-                  className={`${tone} group relative min-h-[245px] overflow-hidden border border-[#0b233a]/10 p-6 transition-transform duration-300 hover:-translate-y-1 ${index === 0 || index === 5 ? "xl:col-span-1" : ""}`}
+                  className={`${tone} relative min-h-[245px] overflow-hidden border border-[#0b233a]/10 p-6 ${index === 0 || index === 5 ? "xl:col-span-1" : ""}`}
                 >
                   <span className="absolute -right-4 -top-7 font-display text-9xl font-bold opacity-[0.07]">{number}</span>
                   <div className="relative flex h-full flex-col justify-between">
@@ -208,9 +207,8 @@ export default function TrainingPage() {
             </div>
 
             <div className="flex flex-col justify-center">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#c87510]">Training &amp; development</p>
-              <h2 className="mt-3 max-w-xl font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-5xl">Build capability with a course shaped around your needs.</h2>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600">
+              <h2 className="max-w-xl font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-5xl">Build capability with a course shaped around your needs.</h2>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-slate-600">
                 Saur provides customised courses for professionals, students and organisations. Training is part of our wider engineering and upskilling capability.
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -232,8 +230,7 @@ export default function TrainingPage() {
         <section className="border-y border-slate-200 bg-[#eef2f5] py-14 sm:py-16">
           <div className="mx-auto grid max-w-[1440px] gap-8 px-5 sm:px-8 lg:grid-cols-[.85fr_1.15fr] lg:px-16">
             <div>
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#c87510]">Training centre</p>
-              <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-4xl">Chennai engineering training centre.</h2>
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-[#0b233a] sm:text-4xl">Chennai engineering training centre.</h2>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="border border-slate-300 bg-white p-5">
@@ -255,9 +252,8 @@ export default function TrainingPage() {
           <div className="absolute inset-0 opacity-20 blueprint-grid" />
           <div className="relative mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-8 px-5 sm:px-8 lg:flex-row lg:items-end lg:px-16">
             <div className="max-w-2xl">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#f0b154]">Custom training enquiry</p>
-              <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">Build your next learning programme with Saur.</h2>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300">Tell us your discipline, audience and training objectives. We will help scope a customised programme.</p>
+              <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-5xl">Build your next learning programme with Saur.</h2>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-slate-300">Tell us your discipline, audience and training objectives. We will help scope a customised programme.</p>
             </div>
             <button
               onClick={() => setConsultationOpen(true)}

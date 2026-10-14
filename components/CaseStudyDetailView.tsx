@@ -366,7 +366,7 @@ export default function CaseStudyDetailView({
                           {group.items.map((item, iIdx) => (
                             <div
                               key={iIdx}
-                              className="px-4 sm:px-5 py-3 flex items-start gap-3 hover:bg-slate-50/50 transition-colors"
+                              className="px-4 sm:px-5 py-3 flex items-start gap-3"
                             >
                               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                               <span className="text-xs sm:text-sm font-medium text-slate-800 leading-relaxed">

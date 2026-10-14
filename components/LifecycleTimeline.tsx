@@ -76,13 +76,10 @@ export default function LifecycleTimeline() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded bg-[#FF8A00]/15 border border-[#FF8A00]/30 text-[#FF8A00] text-xs font-bold uppercase tracking-wider mb-3">
-            Execution Methodology
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-2 sm:mb-3">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-3">
             Project Engineering Lifecycle
           </h2>
-          <p className="font-sans text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed font-light">
+          <p className="font-sans text-base sm:text-lg text-slate-300 leading-relaxed">
             Our ISO 9001:2015 quality process ensures every deliverable is verified, clash-free, and ready for site construction.
           </p>
         </div>

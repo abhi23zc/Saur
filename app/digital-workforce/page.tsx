@@ -56,11 +56,10 @@ export default function DigitalWorkforcePage() {
       <section className="py-24 md:py-32" id="workforce">
         <div className="max-w-[1440px] mx-auto px-6 md:px-16">
           <div className="max-w-2xl mb-16">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-3 block">Manpower & Workforce Solutions</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-[#1a1c1b] tracking-tight mb-4">
               Skilled workforce for onshore, yard & offshore.
             </h2>
-            <p className="text-[#424656] leading-relaxed">
+            <p className="text-[#424656] text-base sm:text-lg leading-relaxed">
               {workforce.intro}
             </p>
           </div>
@@ -73,7 +72,7 @@ export default function DigitalWorkforcePage() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
           >
             {/* Core Expertise */}
-            <motion.div variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 hover:border-[#FF8A00]/40 hover:shadow-[0_8px_32px_rgba(255,138,0,0.08)] transition-all duration-500">
+            <motion.div variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 shadow-xs">
               <span className="material-symbols-outlined text-3xl text-[#FF8A00] mb-4 block">engineering</span>
               <h3 className="font-display text-lg font-bold text-[#1a1c1b] mb-4">Core Expertise</h3>
               <ul className="space-y-3">
@@ -88,7 +87,7 @@ export default function DigitalWorkforcePage() {
 
             {/* Capabilities */}
             {workforce.capabilities.map((cap) => (
-              <motion.div key={cap.title} variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 hover:border-[#FF8A00]/40 hover:shadow-[0_8px_32px_rgba(255,138,0,0.08)] transition-all duration-500">
+              <motion.div key={cap.title} variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 shadow-xs">
                 <span className="material-symbols-outlined text-3xl text-[#FF8A00] mb-4 block">
                   {cap.title.includes("Electrical") ? "electrical_services" : "build"}
                 </span>
@@ -134,11 +133,10 @@ export default function DigitalWorkforcePage() {
       <section className="py-24 md:py-32 bg-[#f4f4f2]" id="domain">
         <div className="max-w-[1440px] mx-auto px-6 md:px-16">
           <div className="max-w-2xl mb-16">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-3 block">Domain / SME Support for IT Companies</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-[#1a1c1b] tracking-tight mb-4">
               Empowering IT firms through deep domain knowledge.
             </h2>
-            <p className="text-[#424656] leading-relaxed">
+            <p className="text-[#424656] text-base sm:text-lg leading-relaxed">
               We provide subject matter expertise that enables IT organizations to deliver customer-centric solutions across industries.
             </p>
           </div>
@@ -187,7 +185,7 @@ export default function DigitalWorkforcePage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
             {domainSME.serviceAreas.map((area, i) => (
-              <motion.div key={area.title} variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 hover:border-[#FF8A00]/40 hover:shadow-[0_8px_32px_rgba(255,138,0,0.08)] transition-all duration-500">
+              <motion.div key={area.title} variants={itemVariants} className="bg-white border border-[#e2e3e1] rounded-2xl p-8 shadow-xs">
                 <div className="w-8 h-8 rounded-lg bg-[#FF8A00]/10 flex items-center justify-center mb-4">
                   <span className="font-mono text-xs font-bold text-[#FF8A00]">{String(i + 1).padStart(2, "0")}</span>
                 </div>
@@ -215,11 +213,10 @@ export default function DigitalWorkforcePage() {
 
         <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16">
           <div className="max-w-3xl mb-16">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-3 block">OT Security Roadmap · IEC 62443</span>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-6">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
               Securing critical infrastructure with IEC 62443.
             </h2>
-            <p className="text-white/60 leading-relaxed">
+            <p className="text-white/70 text-base sm:text-lg leading-relaxed">
               {otSecurity.intro}
             </p>
           </div>
@@ -236,9 +233,9 @@ export default function DigitalWorkforcePage() {
               <motion.div
                 key={step}
                 variants={itemVariants}
-                className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-[#FF8A00]/40 transition-all duration-500 group"
+                className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6"
               >
-                <div className="font-display text-3xl font-bold text-[#FF8A00]/30 mb-3 group-hover:text-[#FF8A00]/60 transition-colors">
+                <div className="font-display text-3xl font-bold text-[#FF8A00]/40 mb-3">
                   {String(i + 1).padStart(2, "0")}
                 </div>
                 <h4 className="font-display text-sm font-bold text-white leading-snug">
@@ -258,11 +255,10 @@ export default function DigitalWorkforcePage() {
       {/* CTA */}
       <section className="py-24 relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-16 text-center">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-4 block">Ready to get started?</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-[#1a1c1b] tracking-tight mb-6">
+          <h2 className="font-display text-3xl md:text-5xl font-bold text-[#1a1c1b] tracking-tight mb-4">
             Let&apos;s discuss your requirements.
           </h2>
-          <p className="text-[#424656] max-w-xl mx-auto mb-10 leading-relaxed">
+          <p className="text-[#424656] text-base sm:text-lg max-w-xl mx-auto mb-10 leading-relaxed">
             Whether you need skilled manpower, domain expertise for IT, or OT security solutions — our team is ready.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

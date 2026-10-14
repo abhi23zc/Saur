@@ -28,13 +28,10 @@ export default function StrategicPartnerships() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/20 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
-              Industry Standard Platforms
-            </div>
             <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-[#0b233a] tracking-tight">
               Specialized Engineering Software
             </h3>
-            <p className="font-sans text-xs md:text-sm text-slate-500 mt-1">
+            <p className="font-sans text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
               Executing multi-discipline projects with advanced industry tools and licensed platforms.
             </p>
           </div>
@@ -65,7 +62,7 @@ export default function StrategicPartnerships() {
           {tools.concat(tools).map((tool, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 font-display text-base md:text-lg font-bold text-slate-400 hover:text-[#FF8A00] transition-colors duration-200 cursor-default"
+              className="flex items-center gap-3 font-display text-base md:text-lg font-bold text-slate-400 cursor-default select-none"
             >
               <span className="w-2 h-2 rounded-full bg-[#FF8A00]" />
               {tool}

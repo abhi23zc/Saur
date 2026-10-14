@@ -195,6 +195,24 @@ export default function MajorProjects() {
     return () => clearInterval(timer);
   }, [isPaused]);
 
+  const lastWheelTimeRef = useRef<number>(0);
+  const handleWheel = (e: React.WheelEvent) => {
+    const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    const delta = isHorizontal ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+    if (Math.abs(delta) < 20) return;
+
+    const now = Date.now();
+    if (now - lastWheelTimeRef.current < 400) return;
+    lastWheelTimeRef.current = now;
+
+    pauseAutoCycle();
+    if (delta > 0) {
+      handleNext();
+    } else {
+      handlePrev();
+    }
+  };
+
   const handlePrev = () => {
     setIsResetting(false);
     setCurrentIndex((prev) => prev - 1);
@@ -233,47 +251,27 @@ export default function MajorProjects() {
     : { duration: 0.65, ease: [0.25, 1, 0.5, 1] as [number, number, number, number] };
 
   return (
-    <section id="projects" className="py-14  bg-[#f8fafc] text-slate-800 relative border-t border-slate-200 overflow-hidden">
+    <section id="projects" className="py-14 bg-[#f8fafc] text-slate-800 relative border-t border-slate-200 overflow-hidden">
       {/* Subtle Micro-Grid */}
       <div className="absolute inset-0 micro-grid opacity-25 pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 relative z-10">
 
-        {/* Section Header with Figure Pre-Title & Navigation Controls */}
+        {/* Section Header & Project Counter */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
-          <div className="max-w-2xl">
-            <span className="text-xs text-[#FF8A00] font-bold uppercase tracking-wider block mb-2">
-              FEATURED PROJECTS &amp; TRACK RECORD
-            </span>
-            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#0b233a] leading-tight">
+          <div className="flex-1 min-w-0 pr-4 sm:pr-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.35rem] xl:text-[2.65rem] font-bold tracking-tight text-[#0b233a] leading-tight lg:whitespace-nowrap">
               Major Projects Executed — Proven Delivery
             </h2>
-            <p className="font-sans text-xs sm:text-base text-slate-600 mt-2 sm:mt-3 leading-relaxed font-light">
+            <p className="font-sans text-base sm:text-lg text-slate-600 mt-2.5 leading-relaxed max-w-3xl">
               Delivering multidisciplinary engineering, 3D plant modeling, and site execution support for global industry leaders.
             </p>
           </div>
 
-          {/* Navigation Controls on Right */}
-          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200">
+          {/* Header Controls on Right: Counter & All Projects Link */}
+          <div className="flex items-center gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200">
             <div className="font-mono text-xs text-slate-500 font-semibold">
               <span className="text-[#FF8A00] font-bold">0{activeProjectIndex + 1}</span> / 0{realProjects.length} Projects
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrev}
-                aria-label="Previous project"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-slate-200 hover:border-[#FF8A00] hover:text-[#FF8A00] text-slate-700 flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
-              >
-                <span className="material-symbols-outlined text-base sm:text-lg">arrow_back</span>
-              </button>
-              <button
-                onClick={handleNext}
-                aria-label="Next project"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#0b233a] hover:bg-[#FF8A00] text-white flex items-center justify-center transition-all shadow-sm hover:shadow active:scale-95"
-              >
-                <span className="material-symbols-outlined text-base sm:text-lg">arrow_forward</span>
-              </button>
             </div>
 
             <Link
@@ -287,7 +285,7 @@ export default function MajorProjects() {
         </div>
 
         {/* ══════════════════════════════════════════════════════════════════════
-           Center-Stage Elevated Carousel (Matching Infinite Fluid Sliding Track)
+           Center-Stage Elevated Carousel with Side-Scroll & Direct Card Arrows
            ══════════════════════════════════════════════════════════════════════ */}
         <div
           ref={containerRef}
@@ -295,6 +293,7 @@ export default function MajorProjects() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={pauseAutoCycle}
+          onWheel={handleWheel}
         >
           {/* Continuous Sliding Horizontal Track with GPU acceleration & Touch Drag */}
           <div className="w-full py-4">
@@ -345,19 +344,19 @@ export default function MajorProjects() {
                     }}
                     transition={transitionConfig}
                     className={cn(
-                      "shrink-0 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-shadow duration-500 cursor-pointer flex flex-col justify-between select-none min-h-[440px] sm:min-h-[460px]",
+                      "shrink-0 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border transition-all duration-500 flex flex-col justify-between select-none min-h-[440px] sm:min-h-[460px] relative",
                       isCenter
-                        ? "border-slate-300 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/80 z-20"
-                        : "border-slate-200 shadow-sm hover:opacity-80 z-10"
+                        ? "border-slate-300 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] ring-1 ring-slate-200/80 z-20 cursor-default"
+                        : "border-slate-200 shadow-sm hover:opacity-90 z-10 cursor-pointer"
                     )}
                   >
                     {/* Top Image Frame with Floating Telemetry */}
                     <div>
-                      <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-900 mb-5 shadow-xs group">
+                      <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-900 mb-5 shadow-xs">
                         <img
                           src={p.image}
                           alt={p.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
 
@@ -391,11 +390,8 @@ export default function MajorProjects() {
                       </div>
 
                       {/* Project Title */}
-                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] leading-tight mb-2 flex items-center justify-between group">
-                        <span>{p.title}</span>
-                        <span className="material-symbols-outlined text-lg text-slate-400 group-hover:text-[#FF8A00] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
-                          north_east
-                        </span>
+                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0b233a] leading-tight mb-2">
+                        {p.title}
                       </h3>
 
                       {/* Plain Language Summary */}
@@ -419,7 +415,7 @@ export default function MajorProjects() {
 
                       <Link
                         href="/projects"
-                        className="flex items-center justify-between text-xs font-bold text-[#FF8A00] hover:text-[#E67C00] pt-1"
+                        className="flex items-center justify-between text-xs font-bold text-[#FF8A00] hover:text-[#E67C00] pt-1 cursor-pointer"
                       >
                         <span>Inspect Full Case Study</span>
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>

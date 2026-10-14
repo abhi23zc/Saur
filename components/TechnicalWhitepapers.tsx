@@ -143,13 +143,10 @@ export default function TechnicalWhitepapers({
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-10 pb-6 border-b border-slate-200 gap-4 sm:gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#FF8A00]/10 border border-[#FF8A00]/25 text-[#FF8A00] font-mono text-[10px] font-bold uppercase tracking-wider mb-2">
-              Saur Training &amp; Upskilling
-            </div>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a]">
               Engineering Professional Courses
             </h2>
-            <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
+            <p className="font-sans text-base sm:text-lg text-slate-600 mt-2 leading-relaxed">
               &ldquo;We don&apos;t just teach. We prepare you to lead.&rdquo; Practical industry training conducted at our Chennai &amp; Mumbai centers.
             </p>
           </div>
