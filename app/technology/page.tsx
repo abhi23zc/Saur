@@ -33,11 +33,14 @@ export default function TechnologyPage() {
         <div className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen" style={{ backgroundImage: "url('/media/expertise-design-office.png')" }} />
         <div className="absolute inset-0 bg-gradient-to-r from-[#05080c] via-[#05080c]/80 to-transparent opacity-95" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-transparent to-transparent opacity-90" />
-        <div className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none" />
-
         <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-16 w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FF8A00] font-bold mb-4 block">Specialized Software</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse shrink-0" />
+              <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                SPECIALIZED SOFTWARE &amp; PLATFORMS
+              </span>
+            </div>
             <h1 className="font-display text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
               The right tools behind<br />
               <span className="text-[#FF8A00]">every deliverable.</span>

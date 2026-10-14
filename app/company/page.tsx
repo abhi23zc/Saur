@@ -177,8 +177,8 @@ export default function AboutPage() {
             {/* Scrim: Dark navy gradient on mobile, subtle vignette on desktop */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#0b233a]/95 via-[#0b233a]/90 to-[#0b233a] lg:bg-gradient-to-r lg:from-transparent lg:via-black/20 lg:to-black/50" />
 
-            {/* Floating Editorial Badges on Right (Desktop only) */}
-            <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
+            {/* Floating Editorial Badge on Bottom-Right (Desktop only) */}
+            <div className="hidden lg:block absolute bottom-12 sm:bottom-14 right-8 xl:right-16 text-right text-white pointer-events-none z-20">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
               <div className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
                 ENGINEERING INDUSTRY
@@ -186,10 +186,6 @@ export default function AboutPage() {
               <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">
                 FOR A STRONGER TOMORROW
               </div>
-            </div>
-
-            <div className="hidden xl:block absolute bottom-12 right-16 text-right text-white/80 font-mono text-[10px] uppercase tracking-[0.2em]">
-              IDEAS. ENGINEERING. REAL IMPACT.
             </div>
           </div>
 
@@ -201,12 +197,14 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-xl"
             >
-              {/* Eyebrow with Orange Accent Line */}
-              <motion.div variants={itemVariants} className="flex items-center gap-2.5 mb-3 sm:mb-4">
-                <div className="w-5 sm:w-6 h-0.5 bg-[#FF8A00]" />
-                <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#FF8A00]">
-                  ABOUT SAUR ENGINEERING &amp; CONSULTANCY
-                </span>
+              {/* Category Eyebrow Pill */}
+              <motion.div variants={itemVariants} className="mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
+                  <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                    ABOUT SAUR ENGINEERING &amp; CONSULTANCY
+                  </span>
+                </div>
               </motion.div>
 
               {/* Main Headline (High Visibility & Crisp Contrast) */}
@@ -411,6 +409,12 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-3xl mb-8 sm:mb-12"
             >
+              <div className="flex items-center gap-3 mb-3.5">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  OUR PURPOSE · WHO WE ARE
+                </span>
+              </div>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Engineering excellence built for complex industrial assets
               </h2>
@@ -685,6 +689,12 @@ export default function AboutPage() {
               className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4"
             >
               <div className="max-w-2xl">
+                <div className="flex items-center gap-3 mb-3.5">
+                  <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                  <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                    QUALITY ASSURANCE &amp; METHODOLOGY
+                  </span>
+                </div>
                 <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                   ISO 9001:2015 Quality Governance Process
                 </h2>
@@ -817,6 +827,12 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-3xl mb-8 sm:mb-12"
             >
+              <div className="flex items-center gap-3 mb-3.5">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  ACCREDITATIONS &amp; REGULATORY COMPLIANCE
+                </span>
+              </div>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight mb-3 leading-tight">
                 Official Certifications &amp; Registrations
               </h2>
@@ -913,6 +929,12 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-2xl mb-8 sm:mb-12"
             >
+              <div className="flex items-center gap-3 mb-3.5">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  DELIVERY INFRASTRUCTURE &amp; HUBS
+                </span>
+              </div>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Two Delivery Centers in India
               </h2>
@@ -1027,6 +1049,12 @@ export default function AboutPage() {
               variants={containerVariants}
               className="max-w-2xl mb-8 sm:mb-12"
             >
+              <div className="flex items-center gap-3 mb-3.5">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  OPERATING PRINCIPLES &amp; VALUES
+                </span>
+              </div>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#0b233a] tracking-tight leading-tight">
                 Our Core Values
               </h2>
@@ -1067,6 +1095,13 @@ export default function AboutPage() {
            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-14 sm:py-20 bg-[#0b233a] text-white relative overflow-hidden">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center relative z-10">
+            <div className="inline-flex items-center justify-center gap-3 mb-3.5">
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+              <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                COLLABORATE &amp; PARTNER
+              </span>
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+            </div>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
               Ready to start your next engineering project?
             </h2>

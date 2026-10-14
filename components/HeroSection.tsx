@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 interface HeroSectionProps {
   onExplore: () => void;
@@ -55,20 +54,14 @@ export default function HeroSection({ onExplore, onOpenConsultation }: HeroSecti
           animate="visible"
           className="max-w-2xl text-white"
         >
-          {/* Authentic Accreditation Badge */}
+          {/* Authentic Accreditation Eyebrow Badge */}
           <motion.div variants={itemVariants}>
-            <Link
-              href="/company#certificates"
-              className="inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white/90 hover:text-white transition-all text-[10px] sm:text-xs font-mono font-medium tracking-wide mb-4 sm:mb-5 group backdrop-blur-md shadow-xs max-w-full"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#FF8A00] shrink-0" />
-              <span>ISO 9001:2015 CERTIFIED</span>
-              <span className="text-white/40 hidden sm:inline">|</span>
-              <span className="text-[#FF8A00] font-bold">DPIIT #STARTUPINDIA</span>
-              <span className="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform text-[#FF8A00] shrink-0">
-                arrow_forward
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4 sm:mb-5 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse shrink-0" />
+              <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                ISO 9001:2015 CERTIFIED · DPIIT #STARTUPINDIA
               </span>
-            </Link>
+            </div>
           </motion.div>
 
           {/* Authentic PDF Tagline Headline */}

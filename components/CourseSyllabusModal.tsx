@@ -44,7 +44,7 @@ export default function CourseSyllabusModal({
             <div className="space-y-1 pr-8">
               {/* Category & Program Number */}
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <span className="font-mono text-[10px] font-bold text-white bg-[#FF8A00] px-2 py-0.5 rounded">
+                <span className="font-mono text-[10px] font-bold text-[#FF8A00] bg-[#FF8A00]/10 border border-[#FF8A00]/25 px-2 py-0.5 rounded">
                   PROGRAM {course.number}
                 </span>
                 <span className="font-mono text-[10px] text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-semibold uppercase tracking-wider">

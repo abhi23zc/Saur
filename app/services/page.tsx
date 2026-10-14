@@ -48,7 +48,7 @@ const deliveryStages = [
   { number: "01", title: "Understand", description: "We align on priorities, scope and project constraints.", nodePosition: "left-[24.4%] top-[74%]", copyPosition: "left-[17%] top-[78%]" },
   { number: "02", title: "Plan", description: "We set out the right team, information and delivery approach.", nodePosition: "left-[43.5%] top-[55%]", copyPosition: "left-[36%] top-[59%]" },
   { number: "03", title: "Deliver", description: "We develop coordinated packages and resolve issues early.", nodePosition: "left-[63.5%] top-[37%]", copyPosition: "left-[57%] top-[41%]" },
-  { number: "04", title: "Support", description: "We stay available through handover, fabrication and site activity.", nodePosition: "left-[89%] top-[18%]", copyPosition: "left-[78%] top-[22%]" },
+  { number: "04", title: "Support", description: "We stay available through handover, fabrication and site activity.", nodePosition: "left-[89%] top-[18%]", copyPosition: "left-[75%] top-[24%]" },
 ];
 
 export default function ServicesPage() {
@@ -61,12 +61,20 @@ export default function ServicesPage() {
         <section className="relative flex min-h-[500px] w-full items-stretch overflow-hidden bg-[#0b233a] pb-6 pt-20 sm:min-h-[540px] sm:pt-22 lg:min-h-[580px] lg:pt-24">
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/media/page-services-hero.png')", backgroundPosition: "center right" }}>
             <div className="absolute inset-0 bg-gradient-to-b from-[#0b233a]/95 via-[#0b233a]/90 to-[#0b233a] lg:bg-gradient-to-r lg:from-transparent lg:via-black/20 lg:to-black/50" />
-            <div className="absolute right-16 top-12 hidden text-right text-white xl:block"><div className="mb-2 ml-auto h-0.5 w-8 bg-[#FF8A00]" /><p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">FROM SCOPE TO SITE</p><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">END-TO-END ENGINEERING</p></div>
-            <p className="absolute bottom-12 right-16 hidden text-right font-mono text-[10px] uppercase tracking-[0.2em] text-white/80 xl:block">CLEAR. COORDINATED. BUILDABLE.</p>
+            <div className="hidden lg:block absolute bottom-12 sm:bottom-14 right-8 xl:right-16 text-right text-white pointer-events-none z-20">
+              <div className="mb-2 ml-auto h-0.5 w-8 bg-[#FF8A00]" />
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">FROM SCOPE TO SITE</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">END-TO-END ENGINEERING</p>
+            </div>
           </div>
           <div className="relative z-10 flex w-full flex-col justify-center bg-transparent px-4 py-8 sm:px-8 sm:py-10 md:px-16 lg:w-[60%] lg:bg-[#0b233a] lg:py-14 xl:w-[54%] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
             <div className="max-w-xl">
-              <div className="mb-3 flex items-center gap-2.5 sm:mb-4"><div className="h-0.5 w-5 bg-[#FF8A00] sm:w-6" /><span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px] sm:tracking-[0.2em]">ENGINEERING SERVICES</span></div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
+                <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                  ENGINEERING SERVICES
+                </span>
+              </div>
               <h1 className="mb-3 font-display text-2xl font-extrabold leading-[1.15] tracking-tight text-white sm:mb-5 sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[3.25rem]">Engineering Services <br className="hidden sm:inline" /><span className="text-white">That Take Projects</span>{" "}<span className="text-[#FF8A00]">From Idea to Reality.</span></h1>
               <p className="mb-6 max-w-lg font-sans text-xs font-light leading-relaxed text-slate-200 sm:mb-7 sm:text-sm md:text-base">From early planning and detailed design to fabrication, site support and flexible engineering teams, we help complex industrial projects move forward with clarity.</p>
               <div className="mb-6 flex w-full flex-col items-stretch gap-3 sm:mb-8 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
@@ -89,21 +97,70 @@ export default function ServicesPage() {
         <section id="services" className="scroll-mt-24 bg-white py-16 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-16">
             <div className="max-w-2xl">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00] sm:text-[11px]">What we do</p>
-              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#0b233a] sm:text-4xl">The support your project needs, without the noise.</h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">We focus on the engineering activities that help you make sound decisions, deliver buildable designs and keep projects progressing.</p>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  CORE CAPABILITIES · WHAT WE DO
+                </span>
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0b233a] leading-tight">
+                The support your project needs, without the noise.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+                We focus on the engineering activities that help you make sound decisions, deliver buildable designs and keep projects progressing.
+              </p>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
               {services.map((service) => (
-                <article key={service.number} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6">
-                  <div className="flex items-start justify-between"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0b233a] text-white"><span className="material-symbols-outlined text-xl">{service.icon}</span></div><span className="font-mono text-xs font-bold text-slate-300">{service.number}</span></div>
-                  <h3 className="mt-5 font-display text-lg font-bold text-[#0b233a]">{service.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{service.description}</p>
-                  <ul className="mt-5 space-y-2 border-t border-slate-100 pt-4">{service.outcomes.map((outcome) => <li key={outcome} className="flex gap-2 text-xs leading-snug text-slate-700"><span className="material-symbols-outlined text-sm text-[#FF8A00]">check_circle</span>{outcome}</li>)}</ul>
+                <article
+                  key={service.number}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6 flex flex-col justify-between transition-all duration-200 hover:shadow-md hover:border-slate-300"
+                >
+                  <div>
+                    {/* Header: Headline on the left, Icon on the right */}
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <h3 className="font-display text-lg sm:text-xl font-bold text-[#0b233a] leading-snug">
+                        {service.title}
+                      </h3>
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#0b233a] text-white shadow-2xs">
+                        <span className="material-symbols-outlined text-xl">{service.icon}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm leading-relaxed text-slate-600">
+                      {service.description}
+                    </p>
+                  </div>
+                  <ul className="mt-5 space-y-2 border-t border-slate-100 pt-4">
+                    {service.outcomes.map((outcome) => (
+                      <li key={outcome} className="flex gap-2 text-xs leading-snug text-slate-700">
+                        <span className="material-symbols-outlined text-sm text-[#FF8A00] shrink-0">check_circle</span>
+                        <span>{outcome}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </article>
               ))}
             </div>
-            <p className="mt-7 max-w-3xl rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-600">Need digital engineering or domain expertise? We also support industrial software, intelligent plant data and digital transformation initiatives.</p>
+            
+            {/* Full-width bottom banner with bold highlighted text and increased font size */}
+            <div className="mt-7 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:px-6 sm:py-4 shadow-2xs">
+              <div className="flex items-start sm:items-center gap-3.5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/15 text-[#FF8A00] mt-0.5 sm:mt-0">
+                  <span className="material-symbols-outlined text-xl">psychology</span>
+                </div>
+                <p className="font-sans text-sm sm:text-base text-slate-700 leading-relaxed">
+                  <strong className="font-bold text-[#0b233a]">Need digital engineering or domain expertise?</strong>{" "}
+                  We also support industrial software, intelligent plant data and digital transformation initiatives.
+                </p>
+              </div>
+              <button
+                onClick={() => setConsultationOpen(true)}
+                className="inline-flex shrink-0 items-center gap-1.5 font-sans text-xs sm:text-sm font-bold text-[#FF8A00] hover:text-[#e67c00] transition-colors uppercase tracking-wider self-start sm:self-auto cursor-pointer"
+              >
+                <span>Inquire now</span>
+                <span className="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -153,17 +210,35 @@ export default function ServicesPage() {
                 <p className="mt-5 text-sm leading-relaxed text-slate-600">We make the path forward clear early, so your project team can focus on the decisions that matter and move with confidence.</p>
               </div>
               <button onClick={() => setConsultationOpen(true)} className="absolute left-[4%] top-[48%] z-20 inline-flex items-center gap-2 rounded-full bg-[#FF4E2B] px-6 py-3 text-xs font-bold text-white shadow-[0_10px_22px_rgba(255,78,43,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#e64121]">Start a project <span className="material-symbols-outlined text-sm">arrow_forward</span></button>
-              <svg viewBox="0 0 1200 530" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+              <svg viewBox="0 0 1200 530" preserveAspectRatio="none" className="absolute inset-0 h-full w-full pointer-events-none z-10" aria-hidden="true">
                 <path d="M-20 230 C80 230 116 258 156 286 C210 346 247 392 293 392 C408 392 449 291 522 291 C626 291 681 204 762 204 C886 204 966 105 1068 105 C1137 105 1186 82 1220 72" fill="none" stroke="#FF4E2B" strokeWidth="3" strokeLinecap="round" className="service-flow-line" />
+                {/* Orange dots perfectly centered on the line curve */}
+                {[
+                  { cx: 293, cy: 392 },
+                  { cx: 522, cy: 291 },
+                  { cx: 762, cy: 204 },
+                  { cx: 1068, cy: 105 },
+                ].map((pt, i) => (
+                  <g key={i}>
+                    <circle cx={pt.cx} cy={pt.cy} r="10" fill="#FF4E2B" fillOpacity="0.18" />
+                    <circle cx={pt.cx} cy={pt.cy} r="6" fill="#FF4E2B" stroke="#ffffff" strokeWidth="2.5" />
+                  </g>
+                ))}
               </svg>
-              {deliveryStages.map((stage, index) => (
-                <span key={stage.number} className={`service-flow-node service-flow-node-${index} absolute z-10 h-4 w-4 rounded-full border-[3px] border-white bg-[#FF4E2B] shadow-[0_0_0_4px_rgba(255,78,43,0.15)] ${stage.nodePosition}`} aria-hidden="true" />
-              ))}
               {deliveryStages.map((stage) => (
                 <article key={stage.title} className={`absolute z-10 w-[220px] ${stage.copyPosition}`}>
-                  <span className="pointer-events-none absolute -left-7 -top-14 font-display text-[6rem] font-extrabold leading-none tracking-tight text-slate-100">{stage.number.replace("0", "")}</span>
-                  <h3 className="relative font-display text-lg font-bold text-[#0b233a]">{stage.title}</h3>
-                  <p className="relative mt-2 text-sm leading-relaxed text-slate-600">{stage.description}</p>
+                  {/* High-visibility large watermark number backdrop */}
+                  <span className="pointer-events-none absolute -left-6 -top-10 font-display text-[6.5rem] font-black leading-none tracking-tight text-slate-300/80 select-none">
+                    {stage.number.replace("0", "")}
+                  </span>
+                  <div className="relative z-10">
+                    <h3 className="font-display text-lg font-bold text-[#0b233a] leading-tight">
+                      {stage.title}
+                    </h3>
+                    <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-600">
+                      {stage.description}
+                    </p>
+                  </div>
                 </article>
               ))}
             </div>

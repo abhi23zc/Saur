@@ -33,6 +33,12 @@ export default function HumanCapital({ onOpenLeadership }: HumanCapitalProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-6">
+            <div className="flex items-center gap-3 mb-3.5">
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+              <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                WORKFORCE SOLUTIONS &amp; TECHNICAL TALENT
+              </span>
+            </div>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight text-[#0b233a] leading-tight">
               Skilled Technical Workforce for Onshore, Yard &amp; Offshore
             </h2>

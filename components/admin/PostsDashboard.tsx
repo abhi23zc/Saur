@@ -17,7 +17,6 @@ import {
   ExternalLink, 
   Copy, 
   Filter, 
-  Sparkles,
   Layers,
   ArrowRight,
   Globe

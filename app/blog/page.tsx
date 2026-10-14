@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Rss, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Rss } from "lucide-react";
 import BlogFilters from "@/components/blog/BlogFilters";
 import { getPublishedPosts } from "@/lib/blog/data";
 

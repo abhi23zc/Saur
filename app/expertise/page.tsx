@@ -17,7 +17,6 @@ import {
   Server,
   Layers,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -574,22 +573,27 @@ export default function ExpertisePage() {
           >
             <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/85 sm:via-[#0b233a]/65 to-black/50 sm:to-black/35" />
 
-            {/* Subtle Brand Watermark on Right */}
-            <div className="hidden xl:block absolute top-12 right-16 text-right text-white/50 text-[11px] font-bold uppercase tracking-widest leading-relaxed pointer-events-none">
-              IDEAS<br />
-              ENGINEERED<br />
-              FOR A MORE<br />
-              RELIABLE TOMORROW
+            {/* Floating Editorial Badge on Bottom-Right */}
+            <div className="hidden lg:block absolute bottom-12 sm:bottom-14 right-8 xl:right-16 text-right text-white pointer-events-none z-20">
+              <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
+                MULTIDISCIPLINARY EXCELLENCE
+              </div>
+              <div className="text-xs text-slate-300 font-normal">
+                11 PRECISION DISCIPLINES
+              </div>
             </div>
           </div>
 
           {/* Left Navy Content Column */}
           <div className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,86%_100%,0_100%)]">
             <div className="max-w-2xl">
-              {/* Category Eyebrow with Orange Accent Dash */}
-              <div className="flex items-center gap-2.5 text-[#FF8A00] font-bold text-xs uppercase tracking-wider mb-4">
-                <span>MULTIDISCIPLINARY CAPABILITIES</span>
-                <span className="w-7 h-[2px] bg-[#FF8A00]" />
+              {/* Category Eyebrow Pill */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/25 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
+                <span className="text-[10px] text-[#FF8A00] font-bold uppercase tracking-[0.2em]">
+                  MULTIDISCIPLINARY CAPABILITIES
+                </span>
               </div>
 
               {/* Headline */}

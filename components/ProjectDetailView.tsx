@@ -88,7 +88,8 @@ export default function ProjectDetailView({
               
               {/* Category, Year & Location Strip */}
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="px-3 py-1 rounded text-xs font-mono font-bold uppercase bg-[#FF8A00] text-white">
+                <span className="px-3 py-1 rounded text-xs font-mono font-bold uppercase bg-[#FF8A00]/15 text-[#FF8A00] border border-[#FF8A00]/30 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
                   {project.year}
                 </span>
                 {project.sector && (
@@ -500,7 +501,7 @@ export default function ProjectDetailView({
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                           <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-white">
-                            <span className="font-mono text-[10px] font-bold bg-[#FF8A00] px-2 py-0.5 rounded">
+                            <span className="font-mono text-[10px] font-bold bg-[#0b233a]/85 backdrop-blur-xs text-white border border-white/20 px-2 py-0.5 rounded uppercase">
                               {p.endUser}
                             </span>
                             <span className="font-mono text-[10px] text-slate-300">

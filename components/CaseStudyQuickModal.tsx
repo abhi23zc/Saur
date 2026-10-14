@@ -75,10 +75,10 @@ export default function CaseStudyQuickModal({
 
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
-                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00] text-white font-mono text-[10px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00]/10 text-[#FF8A00] border border-[#FF8A00]/25 font-mono text-[10px] font-bold">
                   CASE STUDY {caseStudy.number}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-md bg-[#0b233a] text-white font-mono text-[10px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-[#0b233a] border border-slate-200 font-mono text-[10px] font-bold">
                   {caseStudy.endUser}
                 </span>
                 {caseStudy.client && (

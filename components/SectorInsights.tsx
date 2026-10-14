@@ -71,6 +71,12 @@ export default function SectorInsights() {
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="space-y-4 lg:col-span-5">
             <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+                <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                  INDUSTRIES &amp; SECTORS SERVED
+                </span>
+              </div>
               <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#0b233a] sm:text-3xl md:text-4xl">
                 Powering Critical Global Infrastructure
               </h2>

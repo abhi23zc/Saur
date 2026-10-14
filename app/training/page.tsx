@@ -104,7 +104,7 @@ export default function TrainingPage() {
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-[#0b233a] via-[#0b233a]/85 to-black/60 sm:bg-gradient-to-r sm:via-[#0b233a]/65 sm:to-black/40" />
-            <div className="absolute right-16 top-12 hidden text-right text-white xl:block">
+            <div className="hidden lg:block absolute bottom-12 sm:bottom-14 right-8 xl:right-16 text-right text-white pointer-events-none z-20">
               <div className="mb-2 ml-auto h-0.5 w-8 bg-[#FF8A00]" />
               <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">SAUR ACADEMY</div>
               <div className="text-xs font-normal text-slate-300">Chennai engineering training centre</div>
@@ -114,8 +114,10 @@ export default function TrainingPage() {
           <div className="relative z-10 flex w-full flex-col justify-center bg-[#0b233a]/95 px-4 py-10 sm:bg-[#0b233a] sm:px-8 sm:py-12 md:px-14 lg:w-[68%] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)] lg:px-16 lg:py-16 xl:w-[62%]">
             <div className="max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#FF8A00]/25 bg-[#FF8A00]/10 px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#FF8A00]" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF8A00]">Training &amp; Development</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
+                  TRAINING &amp; DEVELOPMENT
+                </span>
               </div>
               <h1 className="mb-4 text-3xl font-extrabold leading-[1.12] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 We don&apos;t just teach. <br />

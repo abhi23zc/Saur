@@ -468,6 +468,12 @@ export default function PrecisionDisciplines({
         {/* Top Header & Discipline Counter */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="flex-1 min-w-0 pr-4 sm:pr-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+              <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                CORE DISCIPLINES &amp; SERVICES
+              </span>
+            </div>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.35rem] xl:text-[2.65rem] font-bold tracking-tight text-[#0b233a] leading-tight lg:whitespace-nowrap">
               {title}
             </h2>

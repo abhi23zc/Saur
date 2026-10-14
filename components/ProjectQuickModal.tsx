@@ -75,10 +75,10 @@ export default function ProjectQuickModal({
 
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5 pr-10">
-                <span className="px-2.5 py-0.5 rounded-md bg-[#0b233a] text-white text-[10px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-[#0b233a] border border-slate-200 text-[10px] font-bold">
                   {project.endUser}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00] text-white text-[10px] font-bold">
+                <span className="px-2.5 py-0.5 rounded-md bg-[#FF8A00]/10 text-[#FF8A00] border border-[#FF8A00]/25 text-[10px] font-bold font-mono">
                   {project.year}
                 </span>
                 {project.sector && (

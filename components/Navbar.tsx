@@ -95,9 +95,22 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
           <div className="flex items-center gap-3">
             <button
               onClick={onOpenConsultation}
-              className="hidden sm:inline-flex items-center gap-2 bg-[#FF8A00] hover:bg-[#E67C00] text-white px-5 py-2.5 rounded-md font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow"
+              className="relative overflow-hidden hidden sm:inline-flex items-center justify-center bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] text-white px-5 py-2.5 rounded-md font-sans text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm hover:shadow cursor-pointer"
             >
-              Request Consultation
+              <span className="relative z-10">Request Consultation</span>
+              {/* Subtle interior light shine sweep (strictly confined inside button) */}
+              <motion.div
+                animate={{
+                  x: ["-150%", "250%"],
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 2.2,
+                  ease: "easeInOut",
+                  repeatDelay: 1.6,
+                }}
+                className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -skew-x-12 pointer-events-none"
+              />
             </button>
 
             {/* Mobile Hamburger Toggle */}

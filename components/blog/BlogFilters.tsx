@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight, ArrowUpDown, CheckCircle2, Mail, RotateCcw, Search, Sparkles, X } from "lucide-react";
+import { ArrowRight, ArrowUpDown, CheckCircle2, Mail, RotateCcw, Search, X } from "lucide-react";
 import BlogCard from "./BlogCard";
 import type { BlogPost, RichTextNode } from "@/lib/blog/types";
 

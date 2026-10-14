@@ -12,6 +12,13 @@ export default function ConsultationCTA({ onOpenConsultation }: ConsultationCTAP
       <div className="absolute inset-0 micro-grid opacity-15 pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 text-center relative z-10">
+        <div className="inline-flex items-center justify-center gap-3 mb-3.5">
+          <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+          <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+            ENGAGE &amp; COLLABORATE
+          </span>
+          <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+        </div>
         <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-bold mb-4 tracking-tight text-white leading-tight">
           Ready to Partner on Your Next Engineering Project?
         </h2>

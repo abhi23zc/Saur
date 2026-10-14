@@ -154,7 +154,8 @@ export default function CaseStudyDetailView({
               
               {/* Category, Number & Operator Badges */}
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="px-3 py-1 rounded text-xs font-mono font-bold uppercase bg-[#FF8A00] text-white">
+                <span className="px-3 py-1 rounded text-xs font-mono font-bold uppercase bg-[#FF8A00]/15 text-[#FF8A00] border border-[#FF8A00]/30 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
                   CASE STUDY {caseStudy.number}
                 </span>
                 <span className="px-3 py-1 rounded text-xs font-mono font-bold uppercase bg-white/10 text-amber-300 border border-white/20">

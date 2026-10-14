@@ -260,6 +260,12 @@ export default function MajorProjects() {
         {/* Section Header & Project Counter */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4 sm:gap-6">
           <div className="flex-1 min-w-0 pr-4 sm:pr-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+              <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                PORTFOLIO · PROVEN TRACK RECORD
+              </span>
+            </div>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[2.35rem] xl:text-[2.65rem] font-bold tracking-tight text-[#0b233a] leading-tight lg:whitespace-nowrap">
               Major Projects Executed — Proven Delivery
             </h2>
@@ -377,7 +383,7 @@ export default function MajorProjects() {
 
                         {/* Bottom Deliverables Pill inside image */}
                         <div className="absolute bottom-3 left-3 z-10">
-                          <span className="px-2.5 py-1 rounded-md bg-[#FF8A00] text-white font-mono text-[10px] font-bold">
+                          <span className="px-2.5 py-1 rounded-md bg-[#0b233a]/85 backdrop-blur-xs text-white border border-white/20 font-mono text-[10px] font-bold">
                             {p.deliverables}
                           </span>
                         </div>

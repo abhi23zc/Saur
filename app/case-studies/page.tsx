@@ -12,7 +12,7 @@ import CaseStudyQuickModal from "@/components/CaseStudyQuickModal";
 import { caseStudies, CaseStudy } from "@/data/site";
 import {
   ArrowRight,
-  Sparkles,
+  Crosshair,
 } from "lucide-react";
 
 // Helper to assign relevant realistic engineering discipline photos from available assets
@@ -118,7 +118,7 @@ export default function CaseStudiesPage() {
         {/* ═══════════════════════════════════════════════════════════════
            1. HERO: Clean Corporate Diagonal Angle Split (Matching Projects Page)
            ═══════════════════════════════════════════════════════════════ */}
-        <section className="relative w-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-8 sm:pb-12 bg-[#0b233a]">
+        <section className="relative w-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-stretch overflow-hidden pt-20 lg:pt-24 pb-6 sm:pb-8 bg-[#0b233a]">
           {/* Photographic Background */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -129,8 +129,8 @@ export default function CaseStudiesPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#0b233a] via-[#0b233a]/85 sm:via-[#0b233a]/65 to-black/60 sm:to-black/40" />
 
-            {/* Editorial Badge on Right (Desktop) */}
-            <div className="hidden xl:block absolute top-12 right-16 text-right text-white">
+            {/* Editorial Badge on Bottom-Right (Desktop) */}
+            <div className="hidden lg:block absolute bottom-12 sm:bottom-14 right-8 xl:right-16 text-right text-white pointer-events-none z-20">
               <div className="w-8 h-0.5 bg-[#FF8A00] ml-auto mb-2" />
               <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90">
                 AUDITED EXECUTION TRACK RECORD
@@ -143,7 +143,7 @@ export default function CaseStudiesPage() {
 
           {/* Left Navy Angle-Split Column */}
           <div
-            className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-10 sm:py-12 lg:py-16 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
+            className="relative z-10 w-full lg:w-[68%] xl:w-[62%] bg-[#0b233a]/95 sm:bg-[#0b233a] flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-16 py-8 sm:py-10 lg:py-12 [clip-path:none] lg:[clip-path:polygon(0_0,100%_0,84%_100%,0_100%)]"
           >
             <div className="max-w-2xl">
 
@@ -319,7 +319,7 @@ export default function CaseStudiesPage() {
                       title="Spotlight this case study below"
                       className="absolute top-3 right-3 bg-white/90 hover:bg-white text-slate-700 hover:text-[#FF8A00] text-[10px] font-bold px-2 py-1 rounded shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
                     >
-                      <Sparkles className="w-3 h-3 text-[#FF8A00]" />
+                      <Crosshair className="w-3 h-3 text-[#FF8A00]" />
                       <span>Spotlight</span>
                     </button>
                   </div>

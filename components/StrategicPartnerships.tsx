@@ -28,6 +28,12 @@ export default function StrategicPartnerships() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
           <div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 sm:w-10 h-1 bg-[#FF8A00] rounded-full shrink-0" />
+              <span className="font-sans text-xs sm:text-sm uppercase tracking-[0.18em] font-extrabold text-[#FF8A00]">
+                SOFTWARE ECOSYSTEM · TOOLS
+              </span>
+            </div>
             <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-[#0b233a] tracking-tight">
               Specialized Engineering Software
             </h3>
