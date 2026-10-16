@@ -1,211 +1,52 @@
 "use client";
 
-import Image from "next/image";
-import { useRef, useState, useTransition } from "react";
-import { uploadMedia } from "@/app/admin/actions";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { uploadMedia, updateMedia, deleteMedia } from "@/app/admin/actions";
 import type { MediaAsset } from "@/lib/blog/types";
-import { AlertCircle, CheckCircle2, ImagePlus, Plus, Search, Upload, X } from "lucide-react";
+import { X, ImagePlus } from "lucide-react";
 
-export default function MediaLibrary({
-  assets,
-  onSetCover,
-  onInsert,
-  asModal = false,
-  isOpen = false,
-  onClose,
-}: {
-  assets: MediaAsset[];
-  onSetCover?: (asset: MediaAsset) => void;
-  onInsert?: (asset: MediaAsset) => void;
-  asModal?: boolean;
-  isOpen?: boolean;
-  onClose?: () => void;
-}) {
-  const [showUpload, setShowUpload] = useState(false);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [query, setQuery] = useState("");
-  const [pending, startTransition] = useTransition();
-  const uploadPanelRef = useRef<HTMLDivElement>(null);
-
-  const filtered = assets.filter((asset) =>
-    (asset.fileName + " " + asset.altText + " " + (asset.caption ?? "")).toLowerCase().includes(query.toLowerCase())
-  );
-
+export default function MediaLibrary({ assets, onSetCover, onInsert, asModal = false, isOpen = false, onClose }: { assets: MediaAsset[]; onSetCover?: (asset: MediaAsset) => void; onInsert?: (asset: MediaAsset) => void; asModal?: boolean; isOpen?: boolean; onClose?: () => void }) {
+  const [uploads,setUploads] = useState<MediaAsset[]>([]);
+  const [updates,setUpdates] = useState<Record<string, Partial<MediaAsset>>>({});
+  const [deleted,setDeleted] = useState<string[]>([]);
+  const [query,setQuery] = useState("");
+  const [message,setMessage] = useState("");
+  const [error,setError] = useState("");
+  const [pending,startTransition] = useTransition();
+  const [editing,setEditing] = useState<string | null>(null);
+  const [alt,setAlt] = useState("");
+  const [caption,setCaption] = useState("");
+  const [selectedFile,setSelectedFile] = useState<File | null>(null);
+  const [uploadAlt,setUploadAlt] = useState("");
+  const [uploadCaption,setUploadCaption] = useState("");
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  useEffect(()=>{
+    if (!asModal) return;
+    const dialog=dialogRef.current;
+    if (isOpen && !dialog?.open) dialog?.showModal();
+    if (!isOpen && dialog?.open) dialog.close();
+  },[isOpen,asModal]);
+  const combined=[...uploads,...assets.filter((asset)=>!uploads.some((item)=>item.id===asset.id))].filter((asset)=>!deleted.includes(asset.id)).map((asset)=>({...asset,...updates[asset.id]}));
+  const filtered=combined.filter((asset)=>`${asset.fileName} ${asset.altText} ${asset.caption || ""}`.toLowerCase().includes(query.toLowerCase()));
   function upload() {
-    const form = uploadPanelRef.current;
-    if (!form) return;
-    const formData = new FormData();
-    const file = form.querySelector<HTMLInputElement>('input[name="file"]')?.files?.[0];
-    const altText = form.querySelector<HTMLInputElement>('input[name="altText"]')?.value ?? "";
-    const caption = form.querySelector<HTMLInputElement>('input[name="caption"]')?.value ?? "";
-    if (file) formData.set("file", file);
-    formData.set("altText", altText);
-    formData.set("caption", caption);
-
-    startTransition(async () => {
-      const result = await uploadMedia({}, formData);
-      if (result.error) {
-        setIsError(true);
-        setMessage(result.error);
-      } else if (result.saved) {
-        setIsError(false);
-        setMessage("Uploaded successfully. Reload page to view new media asset.");
-        form.querySelectorAll<HTMLInputElement>("input").forEach((input) => {
-          input.value = "";
-        });
-      }
+    setError("");setMessage("");
+    if (!selectedFile || !uploadAlt.trim()) {setError("Choose an image and add a description before uploading.");return;}
+    const form=new FormData();form.set("file",selectedFile);form.set("altText",uploadAlt);form.set("caption",uploadCaption);
+    startTransition(async()=>{
+      try {
+        const result=await uploadMedia({},form);
+        if(result.error || !result.asset){setError(result.error || "Unable to upload image.");return;}
+        setUploads((items)=>[result.asset!,...items]);setSelectedFile(null);setUploadAlt("");setUploadCaption("");if(fileRef.current)fileRef.current.value="";setMessage("Image uploaded. You can use it immediately.");setQuery("");
+      } catch {setError("The upload could not reach the server. Please try again.");}
     });
   }
-
-  const content = (
-    <div className="space-y-4">
-      {/* Search & Upload Action Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by filename or description..."
-            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-8 pr-3 py-2 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#0b233a] focus:bg-white transition-colors"
-          />
-        </div>
-        <button
-          type="button"
-          onClick={() => setShowUpload(!showUpload)}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer shrink-0"
-        >
-          {showUpload ? <X className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-          <span>{showUpload ? "Cancel Upload" : "Upload Image"}</span>
-        </button>
-      </div>
-
-      {/* Upload Panel */}
-      {showUpload && (
-        <div ref={uploadPanelRef} className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-xs space-y-2.5">
-          <label className="block text-[11px] font-semibold text-slate-600">Select Image File</label>
-          <input
-            required
-            name="file"
-            type="file"
-            accept="image/*"
-            className="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#0b233a] file:text-white cursor-pointer"
-          />
-          <input
-            required
-            name="altText"
-            placeholder="Descriptive alt text (required for SEO & accessibility) *"
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-800 outline-none focus:border-[#0b233a]"
-          />
-          <input
-            name="caption"
-            placeholder="Optional technical caption"
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-800 outline-none focus:border-[#0b233a]"
-          />
-          <button
-            type="button"
-            onClick={upload}
-            disabled={pending}
-            className="w-full rounded-lg bg-[#0b233a] hover:bg-[#163654] px-3 py-2 text-xs font-semibold text-white transition-colors cursor-pointer disabled:opacity-60 flex items-center justify-center gap-1.5"
-          >
-            <Upload className="w-3.5 h-3.5" />
-            <span>{pending ? "Uploading Media..." : "Upload Asset"}</span>
-          </button>
-          {message && (
-            <p className={(isError ? "text-red-600" : "text-emerald-700 font-semibold") + " text-xs flex items-center gap-1.5 pt-1"}>
-              {isError ? <AlertCircle className="w-3.5 h-3.5 shrink-0" /> : <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />}
-              <span>{message}</span>
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Asset Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto pr-1">
-        {filtered.map((asset) => (
-          <div
-            key={asset.id}
-            className="group relative rounded-xl border border-slate-200 bg-white overflow-hidden hover:border-[#0b233a] transition-all flex flex-col"
-          >
-            <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-              <Image
-                src={asset.publicUrl}
-                alt={asset.altText}
-                width={180}
-                height={120}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <div className="p-2 space-y-1.5 flex-1 flex flex-col justify-between">
-              <p className="truncate text-[10px] font-medium text-slate-700" title={asset.fileName}>
-                {asset.fileName}
-              </p>
-              <div className="grid grid-cols-2 gap-1 pt-1">
-                {onSetCover && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onSetCover(asset);
-                      if (asModal && onClose) onClose();
-                    }}
-                    className="rounded-md bg-slate-100 px-1.5 py-1 text-[10px] font-semibold text-[#0b233a] hover:bg-orange-50 hover:text-[#e67c00] transition-colors text-center cursor-pointer"
-                  >
-                    Set Cover
-                  </button>
-                )}
-                {onInsert && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onInsert(asset);
-                      if (asModal && onClose) onClose();
-                    }}
-                    className="rounded-md bg-[#0b233a] px-1.5 py-1 text-[10px] font-semibold text-white hover:bg-[#163654] transition-colors flex items-center justify-center gap-0.5 cursor-pointer"
-                  >
-                    <ImagePlus className="w-2.5 h-2.5" />
-                    <span>Inline</span>
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {!filtered.length && (
-          <div className="col-span-full py-8 text-center text-xs text-slate-400">
-            No media assets found matching &ldquo;{query}&rdquo;
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  if (!asModal) {
-    return content;
-  }
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
-      <div className="relative w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-          <div>
-            <h3 className="font-display font-bold text-lg text-[#0b233a]">Media Assets Library</h3>
-            <p className="text-xs text-slate-500">Select an image to set as featured cover or insert into article.</p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto">{content}</div>
-      </div>
-    </div>
-  );
+  const content=<div className="cms-media">
+    <div className="cms-field"><label htmlFor={asModal?"media-search-modal":"media-search"}>Search images</label><input id={asModal?"media-search-modal":"media-search"} type="search" value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Filename, description or caption" /></div>
+    <details className="cms-media-upload"><summary>Upload a new image</summary><div className="cms-details-content"><div className="cms-field"><label htmlFor={asModal?"upload-image-modal":"upload-image"}>Image file</label><input ref={fileRef} id={asModal?"upload-image-modal":"upload-image"} type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" onChange={(e)=>setSelectedFile(e.target.files?.[0] || null)} /><small>JPG, PNG, WebP, GIF or AVIF · maximum 5 MB</small></div><div className="cms-field"><label htmlFor="upload-alt">Describe the image</label><input id="upload-alt" value={uploadAlt} maxLength={500} onChange={(e)=>setUploadAlt(e.target.value)} placeholder="For example, engineers reviewing a piping model" /></div><div className="cms-field"><label htmlFor="upload-caption">Caption or image credit (optional)</label><input id="upload-caption" value={uploadCaption} maxLength={500} onChange={(e)=>setUploadCaption(e.target.value)} /></div><button type="button" className="cms-primary" disabled={pending} onClick={upload}>{pending?"Uploading…":"Upload image"}</button></div></details>
+    {error && <p className="cms-error" role="alert">{error}</p>}{message && <p className="cms-notice" role="status">{message}</p>}
+    <div className="cms-media-grid">{filtered.map((asset)=><div className="cms-media-item" key={asset.id}><img src={asset.publicUrl} alt={asset.altText} loading="lazy" /><div className="cms-media-copy"><p title={asset.fileName}>{asset.fileName}</p><small>{asset.altText}</small><div className="cms-media-actions">{onSetCover && <button type="button" className="cms-secondary" onClick={()=>{onSetCover(asset);onClose?.();}}>Use as cover</button>}{onInsert && <button type="button" className="cms-secondary" onClick={()=>{onInsert(asset);onClose?.();}}><ImagePlus size={14} />Insert</button>}<button type="button" onClick={()=>{setEditing(asset.id);setAlt(asset.altText);setCaption(asset.caption || "");}}>Edit details</button>{!asModal && <button type="button" className="cms-danger-link" disabled={pending} onClick={()=>{if(!window.confirm("Delete this unused image? Images used by an article or revision are protected."))return;startTransition(async()=>{const result=await deleteMedia(asset.id);if(result.error)setError(result.error);else{setDeleted((ids)=>[...ids,asset.id]);setMessage("Image deleted.");}});}}>Delete unused image</button>}</div>{editing===asset.id && <div className="cms-field"><label htmlFor={`alt-${asset.id}`}>Image description</label><input id={`alt-${asset.id}`} value={alt} onChange={(e)=>setAlt(e.target.value)} /><label htmlFor={`caption-${asset.id}`}>Caption</label><input id={`caption-${asset.id}`} value={caption} onChange={(e)=>setCaption(e.target.value)} /><small>Existing article images keep the description saved with the article.</small><button type="button" className="cms-secondary" disabled={pending} onClick={()=>startTransition(async()=>{const result=await updateMedia(asset.id,alt,caption);if(result.error){setError(result.error);return;}setUpdates((items)=>({...items,[asset.id]:{altText:alt,caption}}));setEditing(null);setMessage("Image details saved.");})}>Save details</button></div>}</div></div>)}</div>{!filtered.length && <p className="cms-help">No images found. Upload an image to get started.</p>}
+  </div>;
+  if(!asModal)return content;
+  return <dialog ref={dialogRef} aria-label="Image library" className="cms-media-dialog" onCancel={()=>onClose?.()} onClick={(e)=>{if(e.target===dialogRef.current)onClose?.();}}><div className="cms-dialog-heading"><h2>Image library</h2><button type="button" aria-label="Close image library" onClick={()=>onClose?.()}><X size={22} /></button></div>{content}</dialog>;
 }

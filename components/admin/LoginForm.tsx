@@ -1,42 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Lock, Mail, ArrowRight, AlertCircle } from "lucide-react";
+
+const subscribeToReadiness = () => () => {};
 
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const ready = useSyncExternalStore(subscribeToReadiness, () => true, () => false);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError("");
     const form = new FormData(event.currentTarget);
-    const { error: signInError } = await createClient().auth.signInWithPassword({
-      email: String(form.get("email")),
-      password: String(form.get("password")),
-    });
-    if (signInError) {
-      setError(signInError.message);
-      setLoading(false);
-      return;
-    }
-    router.push("/admin");
+    try {
+      const { error: signInError } = await createClient().auth.signInWithPassword({
+        email: String(form.get("email")), password: String(form.get("password")),
+      });
+      if (signInError) { setError("Sign-in failed. Check your email and password and try again."); return; }
+      router.replace("/admin"); router.refresh();
+    } catch { setError("Unable to sign in. Check your connection and try again."); }
+    finally { setLoading(false); }
+
   }
 
   return (
-    <form onSubmit={submit} className="mt-6 space-y-4">
+    <form method="post" onSubmit={submit} className="mt-6 space-y-4">
       <div>
-        <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+        <label htmlFor="login-email" className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">
           Email Address
         </label>
         <div className="relative">
           <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             required
+            id="login-email"
             type="email"
             name="email"
             autoComplete="email"
@@ -47,13 +50,14 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+        <label htmlFor="login-password" className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">
           Password
         </label>
         <div className="relative">
           <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             required
+            id="login-password"
             type="password"
             name="password"
             autoComplete="current-password"
@@ -74,7 +78,7 @@ export default function LoginForm() {
       )}
 
       <button
-        disabled={loading}
+        disabled={loading || !ready}
         className="w-full rounded-xl bg-[#FF8A00] hover:bg-[#E67C00] active:scale-[0.98] px-5 py-3.5 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 min-h-[44px]"
       >
         <span>{loading ? "Verifying Credentials..." : "Sign In to Dashboard"}</span>

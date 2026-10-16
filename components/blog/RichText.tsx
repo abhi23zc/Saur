@@ -1,21 +1,20 @@
 import Image from "next/image";
 import type { RichTextNode } from "@/lib/blog/types";
 
-export function headingId(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
+import { articleHeadings } from "@/lib/blog/presentation";
+export { headingId } from "@/lib/blog/presentation";
 
-function nodeText(node: RichTextNode): string {
-  return node.text ?? node.content?.map(nodeText).join("") ?? "";
+function safeHref(value: unknown) {
+  const href = String(value ?? "#").trim();
+  return /^(https?:|mailto:|tel:|\/|#)/i.test(href) && !href.startsWith("//") ? href : "#";
 }
 
 function textWithMarks(node: RichTextNode, key: string) {
   let value: React.ReactNode = node.text ?? "";
   for (const mark of node.marks ?? []) {
     if (mark.type === "bold") value = <strong key={`${key}-bold`} className="font-bold text-slate-900">{value}</strong>;
+    if (mark.type === "strike") value = <s key={`${key}-strike`}>{value}</s>;
+    if (mark.type === "underline") value = <u key={`${key}-underline`}>{value}</u>;
     if (mark.type === "italic") value = <em key={`${key}-italic`} className="italic">{value}</em>;
     if (mark.type === "code") {
       value = (
@@ -28,7 +27,7 @@ function textWithMarks(node: RichTextNode, key: string) {
       value = (
         <a
           key={`${key}-link`}
-          href={String(mark.attrs?.href ?? "#")}
+          href={safeHref(mark.attrs?.href)}
           target={String(mark.attrs?.href ?? "").startsWith("http") ? "_blank" : undefined}
           rel={String(mark.attrs?.href ?? "").startsWith("http") ? "noopener noreferrer" : undefined}
           className="font-semibold text-[#e67c00] hover:text-[#0b233a] underline underline-offset-4 transition-colors"
@@ -41,9 +40,9 @@ function textWithMarks(node: RichTextNode, key: string) {
   return value;
 }
 
-function renderNode(node: RichTextNode, key: string): React.ReactNode {
+function renderNode(node: RichTextNode, key: string, headingIds: string[], cursor: { index: number }): React.ReactNode {
   if (node.type === "text") return textWithMarks(node, key);
-  const children = node.content?.map((child, index) => renderNode(child, `${key}-${index}`));
+  const children = node.content?.map((child, index) => renderNode(child, `${key}-${index}`, headingIds, cursor));
 
   if (node.type === "doc") return children;
 
@@ -56,16 +55,9 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
   }
 
   if (node.type === "heading") {
-    const level = Number(node.attrs?.level ?? 2);
-    const id = headingId(nodeText(node));
+    const level = Math.max(2, Number(node.attrs?.level ?? 2));
+    const id = headingIds[cursor.index++];
 
-    if (level === 1) {
-      return (
-        <h1 id={id} key={key} className="mt-12 mb-5 scroll-mt-28 font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0b233a]">
-          {children}
-        </h1>
-      );
-    }
     if (level === 2) {
       return (
         <h2 id={id} key={key} className="mt-12 mb-4 scroll-mt-28 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0b233a]">
@@ -135,6 +127,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
           alt={String(node.attrs.alt ?? "Article illustration")}
           width={1200}
           height={675}
+          sizes="(max-width: 760px) 100vw, 760px"
           className="h-auto w-full rounded-2xl shadow-md border border-slate-200/80"
         />
         {typeof node.attrs?.title === "string" && node.attrs.title && (
@@ -146,11 +139,18 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
     );
   }
 
+  if (node.type === "table") return <div className="journal-table-scroll" key={key}><table><tbody>{children}</tbody></table></div>;
+  if (node.type === "tableRow") return <tr key={key}>{children}</tr>;
+  if (node.type === "tableCell" || node.type === "tableHeader") {
+    const Cell = node.type === "tableHeader" ? "th" : "td";
+    return <Cell key={key} colSpan={Math.min(20, Math.max(1, Number(node.attrs?.colspan) || 1))} rowSpan={Math.min(100, Math.max(1, Number(node.attrs?.rowspan) || 1))}>{children}</Cell>;
+  }
+
   if (node.type === "hardBreak") return <br key={key} />;
 
   return children;
 }
 
 export default function RichText({ content }: { content: RichTextNode }) {
-  return <div className="article-body">{renderNode(content, "root")}</div>;
+  return <div className="article-body">{renderNode(content, "root", articleHeadings(content).map((heading) => heading.id), { index: 0 })}</div>;
 }

@@ -30,7 +30,7 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
     { name: "Projects", href: "/projects" },
     { name: "Case Studies", href: "/case-studies" },
     { name: "Training", href: "/training" },
-    // { name: "Blog", href: "/blog" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const isActive = (href: string) => {
@@ -68,13 +68,13 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-7">
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  "font-sans text-xs uppercase tracking-[0.15em] font-bold transition-colors duration-200 relative py-1",
+                  "font-sans text-[10px] xl:text-xs uppercase tracking-[0.1em] font-bold transition-colors duration-200 relative py-1",
                   isActive(link.href)
                     ? "text-[#FF8A00]"
                     : "text-[#0b233a] hover:text-[#FF8A00]"

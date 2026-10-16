@@ -1,102 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Rss } from "lucide-react";
-import BlogFilters from "@/components/blog/BlogFilters";
-import { getPublishedPosts } from "@/lib/blog/data";
+import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import BlogFilters, { blogHref } from "@/components/blog/BlogFilters";
+import BlogCard from "@/components/blog/BlogCard";
+import JournalConsultation from "@/components/blog/JournalConsultation";
+import { getBlogIndex } from "@/lib/blog/data";
 
-export const metadata: Metadata = {
-  title: "Engineering Blog & Technical Insights | Saur Engineering & Consultancy",
-  description:
-    "Practical engineering insights on FEED, detailed engineering, ASME/API compliance, offshore infrastructure, and project execution from Saur Engineering.",
-};
+type Props = { searchParams: Promise<{ q?: string | string[]; category?: string | string[]; page?: string | string[] }> };
+const first = (value?: string | string[]) => (Array.isArray(value) ? value[0] : value) || "";
+const title = "Engineering Insights & Journal | Saur Engineering";
+const description = "Practical perspectives on FEED, detailed engineering, piping design and project delivery from Saur Engineering & Consultancy.";
 
-export default async function BlogPage() {
-  const posts = await getPublishedPosts();
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const page = Math.max(1, Number.parseInt(first(params.page), 10) || 1);
+  const filtered = Boolean(first(params.q) || first(params.category));
+  return { title: page > 1 ? `Engineering Insights — Page ${page} | Saur Engineering` : title, description,
+    alternates: { canonical: blogHref({ page }), types: { "application/rss+xml": "/api/rss.xml" } },
+    robots: filtered ? { index: false, follow: true } : undefined,
+    openGraph: { title, description, type: "website", url: "/blog", siteName: "Saur Engineering & Consultancy", images: [{ url: "/media/page-services-hero.png", alt: "Saur Engineering industrial project insights" }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/media/page-services-hero.png"] },
+  };
+}
 
-  return (
-    <main className="min-h-screen bg-[#F8FAFC] pt-20">
-      {/* ═══════════════════════════════════════════════════════════════
-         1. CLEAN EDITORIAL PUBLICATION HEADER
-         ═══════════════════════════════════════════════════════════════ */}
-      <section className="border-b border-slate-200/90 bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            
-            {/* Title & Tagline */}
-            <div className="max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-md bg-orange-50 border border-orange-200/80 px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider text-[#e67c00]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
-                <span>Saur Engineering Journal</span>
-              </div>
-
-              <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0b233a] leading-tight">
-                Insights &amp; Technical Perspectives
-              </h1>
-
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-                Practical guides, FEED methodologies, ASME/API compliance, piping stress analysis, and multidisciplinary delivery insights.
-              </p>
-            </div>
-
-            {/* Quick Editorial Meta Pill */}
-            <div className="flex items-center gap-3 shrink-0">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-2.5 flex items-center gap-4 text-xs font-mono text-slate-600">
-                <div className="flex items-center gap-1.5 font-bold text-[#0b233a]">
-                  <BookOpen className="w-3.5 h-3.5 text-[#FF8A00]" />
-                  <span>{posts.length} Analyses</span>
-                </div>
-                <span className="text-slate-300">|</span>
-                <Link
-                  href="/api/rss.xml"
-                  target="_blank"
-                  className="flex items-center gap-1 hover:text-[#e67c00] transition-colors"
-                  title="Subscribe via RSS"
-                >
-                  <Rss className="w-3.5 h-3.5 text-amber-500" />
-                  <span>RSS</span>
-                </Link>
-              </div>
-            </div>
-
-          </div>
-        </div>
+export default async function BlogPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const query = first(params.q).trim().slice(0, 160);
+  const category = first(params.category).slice(0, 160);
+  const requestedPage = Math.max(1, Number.parseInt(first(params.page), 10) || 1);
+  if (!Number.isSafeInteger(requestedPage) || requestedPage > 1000000) notFound();
+  const pageSize = 6;
+  const { posts: visible, count, categories } = await getBlogIndex(query, category, requestedPage, pageSize);
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  if (requestedPage > totalPages) notFound();
+  const page = requestedPage;
+  const featured = !query && !category && page === 1 ? visible[0] : undefined;
+  const articles = featured ? visible.slice(1) : visible;
+  return <main className="journal journal-listing" id="main-content">
+    <div className="journal-shell">
+      <header className="journal-intro"><p className="journal-eyebrow">Insights from practice</p><h1>Engineering insights.<br />Practical perspectives.</h1><p>Ideas and expertise for safer, smarter project delivery.</p></header>
+      {featured && <BlogCard post={featured} featured />}
+      <BlogFilters categories={categories} category={category} query={query} />
+      <section className="journal-feed" aria-labelledby="insights-heading">
+        <div className="journal-section-heading"><h2 id="insights-heading">{query ? `Results for “${query}”` : category || (page > 1 ? "Engineering insights" : "Latest insights")}</h2>{(query || category) && <Link href="/blog" className="journal-reset">Clear filters</Link>}</div>
+        {articles.length ? <div className="journal-grid">{articles.map((post) => <BlogCard key={post.id} post={post} />)}</div> : !featured && <div className="journal-empty"><h3>{page > totalPages ? "This page has no articles yet." : "No articles found."}</h3><p>Try another topic or search term to find an engineering perspective.</p><Link href="/blog" className="journal-text-link">Explore all insights <ArrowRight size={16} /></Link></div>}
+        {totalPages > 1 && <nav className="journal-pagination" aria-label="Article pages">
+          {page > 1 && <Link href={blogHref({ category, query, page: Math.min(page - 1, totalPages) })} aria-label="Previous page"><ArrowLeft size={17} /></Link>}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).filter((n) => n === 1 || n === totalPages || Math.abs(n - page) <= 1).map((n, i, pages) => <span key={n}>{i > 0 && n - pages[i - 1] > 1 && <span className="journal-pagination-gap">…</span>}<Link href={blogHref({ category, query, page: n })} aria-label={`Page ${n}`} aria-current={n === page ? "page" : undefined}>{n}</Link></span>)}
+          {page < totalPages && <Link href={blogHref({ category, query, page: page + 1 })} aria-label="Next page"><ArrowRight size={17} /></Link>}
+        </nav>}
       </section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-         2. MAIN BLOG FEED (Category Tabs, Featured Post, Article Grid)
-         ═══════════════════════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-16">
-        
-        {/* Interactive Category Tabs, Search, Featured Story & Articles Grid */}
-        <BlogFilters posts={posts} />
-
-        {/* ═══════════════════════════════════════════════════════════════
-           3. TECHNICAL CONSULTATION CALLOUT BANNER
-           ═══════════════════════════════════════════════════════════════ */}
-        <section className="rounded-3xl bg-[#0b233a] border border-[#163654] p-8 sm:p-12 text-white relative overflow-hidden shadow-xl">
-          <div className="relative max-w-3xl space-y-4">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#FF8A00]">
-              Engineering Advisory &amp; Review
-            </span>
-            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-              Have an upcoming energy, offshore, or industrial facility project?
-            </h3>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              Connect directly with Saur&apos;s senior multidisciplinary engineering team for FEED verification, stress analysis, 3D piping design, or EPC project delivery advisory.
-            </p>
-            <div className="pt-2">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#FF8A00] hover:bg-[#e67c00] active:scale-[0.98] px-6 py-3.5 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-md transition-all"
-              >
-                <span>Request Technical Consultation</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-      </div>
-    </main>
-  );
+      <JournalConsultation />
+    </div>
+  </main>;
 }

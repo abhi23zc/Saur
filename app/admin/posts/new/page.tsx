@@ -6,8 +6,10 @@ import { getAllAdminPosts, getMediaAssets } from "@/lib/blog/data";
 import AdminFrame from "@/components/admin/AdminFrame";
 
 export default async function NewPostPage() {
-  const { user } = await requireAdmin();
+  const { user, client } = await requireAdmin();
   const [assets, posts] = await Promise.all([getMediaAssets(), getAllAdminPosts()]);
+
+  const { data: categories } = await client.from("categories").select("name").order("name");
 
   return (
     <AdminFrame email={user.email ?? "Administrator"}>
@@ -33,7 +35,7 @@ export default async function NewPostPage() {
       </div>
 
       {/* Editor Component */}
-      <PostEditor assets={assets} allPosts={posts} />
+      <PostEditor assets={assets} allPosts={posts} categories={(categories || []).map((item) => item.name)} />
     </AdminFrame>
   );
 }

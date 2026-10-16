@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local database migration backups
+.local-backups/
+
+# Private local setup credentials and logs
+.local/

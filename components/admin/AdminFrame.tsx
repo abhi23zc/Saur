@@ -51,6 +51,7 @@ export default function AdminFrame({ email, children }: { email: string; childre
                 <span>Main Site</span>
                 <ExternalLink className="w-3 h-3 opacity-60" />
               </Link>
+              <Link href="/admin/media" className="px-3 py-1.5 rounded-lg text-xs text-white/80 hover:bg-white/10">Images</Link>
             </nav>
           </div>
 
@@ -95,12 +96,11 @@ export default function AdminFrame({ email, children }: { email: string; childre
             <span>Public Blog</span>
           </Link>
           <Link
-            href="/"
-            target="_blank"
+            href="/admin/media"
             className="flex items-center gap-1 text-slate-300 hover:text-white"
           >
             <Globe className="w-3 h-3 text-slate-400" />
-            <span>Main Site</span>
+            <span>Images</span>
           </Link>
         </div>
       </header>

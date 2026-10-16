@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, Share2 } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ReadingProgress() {
@@ -51,45 +51,23 @@ export function ArticleToc({ headings }: { headings: { id: string; text: string;
 
   if (!headings.length) return null;
 
-  return (
-    <aside className="hidden xl:block w-56 shrink-0">
-      <div className="sticky top-28 space-y-3 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-        <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#0b233a]">
-          On This Page
-        </p>
-        <nav className="space-y-1 max-h-[70vh] overflow-y-auto pr-1">
-          {headings.map((heading) => {
-            const isActive = activeId === heading.id;
-            return (
-              <a
-                key={heading.id}
-                href={`#${heading.id}`}
-                className={
-                  (isActive
-                    ? "text-[#e67c00] font-bold bg-orange-50/80 border-l-2 border-[#FF8A00] pl-2.5"
-                    : "text-slate-600 hover:text-[#0b233a] hover:bg-slate-50") +
-                  ` block py-1 text-xs leading-snug rounded-md transition-all ${
-                    heading.level === 3 ? "pl-4 text-[11px]" : "pl-2 font-medium"
-                  }`
-                }
-              >
-                {heading.text}
-              </a>
-            );
-          })}
-        </nav>
-      </div>
-    </aside>
-  );
+  const links = headings.map((heading) => <a key={heading.id} href={`#${heading.id}`} aria-current={activeId === heading.id ? "location" : undefined} className={`${activeId === heading.id ? "is-active" : ""} ${heading.level === 3 ? "is-subheading" : ""}`}>{heading.text}</a>);
+  return <aside className="journal-toc">
+    <div className="journal-toc-desktop"><p>On this page</p><nav aria-label="Table of contents">{links}</nav></div>
+    <details className="journal-toc-mobile"><summary>On this page</summary><nav aria-label="Mobile table of contents">{links}</nav></details>
+  </aside>;
 }
 
 export function ShareControls({ title }: { title?: string }) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
-    await navigator.clipboard?.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
+    try {
+      if (!navigator.clipboard) return;
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch { setCopied(false); }
   }
 
   function shareLinkedin() {
@@ -104,7 +82,7 @@ export function ShareControls({ title }: { title?: string }) {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="journal-share flex items-center gap-2">
       <button
         onClick={copy}
         className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 px-3.5 py-1.5 text-xs font-mono font-semibold text-slate-700 transition-all cursor-pointer"
@@ -137,6 +115,8 @@ export function ShareControls({ title }: { title?: string }) {
 
 export function ViewReporter({ id }: { id: string }) {
   useEffect(() => {
+    // Sample articles have local IDs and no database metrics record.
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return;
     fetch(`/api/articles/${id}/view`, { method: "POST", keepalive: true }).catch(() => undefined);
   }, [id]);
   return null;

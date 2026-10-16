@@ -1,1024 +1,210 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import LinkExtension from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
-import {
-  AlertCircle,
-  Bold,
-  Calendar,
-  Check,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Clock,
-  Code2,
-  Eye,
-  FileText,
-  Heading2,
-  Heading3,
-  History,
-  ImagePlus,
-  Italic,
-  Link2,
-  List,
-  ListOrdered,
-  Loader2,
-  Maximize2,
-  Minimize2,
-  Minus,
-  Quote,
-  Redo2,
-  RotateCcw,
-  Undo2,
-} from "lucide-react";
-import { autosavePost, restoreRevision, savePost, type FormState } from "@/app/admin/actions";
-import MediaLibrary from "@/components/admin/MediaLibrary";
-import RichText from "@/components/blog/RichText";
-import { markdownToRichText, plainTextFromMarkdown, richTextToMarkdown } from "@/components/admin/markdownConversion";
+import { TableKit } from "@tiptap/extension-table";
+import { Bold, Italic, List, ListOrdered, Link2, ImagePlus, Undo2, Redo2, Heading2, Heading3, Quote, Table2, X, Eye, Save, Send, Maximize2, Minimize2 } from "lucide-react";
+import { saveArticle, restoreRevision, getRevisions } from "@/app/admin/actions";
+import { toEditor, slugify, names, lines, toLocalDateTime, publicationIssues, type EditorDocument, type SaveCommand } from "@/lib/blog/editor";
+import { plainText, readingTime } from "@/lib/blog/presentation";
+import { markdownToRichText, richTextToMarkdown } from "./markdownConversion";
 import type { BlogPost, MediaAsset, PostStatus, RichTextNode } from "@/lib/blog/types";
+import MediaLibrary from "./MediaLibrary";
+import ArticleView from "@/components/blog/ArticleView";
 
-const initialContent: RichTextNode = {
-  type: "doc",
-  content: [
-    {
-      type: "paragraph",
-      content: [{ type: "text", text: "Start drafting the engineering analysis, FEED milestone details, or equipment specifications..." }],
-    },
-  ],
-};
+type Props = { post?: BlogPost; assets?: MediaAsset[]; revisions?: { id: string; created_at: string }[]; allPosts?: BlogPost[]; categories?: string[] };
+const categoryDefaults = ["FEED & Engineering", "Detailed Engineering", "Piping Engineering", "Offshore & Marine", "Process Safety", "Project Execution", "Workforce & Training"];
+type Mode = "visual" | "markdown";
 
-const CATEGORY_OPTIONS = [
-  "FEED & Engineering",
-  "Piping Engineering",
-  "Offshore & Marine",
-  "Civil & Structural",
-  "Process Safety",
-  "Project Execution",
-  "Procurement & EPC",
-];
+export default function PostEditor({ post, assets = [], revisions = [], allPosts = [], categories = [] }: Props) {
+  const [revisionList, setRevisionList] = useState(revisions);
+  const [doc, setDoc] = useState<EditorDocument>(() => toEditor(post));
+  const [id] = useState(() => post?.id || crypto.randomUUID());
+  const [status, setStatus] = useState<PostStatus>(post?.status || "draft");
+  const [mode, setMode] = useState<Mode>("visual");
+  const [tagText, setTagText] = useState(() => post?.tags.join(", ") || "");
+  const [takeawayText, setTakeawayText] = useState(() => post?.techTakeaways.join("\n") || "");
+  const [markdown, setMarkdown] = useState(() => richTextToMarkdown(toEditor(post).content));
+  const [dirty, setDirty] = useState(false);
+  const [savedAt, setSavedAt] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [fields, setFields] = useState<Record<string, string>>({});
+  const [notice, setNotice] = useState("");
+  const [media, setMedia] = useState(false);
+  const [preview, setPreview] = useState(false);
+  const [focus, setFocus] = useState(false);
+  const [scheduledFor, setScheduledFor] = useState("");
+  const [recovery, setRecovery] = useState<EditorDocument | null>(null);
+  const [linkPanel, setLinkPanel] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const [extraCategories, setExtraCategories] = useState<string[]>([]);
+  const [blocked, setBlocked] = useState(false);
+  const version = useRef(post?.draftVersion || 0);
+  const previewRef = useRef<HTMLDialogElement>(null);
+  const docRef = useRef(doc);
+  const changeNumber = useRef(0);
+  const saving = useRef(false);
+  const dirtyRef = useRef(false);
+  const saveRef = useRef<(command: SaveCommand, automatic?: boolean) => Promise<boolean>>(async () => false);
+  const initialId = post?.id || "new";
+  const recoveryKey = `saur-article-${initialId}`;
+  const lockedSlug = Boolean(post?.originalPublishedAt || status === "published");
 
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-const comma = (value?: string[]) => value?.join(", ") ?? "";
-const lines = (value?: string[]) => value?.join("\n") ?? "";
-
-type Revision = { id: string; created_at: string };
-type EditorMode = "visual" | "markdown" | "preview";
-
-function ToolButton({
-  active,
-  label,
-  onClick,
-  children,
-}: {
-  active?: boolean;
-  label: string;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      title={label}
-      aria-label={label}
-      className={
-        (active
-          ? "bg-[#0b233a] text-white shadow-xs"
-          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900") +
-        " rounded-lg p-1.5 sm:p-2 text-xs transition-colors cursor-pointer inline-flex items-center justify-center min-h-[32px] min-w-[32px]"
-      }
-    >
-      {children}
-    </button>
-  );
-}
-
-function readJsonContent(content: string): RichTextNode {
-  try {
-    return JSON.parse(content) as RichTextNode;
-  } catch {
-    return initialContent;
-  }
-}
-
-export default function PostEditor({
-  post,
-  assets = [],
-  revisions = [],
-  allPosts = [],
-}: {
-  post?: BlogPost;
-  assets?: MediaAsset[];
-  revisions?: Revision[];
-  allPosts?: BlogPost[];
-}) {
-  const initialDoc = post?.content ?? initialContent;
-  const [editorMode, setEditorMode] = useState<EditorMode>("visual");
-  const [intent, setIntent] = useState<PostStatus>(post?.status ?? "draft");
-  const [content, setContent] = useState(JSON.stringify(initialDoc));
-  const [markdown, setMarkdown] = useState(() => richTextToMarkdown(initialDoc));
-  const [conversionError, setConversionError] = useState("");
-  const [title, setTitle] = useState(post?.title ?? "");
-  const [slug, setSlug] = useState(post?.slug ?? "");
-  const [category, setCategory] = useState(post?.categories?.[0] ?? "FEED & Engineering");
-  const [customCategory, setCustomCategory] = useState("");
-  const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
-  const [coverImage, setCoverImage] = useState(post?.coverImage ?? "");
-  const [relatedIds, setRelatedIds] = useState<string[]>(post?.relatedPostIds ?? []);
-  const [fullscreen, setFullscreen] = useState(false);
-  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
-  const [isRevisionsOpen, setIsRevisionsOpen] = useState(false);
-  const [state, action, pending] = useActionState<FormState, FormData>(savePost, {});
-  const [autosaveStatus, setAutosaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [autosaveLabel, setAutosaveLabel] = useState("");
-  const [isRestoring, startTransition] = useTransition();
-  const formRef = useRef<HTMLFormElement>(null);
-  const markdownRef = useRef<HTMLTextAreaElement>(null);
-  const dirty = useRef(false);
+  const change = useCallback((patch: Partial<EditorDocument>) => {
+    const next = { ...docRef.current, ...patch };
+    docRef.current = next;
+    changeNumber.current++;
+    dirtyRef.current = true;
+    setDoc(next); setDirty(true); setNotice("");
+    try { sessionStorage.setItem(recoveryKey, JSON.stringify(next)); sessionStorage.setItem(`saur-article-${id}`, JSON.stringify(next)); } catch { /* Recovery storage may be unavailable. */ }
+  }, [recoveryKey, id]);
 
   const editor = useEditor({
-    extensions: [StarterKit, LinkExtension.configure({ openOnClick: false }), ImageExtension],
-    content: initialDoc,
-    immediatelyRender: false,
-    onUpdate: ({ editor: instance }) => {
-      dirty.current = true;
-      setContent(JSON.stringify(instance.getJSON()));
-      setConversionError("");
-      setAutosaveStatus("idle");
-    },
+    extensions: [StarterKit.configure({ heading: { levels: [2, 3, 4] }, link: { openOnClick: false } }), ImageExtension, TableKit.configure({ table: { resizable: false } })],
+    content: toEditor(post).content, immediatelyRender: false,
+    onUpdate: ({ editor: instance }) => change({ content: instance.getJSON() as EditorDocument["content"] }),
   });
 
   useEffect(() => {
-    const warning = (event: BeforeUnloadEvent) => {
-      if (dirty.current) {
-        event.preventDefault();
-        event.returnValue = "";
-      }
+    if (preview && !previewRef.current?.open) previewRef.current?.showModal();
+  }, [preview]);
+
+  useEffect(() => {
+    // Restore notices are derived from browser storage after hydration.
+    const timer = window.setTimeout(() => {
+      setScheduledFor(toLocalDateTime(post?.scheduledFor));
+      try { const value = sessionStorage.getItem(recoveryKey); if (value) setRecovery(JSON.parse(value)); } catch { /* Ignore malformed recovery data. */ }
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [post?.scheduledFor, recoveryKey]);
+
+  useEffect(() => {
+    const warn = (event: BeforeUnloadEvent) => { if (dirtyRef.current) { event.preventDefault(); event.returnValue = ""; } };
+    window.addEventListener("beforeunload", warn);
+    const guard = (event: MouseEvent) => {
+      const link = (event.target as Element).closest?.("a");
+      if (dirtyRef.current && link?.getAttribute("href")?.startsWith("/") && !link.target && !window.confirm("You have unsaved changes. Leave this article?")) { event.preventDefault(); event.stopPropagation(); }
     };
-    window.addEventListener("beforeunload", warning);
-    return () => window.removeEventListener("beforeunload", warning);
+    document.addEventListener("click", guard, true);
+    return () => { window.removeEventListener("beforeunload", warn); document.removeEventListener("click", guard, true); };
   }, []);
 
-  // Autosave timer (30s)
-  useEffect(() => {
-    if (!post?.id) return;
-    const timer = window.setInterval(() => {
-      if (!dirty.current || !formRef.current) return;
-      const formData = new FormData(formRef.current);
-      formData.set("content", content);
-      formData.set("intent", intent);
-      formData.set("relatedPostIds", relatedIds.join(","));
-      formData.set("categories", customCategory || category);
-      setAutosaveStatus("saving");
-      setAutosaveLabel("Autosaving...");
-      autosavePost(formData).then((result) => {
-        if (result.saved) {
-          dirty.current = false;
-          setAutosaveStatus("saved");
-          const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-          setAutosaveLabel(`Autosaved at ${timeStr}`);
-        } else {
-          setAutosaveStatus("error");
-          setAutosaveLabel(result.error || "Autosave failed");
-        }
-      });
-    }, 30000);
-    return () => window.clearInterval(timer);
-  }, [post?.id, content, intent, relatedIds, category, customCategory]);
-
-  const activeText = editorMode === "markdown" ? plainTextFromMarkdown(markdown) : editor?.getText().trim() ?? "";
-  const wordCount = activeText.split(/\s+/).filter(Boolean).length;
-  const readTime = Math.max(1, Math.ceil(wordCount / 220));
-  const previewDoc = useMemo(() => readJsonContent(content), [content]);
-  const relatedOptions = useMemo(() => allPosts.filter((item) => item.id !== post?.id), [allPosts, post?.id]);
-
-  function markDirty() {
-    dirty.current = true;
-    setAutosaveStatus("idle");
-  }
-
-  function setDoc(doc: RichTextNode, updateEditor = false) {
-    setContent(JSON.stringify(doc));
-    if (updateEditor) editor?.commands.setContent(doc);
-  }
-
-  function syncMarkdownToJson(value: string) {
+  async function persist(command: SaveCommand, automatic = false): Promise<boolean> {
+    if (saving.current || blocked || (automatic && !dirtyRef.current)) return false;
+    if (command === "publish" || command === "schedule") {
+      const issues = publicationIssues(docRef.current);
+      if (Object.keys(issues).length) { setFields(issues); setError("Please complete the highlighted details before publishing."); return false; }
+    }
+    saving.current = true; setBusy(true); setError(""); setFields({});
+    const submittedChange = changeNumber.current;
+    const form = new FormData();
+    form.set("id", id); form.set("version", String(version.current)); form.set("command", command); form.set("document", JSON.stringify(docRef.current));
+    if (command === "schedule" && scheduledFor) form.set("scheduledFor", new Date(scheduledFor).toISOString());
     try {
-      const doc = markdownToRichText(value);
-      setDoc(doc);
-      setConversionError("");
-      return doc;
-    } catch (error) {
-      setConversionError(error instanceof Error ? error.message : "Markdown could not be converted.");
-      return null;
-    }
+      const result = await saveArticle(form);
+      if (!result.saved) { setError(result.error || "Unable to save. Please retry."); setFields(result.fields || {}); setBlocked(Boolean(result.conflict)); return false; }
+      version.current = result.version!; setStatus(result.status!); setSavedAt(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+      if (!post && window.location.pathname.endsWith("/new")) window.history.replaceState(null, "", `/admin/posts/${id}`);
+      if (submittedChange === changeNumber.current) { dirtyRef.current = false; setDirty(false); try { sessionStorage.removeItem(recoveryKey); sessionStorage.removeItem(`saur-article-${id}`); } catch {} }
+      setNotice(command === "publish" ? "Your article is live." : command === "schedule" ? "Article scheduled. The date below uses your local time zone." : command === "unpublish" ? "Article unpublished and saved as a draft." : automatic ? "" : "Draft saved. Live content has not changed.");
+      return true;
+    } catch { setError("Could not reach the server. Your work is kept in this tab. Try saving again."); return false; }
+    finally { saving.current = false; setBusy(false); }
   }
+  useEffect(() => { saveRef.current = persist; });
+  useEffect(() => {
+    const timer = window.setInterval(() => { void saveRef.current("save", true); }, 15000);
+    return () => window.clearInterval(timer);
+  }, []);
+  useEffect(() => {
+    const shortcut = (event: KeyboardEvent) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") { event.preventDefault(); void saveRef.current("save"); } };
+    window.addEventListener("keydown", shortcut); return () => window.removeEventListener("keydown", shortcut);
+  }, []);
 
-  function switchMode(nextMode: EditorMode) {
-    if (editorMode === nextMode) return;
-    if (editorMode === "markdown") {
-      const doc = syncMarkdownToJson(markdown);
-      if (!doc) return;
-      if (nextMode === "visual") editor?.commands.setContent(doc);
-    } else if (nextMode === "markdown") {
-      setMarkdown(richTextToMarkdown(readJsonContent(content)));
-    }
-    setEditorMode(nextMode);
+  function switchMode(next: Mode) {
+    if (next === mode) return;
+    if (next === "markdown") {
+      function hasComplexFormatting(node: RichTextNode): boolean {
+        return Number(node.attrs?.colspan || 1) > 1 || Number(node.attrs?.rowspan || 1) > 1 || Boolean(node.marks?.some((mark) => mark.type === "underline")) || Boolean(node.content?.some(hasComplexFormatting));
+      }
+      if (hasComplexFormatting(doc.content) && !window.confirm("Markdown cannot preserve merged table cells or underlining. Stay in Write mode to keep that formatting. Switch anyway?")) return;
+      // Conversion happens only if the writer edits Markdown; switching back without edits preserves the source.
+      setMarkdown(richTextToMarkdown(doc.content));
+    } else { editor?.commands.setContent(doc.content, { emitUpdate: false }); }
+    setMode(next);
   }
-
-  function addLink() {
-    const href = window.prompt("Paste the destination URL");
-    if (href) editor?.chain().focus().extendMarkRange("link").setLink({ href }).run();
+  function insertImage(asset: MediaAsset) {
+    if (mode === "markdown") {
+      const next = `${markdown}\n\n![${asset.altText}](${asset.publicUrl}${asset.caption ? ` "${asset.caption}"` : ""})`;
+      setMarkdown(next); change({ content: markdownToRichText(next) });
+    } else { editor?.chain().focus().setImage({ src: asset.publicUrl, alt: asset.altText, title: asset.caption || "" }).run(); }
   }
-
-  function replaceMarkdownSelection(replacement: string, cursorOffset?: number) {
-    const textarea = markdownRef.current;
-    if (!textarea) {
-      const next = markdown + replacement;
-      setMarkdown(next);
-      syncMarkdownToJson(next);
-      markDirty();
-      return;
-    }
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const next = markdown.slice(0, start) + replacement + markdown.slice(end);
-    setMarkdown(next);
-    syncMarkdownToJson(next);
-    markDirty();
-    requestAnimationFrame(() => {
-      textarea.focus();
-      const position = cursorOffset === undefined ? start + replacement.length : start + cursorOffset;
-      textarea.setSelectionRange(position, position);
-    });
+  function field(key: keyof EditorDocument, label: string, options: { type?: string; placeholder?: string; max?: number; help?: string } = {}) {
+    return <div className="cms-field"><label htmlFor={`cms-${key}`}>{label}</label><input id={`cms-${key}`} type={options.type || "text"} value={String(doc[key] ?? "")} maxLength={options.max || 500} placeholder={options.placeholder} onChange={(event) => change({ [key]: event.target.value })} aria-invalid={Boolean(fields[key])} aria-describedby={fields[key] ? `error-${key}` : undefined} />{options.help && <small>{options.help}</small>}{fields[key] && <p className="cms-field-error" id={`error-${key}`}>{fields[key]}</p>}</div>;
   }
-
-  function wrapMarkdown(prefix: string, suffix: string) {
-    const textarea = markdownRef.current;
-    const selected = textarea ? markdown.slice(textarea.selectionStart, textarea.selectionEnd) : "";
-    replaceMarkdownSelection(prefix + selected + suffix, selected ? prefix.length + selected.length + suffix.length : prefix.length);
+  function textarea(key: "excerpt" | "seoDescription" | "seoOgDescription" | "seoTwitterDescription", label: string, max: number) {
+    return <div className="cms-field"><label htmlFor={`cms-${key}`}>{label} <span>{doc[key].length}/{max}</span></label><textarea id={`cms-${key}`} rows={3} value={doc[key]} maxLength={max} onChange={(e) => change({ [key]: e.target.value })} aria-invalid={Boolean(fields[key])} />{fields[key] && <p className="cms-field-error">{fields[key]}</p>}</div>;
   }
+  const previewPost: BlogPost = { ...post, ...doc, id, status, publishedAt: post?.publishedAt || null, createdAt: post?.createdAt || new Date().toISOString(), updatedAt: post?.updatedAt || new Date().toISOString() };
+  const topics = [...new Set([...categoryDefaults, ...categories, ...allPosts.flatMap((p) => p.categories), ...doc.categories, ...extraCategories])].sort();
+  const issues = publicationIssues(doc);
 
-  function prependMarkdown(prefix: string) {
-    const textarea = markdownRef.current;
-    if (!textarea) return replaceMarkdownSelection(prefix);
-    const lineStart = markdown.lastIndexOf("\n", textarea.selectionStart - 1) + 1;
-    const next = markdown.slice(0, lineStart) + prefix + markdown.slice(lineStart);
-    setMarkdown(next);
-    syncMarkdownToJson(next);
-    markDirty();
-    requestAnimationFrame(() => {
-      textarea.focus();
-      textarea.setSelectionRange(textarea.selectionStart + prefix.length, textarea.selectionStart + prefix.length);
-    });
-  }
-
-  function insertInline(asset: MediaAsset) {
-    if (!asset.altText) return;
-    if (editorMode === "markdown") {
-      const caption = asset.caption ? ' "' + asset.caption + '"' : "";
-      replaceMarkdownSelection("![" + asset.altText + "](" + asset.publicUrl + caption + ")");
-      return;
-    }
-    editor?.chain().focus().setImage({ src: asset.publicUrl, alt: asset.altText, title: asset.caption || "" }).run();
-    markDirty();
-  }
-
-  return (
-    <>
-      <form
-        ref={formRef}
-        action={action}
-        className={
-          fullscreen
-            ? "fixed inset-0 z-50 overflow-y-auto bg-[#F4F6F9] p-3 sm:p-6 md:p-8"
-            : "w-full max-w-5xl mx-auto space-y-4 sm:space-y-6 pb-12 sm:pb-20"
-        }
-      >
-        {/* Hidden Form Sync Inputs */}
-        <input type="hidden" name="id" value={post?.id ?? ""} />
-        <input type="hidden" name="content" value={content} />
-        <input type="hidden" name="intent" value={intent} />
-        <input type="hidden" name="coverImage" value={coverImage} />
-        <input type="hidden" name="relatedPostIds" value={relatedIds.join(",")} />
-        <input type="hidden" name="categories" value={customCategory || category} />
-
-        {/* Top Error Notification */}
-        {state?.error && (
-          <div className="flex items-center gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 sm:p-4 text-xs font-semibold text-red-700 shadow-xs">
-            <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
-            <span>{state.error}</span>
-          </div>
-        )}
-
-        {/* Main Document Card Container (Webifyit Clean Design Structure) */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-7 md:p-10 shadow-xs space-y-6 sm:space-y-8">
-          
-          {/* Card Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-5 sm:pb-6 border-b border-slate-100">
-            <div>
-              <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0b233a]">
-                {post ? "Edit Article" : "New Article"}
-              </h2>
-              <p className="mt-1 text-xs text-slate-500">
-                Write in Rich Text or Markdown. Preview renders exactly as the live engineering blog.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-xs text-slate-400 shrink-0">
-              <span className="flex items-center gap-1">
-                <FileText className="w-3.5 h-3.5 text-slate-400" />
-                <strong className="text-slate-700 font-semibold"># {wordCount.toLocaleString()} words</strong>
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                <strong className="text-slate-700 font-semibold">{readTime} min read</strong>
-              </span>
-            </div>
-          </div>
-
-          {/* Section 1: Article Title */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-              Article Title <span className="text-[#FF8A00]">*</span>
-            </label>
-            <input
-              required
-              name="title"
-              value={title}
-              onChange={(event) => {
-                const next = event.target.value;
-                setTitle(next);
-                if (!slug || slug === slugify(title)) setSlug(slugify(next));
-                markDirty();
-              }}
-              minLength={8}
-              maxLength={160}
-              placeholder="e.g. The Human-in-the-Loop Pattern: Engineering Safe Autonomous Workflows"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base md:text-lg font-bold text-[#0b233a] placeholder:text-slate-400 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-            />
-          </div>
-
-          {/* Section 2: URL Slug & Category (2-Column Grid) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            {/* URL Slug */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                URL Slug <span className="text-[#FF8A00]">*</span>
-              </label>
-              <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50/60 px-3 sm:px-3.5 py-2 sm:py-2.5 focus-within:border-[#0b233a] focus-within:bg-white transition-all shadow-2xs min-w-0">
-                <span className="text-xs font-mono text-slate-400 select-none pr-1 shrink-0">/blog/</span>
-                <input
-                  required
-                  name="slug"
-                  value={slug}
-                  onChange={(event) => {
-                    setSlug(slugify(event.target.value));
-                    markDirty();
-                  }}
-                  pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                  placeholder="article-slug"
-                  className="w-full text-xs font-mono font-semibold text-[#0b233a] bg-transparent outline-none focus:outline-none focus:ring-0 min-w-0"
-                />
-              </div>
-            </div>
-
-            {/* Category Select */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Category <span className="text-[#FF8A00]">*</span>
-              </label>
-              <select
-                value={category}
-                onChange={(event) => {
-                  setCategory(event.target.value);
-                  markDirty();
-                }}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 sm:px-3.5 py-2 sm:py-2.5 text-xs font-medium text-slate-800 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs cursor-pointer"
-              >
-                {CATEGORY_OPTIONS.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Section 3: Meta Description & Summary */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-              <span>
-                Meta Description / Abstract <span className="text-[#FF8A00]">*</span> (SEO)
-              </span>
-              <span className={excerpt.length > 320 || (excerpt.length > 0 && excerpt.length < 30) ? "text-[#FF8A00]" : "text-slate-400"}>
-                {excerpt.length}/320
-              </span>
-            </div>
-            <textarea
-              required
-              name="excerpt"
-              value={excerpt}
-              onChange={(event) => {
-                setExcerpt(event.target.value);
-                markDirty();
-              }}
-              minLength={30}
-              maxLength={320}
-              rows={3}
-              placeholder="Why engineering teams reject hands-off workflows for mission-critical systems. Practical architecture patterns for stateful checkpointing, human approvals, and audit logs."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/60 p-3 sm:p-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed placeholder:text-slate-400 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-            />
-          </div>
-
-          {/* Section 4: Author Name, Author Role, Status (3-Column Grid) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {/* Author Name */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Author Name
-              </label>
-              <input
-                name="authorName"
-                defaultValue={post?.authorName ?? "Saur Engineering Team"}
-                onChange={markDirty}
-                placeholder="e.g. Atharv K"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2 sm:py-2.5 text-xs font-medium text-slate-800 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-              />
-            </div>
-
-            {/* Author Role */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Author Role
-              </label>
-              <input
-                name="authorRole"
-                defaultValue={post?.authorRole ?? "Principal Systems Engineer"}
-                onChange={markDirty}
-                placeholder="e.g. Systems Explorer"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2 sm:py-2.5 text-xs font-medium text-slate-800 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-              />
-            </div>
-
-            {/* Status Dropdown */}
-            <div className="space-y-1.5 sm:space-y-2 sm:col-span-2 lg:col-span-1">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Publishing Status
-              </label>
-              <select
-                value={intent}
-                onChange={(event) => {
-                  setIntent(event.target.value as PostStatus);
-                  markDirty();
-                }}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2 sm:py-2.5 text-xs font-semibold text-[#0b233a] outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs cursor-pointer"
-              >
-                <option value="draft">Draft</option>
-                <option value="scheduled">Scheduled</option>
-                <option value="published">Published</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Schedule Picker if Scheduled */}
-          {intent === "scheduled" && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-3.5 sm:p-4 space-y-2">
-              <label className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-amber-900">
-                <Calendar className="w-3.5 h-3.5 text-amber-600" />
-                <span>Publish Schedule Date &amp; Time</span>
-              </label>
-              <input
-                required
-                name="scheduledFor"
-                type="datetime-local"
-                defaultValue={post?.scheduledFor?.slice(0, 16)}
-                className="w-full sm:w-80 rounded-xl border border-amber-300 bg-white px-3.5 py-2 text-xs font-mono text-slate-800 outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0"
-              />
-            </div>
-          )}
-
-          {/* Section 5: Featured Cover & Tags (2-Column Grid) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-2 border-t border-slate-100">
-            {/* Featured Cover */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                  Featured Cover Image
-                </label>
-                {coverImage && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCoverImage("");
-                      markDirty();
-                    }}
-                    className="text-[11px] font-semibold text-red-600 hover:text-red-700 cursor-pointer"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-              {coverImage ? (
-                <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-slate-200 group bg-slate-100">
-                  <img src={coverImage} alt="Cover preview" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsMediaModalOpen(true)}
-                      className="px-3 py-1.5 rounded-lg bg-white text-[#0b233a] text-xs font-bold shadow-sm cursor-pointer"
-                    >
-                      Change Cover
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setIsMediaModalOpen(true)}
-                  className="w-full h-[100px] sm:h-[120px] rounded-xl border border-dashed border-slate-300 hover:border-[#0b233a] bg-slate-50/60 hover:bg-slate-50 p-4 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 group"
-                >
-                  <ImagePlus className="w-5 h-5 text-slate-400 group-hover:text-[#FF8A00] transition-colors" />
-                  <span className="text-xs font-semibold text-slate-600 group-hover:text-[#0b233a]">
-                    Select / Upload Cover Image
-                  </span>
-                </button>
-              )}
-            </div>
-
-            {/* Tags & Standards */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Tags &amp; Industry Standards
-              </label>
-              <textarea
-                name="tags"
-                defaultValue={comma(post?.tags)}
-                onChange={markDirty}
-                rows={4}
-                placeholder="ASME B31.3, Smart 3D, ADNOC, CAESAR II, Subsea"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 p-3 sm:p-3.5 text-xs text-slate-800 leading-relaxed outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-              />
-            </div>
-          </div>
-
-          {/* Section 6: Article Content / Editor */}
-          <div className="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <label className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-[#FF8A00]" />
-                <span>Article Content</span>
-                <span className="text-[#FF8A00]">*</span>
-              </label>
-
-              <div className="flex items-center gap-2">
-                {/* Mode Selector */}
-                <div className="inline-flex rounded-xl border border-slate-200 bg-slate-100 p-0.5">
-                  {(["visual", "markdown", "preview"] as const).map((mode) => (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => switchMode(mode)}
-                      className={
-                        (editorMode === mode
-                          ? "bg-[#0b233a] text-white shadow-xs font-bold"
-                          : "text-slate-600 hover:text-slate-900 font-medium") +
-                        " rounded-lg px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs capitalize transition-colors cursor-pointer"
-                      }
-                    >
-                      {mode}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Focus Mode */}
-                <button
-                  type="button"
-                  onClick={() => setFullscreen(!fullscreen)}
-                  title={fullscreen ? "Exit Focus Mode" : "Focus Mode"}
-                  className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1.5 sm:p-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
-                >
-                  {fullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Editor Box */}
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xs">
-              {/* Sticky Visual Toolbar */}
-              {editorMode === "visual" && (
-                <div className="sticky top-0 z-20 flex flex-wrap items-center gap-0.5 sm:gap-1 border-b border-slate-200 bg-slate-50/80 backdrop-blur-xs p-1.5 sm:p-2.5">
-                  <ToolButton label="Heading 2" active={editor?.isActive("heading", { level: 2 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}>
-                    <Heading2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Heading 3" active={editor?.isActive("heading", { level: 3 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>
-                    <Heading3 className="h-4 w-4" />
-                  </ToolButton>
-                  <div className="h-4 w-px bg-slate-200 mx-0.5 sm:mx-1" />
-                  <ToolButton label="Bold" active={editor?.isActive("bold")} onClick={() => editor?.chain().focus().toggleBold().run()}>
-                    <Bold className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Italic" active={editor?.isActive("italic")} onClick={() => editor?.chain().focus().toggleItalic().run()}>
-                    <Italic className="h-4 w-4" />
-                  </ToolButton>
-                  <div className="h-4 w-px bg-slate-200 mx-0.5 sm:mx-1" />
-                  <ToolButton label="Bulleted List" active={editor?.isActive("bulletList")} onClick={() => editor?.chain().focus().toggleBulletList().run()}>
-                    <List className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Numbered List" active={editor?.isActive("orderedList")} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>
-                    <ListOrdered className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Blockquote" active={editor?.isActive("blockquote")} onClick={() => editor?.chain().focus().toggleBlockquote().run()}>
-                    <Quote className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Code Block" active={editor?.isActive("codeBlock")} onClick={() => editor?.chain().focus().toggleCodeBlock().run()}>
-                    <Code2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Divider Line" onClick={() => editor?.chain().focus().setHorizontalRule().run()}>
-                    <Minus className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Insert Link" onClick={addLink}>
-                    <Link2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Insert Media" onClick={() => setIsMediaModalOpen(true)}>
-                    <ImagePlus className="h-4 w-4 text-[#FF8A00]" />
-                  </ToolButton>
-                  <div className="h-4 w-px bg-slate-200 mx-0.5 sm:mx-1" />
-                  <ToolButton label="Undo" onClick={() => editor?.chain().focus().undo().run()}>
-                    <Undo2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Redo" onClick={() => editor?.chain().focus().redo().run()}>
-                    <Redo2 className="h-4 w-4" />
-                  </ToolButton>
-                </div>
-              )}
-
-              {/* Sticky Markdown Toolbar */}
-              {editorMode === "markdown" && (
-                <div className="sticky top-0 z-20 flex flex-wrap items-center gap-0.5 sm:gap-1 border-b border-slate-200 bg-slate-50/80 backdrop-blur-xs p-1.5 sm:p-2.5">
-                  <ToolButton label="Heading 2" onClick={() => prependMarkdown("## ")}>
-                    <Heading2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Heading 3" onClick={() => prependMarkdown("### ")}>
-                    <Heading3 className="h-4 w-4" />
-                  </ToolButton>
-                  <div className="h-4 w-px bg-slate-200 mx-0.5 sm:mx-1" />
-                  <ToolButton label="Bold" onClick={() => wrapMarkdown("**", "**")}>
-                    <Bold className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Italic" onClick={() => wrapMarkdown("*", "*")}>
-                    <Italic className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Inline Code" onClick={() => wrapMarkdown("`", "`")}>
-                    <Code2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Code Block" onClick={() => replaceMarkdownSelection("\n```\n\n```\n", 5)}>
-                    <Code2 className="h-4 w-4 text-emerald-600" />
-                  </ToolButton>
-                  <ToolButton label="Quote" onClick={() => prependMarkdown("> ")}>
-                    <Quote className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Bulleted List" onClick={() => prependMarkdown("- ")}>
-                    <List className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Numbered List" onClick={() => prependMarkdown("1. ")}>
-                    <ListOrdered className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Link" onClick={() => wrapMarkdown("[", "](url)")}>
-                    <Link2 className="h-4 w-4" />
-                  </ToolButton>
-                  <ToolButton label="Insert Media" onClick={() => setIsMediaModalOpen(true)}>
-                    <ImagePlus className="h-4 w-4 text-[#FF8A00]" />
-                  </ToolButton>
-                </div>
-              )}
-
-              {/* Conversion Alert */}
-              {conversionError && (
-                <div className="m-3 sm:m-4 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-600">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{conversionError}</span>
-                </div>
-              )}
-
-              {/* Visual Editor */}
-              {editorMode === "visual" && (
-                <div className="p-3.5 sm:p-6 md:p-8 min-h-[350px] sm:min-h-[480px]">
-                  <EditorContent
-                    editor={editor}
-                    className="min-h-[320px] sm:min-h-[420px] text-sm sm:text-base leading-relaxed text-slate-800 outline-none focus:outline-none
-                      [&_.ProseMirror]:min-h-[320px]
-                      [&_.ProseMirror]:sm:min-h-[420px]
-                      [&_.ProseMirror]:outline-none
-                      [&_.ProseMirror_h2]:mt-6
-                      [&_.ProseMirror_h2]:sm:mt-8
-                      [&_.ProseMirror_h2]:mb-3
-                      [&_.ProseMirror_h2]:font-display
-                      [&_.ProseMirror_h2]:font-extrabold
-                      [&_.ProseMirror_h2]:text-xl
-                      [&_.ProseMirror_h2]:sm:text-2xl
-                      [&_.ProseMirror_h2]:text-[#0b233a]
-                      [&_.ProseMirror_h3]:mt-5
-                      [&_.ProseMirror_h3]:sm:mt-6
-                      [&_.ProseMirror_h3]:mb-2
-                      [&_.ProseMirror_h3]:font-display
-                      [&_.ProseMirror_h3]:font-bold
-                      [&_.ProseMirror_h3]:text-lg
-                      [&_.ProseMirror_h3]:sm:text-xl
-                      [&_.ProseMirror_h3]:text-[#0b233a]
-                      [&_.ProseMirror_p]:mb-4
-                      [&_.ProseMirror_p]:text-slate-700
-                      [&_.ProseMirror_p]:leading-7
-                      [&_.ProseMirror_ul]:mb-4
-                      [&_.ProseMirror_ul]:list-disc
-                      [&_.ProseMirror_ul]:pl-5
-                      [&_.ProseMirror_ul]:sm:pl-6
-                      [&_.ProseMirror_ul]:space-y-1
-                      [&_.ProseMirror_ol]:mb-4
-                      [&_.ProseMirror_ol]:list-decimal
-                      [&_.ProseMirror_ol]:pl-5
-                      [&_.ProseMirror_ol]:sm:pl-6
-                      [&_.ProseMirror_ol]:space-y-1
-                      [&_.ProseMirror_blockquote]:my-5
-                      [&_.ProseMirror_blockquote]:sm:my-6
-                      [&_.ProseMirror_blockquote]:border-l-4
-                      [&_.ProseMirror_blockquote]:border-[#FF8A00]
-                      [&_.ProseMirror_blockquote]:bg-orange-50/30
-                      [&_.ProseMirror_blockquote]:p-3.5
-                      [&_.ProseMirror_blockquote]:sm:p-4
-                      [&_.ProseMirror_blockquote]:rounded-r-xl
-                      [&_.ProseMirror_blockquote]:italic
-                      [&_.ProseMirror_blockquote]:text-slate-700
-                      [&_.ProseMirror_code]:bg-slate-100
-                      [&_.ProseMirror_code]:px-1.5
-                      [&_.ProseMirror_code]:py-0.5
-                      [&_.ProseMirror_code]:rounded-md
-                      [&_.ProseMirror_code]:font-mono
-                      [&_.ProseMirror_code]:text-xs
-                      [&_.ProseMirror_pre]:my-5
-                      [&_.ProseMirror_pre]:bg-[#0b233a]
-                      [&_.ProseMirror_pre]:text-slate-100
-                      [&_.ProseMirror_pre]:p-3.5
-                      [&_.ProseMirror_pre]:sm:p-4
-                      [&_.ProseMirror_pre]:rounded-xl
-                      [&_.ProseMirror_pre]:overflow-x-auto
-                      [&_.ProseMirror_img]:my-5
-                      [&_.ProseMirror_img]:rounded-xl
-                      [&_.ProseMirror_img]:border
-                      [&_.ProseMirror_img]:border-slate-200
-                      [&_.ProseMirror_hr]:my-6
-                      [&_.ProseMirror_hr]:sm:my-8
-                      [&_.ProseMirror_hr]:border-slate-200"
-                  />
-                </div>
-              )}
-
-              {/* Markdown Editor */}
-              {editorMode === "markdown" && (
-                <textarea
-                  ref={markdownRef}
-                  value={markdown}
-                  onChange={(event) => {
-                    const next = event.target.value;
-                    setMarkdown(next);
-                    syncMarkdownToJson(next);
-                    markDirty();
-                  }}
-                  onKeyDown={(event) => {
-                    const mod = event.metaKey || event.ctrlKey;
-                    if (mod && event.key.toLowerCase() === "b") {
-                      event.preventDefault();
-                      wrapMarkdown("**", "**");
-                    }
-                    if (mod && event.key.toLowerCase() === "i") {
-                      event.preventDefault();
-                      wrapMarkdown("*", "*");
-                    }
-                    if (mod && event.key.toLowerCase() === "k") {
-                      event.preventDefault();
-                      wrapMarkdown("[", "](url)");
-                    }
-                    if (event.key === "Tab") {
-                      event.preventDefault();
-                      replaceMarkdownSelection("  ");
-                    }
-                  }}
-                  spellCheck
-                  rows={20}
-                  className="w-full min-h-[350px] sm:min-h-[480px] resize-y bg-white p-3.5 sm:p-6 md:p-8 font-mono text-xs sm:text-sm leading-relaxed text-slate-800 outline-none focus:outline-none focus:ring-0 placeholder:text-slate-400"
-                  placeholder="Write article body in Markdown syntax..."
-                />
-              )}
-
-              {/* Live Preview */}
-              {editorMode === "preview" && (
-                <div className="p-3.5 sm:p-6 md:p-8 min-h-[350px] sm:min-h-[480px] bg-slate-50/30">
-                  <div className="max-w-3xl mx-auto">
-                    <RichText content={previewDoc} />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Section 7: Technical Takeaways & Related Articles (2-Column Grid) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-3 sm:pt-4 border-t border-slate-100">
-            {/* Takeaways */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                Key Technical Takeaways (One per line)
-              </label>
-              <textarea
-                name="techTakeaways"
-                defaultValue={lines(post?.techTakeaways)}
-                onChange={markDirty}
-                rows={4}
-                placeholder="FEED milestone check 1&#10;ASME / API compliance rule 2&#10;Risk & cost reduction outcome 3"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 p-3 sm:p-3.5 text-xs text-slate-800 leading-relaxed outline-none focus:outline-none focus:border-[#0b233a] focus:ring-0 focus:bg-white transition-all shadow-2xs"
-              />
-            </div>
-
-            {/* Related Articles */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                  Related Articles
-                </label>
-                <span className="text-[10px] font-mono text-slate-400">{relatedIds.length} selected</span>
-              </div>
-              <div className="max-h-28 space-y-1.5 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50/60 p-2">
-                {relatedOptions.map((item) => (
-                  <label
-                    key={item.id}
-                    className="flex items-start gap-2 rounded-lg p-1.5 hover:bg-white text-xs transition-colors cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={relatedIds.includes(item.id)}
-                      onChange={(event) => {
-                        setRelatedIds(
-                          event.target.checked
-                            ? [...relatedIds, item.id].slice(0, 6)
-                            : relatedIds.filter((id) => id !== item.id)
-                        );
-                        markDirty();
-                      }}
-                      className="mt-0.5 rounded border-slate-300 text-[#0b233a] focus:ring-0 focus:outline-none"
-                    />
-                    <span className="truncate font-medium text-slate-800 text-[11px]">{item.title}</span>
-                  </label>
-                ))}
-                {!relatedOptions.length && (
-                  <p className="text-xs text-slate-400 p-2 text-center">No other articles available.</p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Section 8: Version Snapshots (if revisions exist) */}
-          {revisions.length > 0 && (
-            <div className="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
-              <div className="rounded-xl border border-slate-200 bg-slate-50/60 overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setIsRevisionsOpen(!isRevisionsOpen)}
-                  className="w-full flex items-center justify-between p-3.5 sm:p-4 text-xs font-mono font-bold uppercase tracking-wider text-slate-700 hover:text-[#0b233a] transition-colors cursor-pointer text-left"
-                >
-                  <span className="flex items-center gap-2">
-                    <History className="w-4 h-4 text-[#FF8A00] shrink-0" />
-                    <span>Version History ({revisions.length} Snapshots)</span>
-                  </span>
-                  {isRevisionsOpen ? <ChevronUp className="w-4 h-4 shrink-0" /> : <ChevronDown className="w-4 h-4 shrink-0" />}
-                </button>
-
-                {isRevisionsOpen && (
-                  <div className="p-3.5 sm:p-4 pt-0 space-y-2 border-t border-slate-200/80 bg-white">
-                    <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {revisions.slice(0, 6).map((revision) => (
-                        <button
-                          key={revision.id}
-                          disabled={isRestoring}
-                          type="button"
-                          onClick={() =>
-                            startTransition(async () => {
-                              await restoreRevision(post!.id, revision.id);
-                              window.location.reload();
-                            })
-                          }
-                          className="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 hover:border-[#0b233a] bg-slate-50/60 hover:bg-slate-50 text-left text-xs text-slate-700 transition-colors cursor-pointer group"
-                        >
-                          <div>
-                            <span className="font-semibold text-slate-800 block">
-                              {new Date(revision.created_at).toLocaleString([], {
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                            <span className="text-[10px] text-slate-400">Restore Snapshot</span>
-                          </div>
-                          <RotateCcw className="h-3.5 w-3.5 text-slate-400 group-hover:text-[#FF8A00] transition-colors" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Section 9: Sticky Bottom Publishing Action Bar */}
-          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 sm:pt-6 border-t border-slate-100">
-            {/* Left: Autosave indicator */}
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono text-slate-500 py-1">
-              {autosaveStatus === "saving" && (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-400" />
-                  <span>Autosaving draft...</span>
-                </>
-              )}
-              {autosaveStatus === "saved" && (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>{autosaveLabel || "All changes saved locally"}</span>
-                </>
-              )}
-              {autosaveStatus === "idle" && (
-                <span className="text-slate-400 text-center sm:text-left">
-                  {dirty.current ? "Unsaved changes" : "Autosaves automatically every 30s"}
-                </span>
-              )}
-            </div>
-
-            {/* Right: Actions */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              {post && (
-                <a
-                  href={`/admin/posts/${post.id}/preview`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold font-mono uppercase tracking-wider text-slate-700 transition-colors shadow-2xs min-h-[42px]"
-                >
-                  <Eye className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Preview</span>
-                </a>
-              )}
-
-              <button
-                type="submit"
-                disabled={pending}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0b233a] hover:bg-[#163654] active:scale-[0.99] px-6 py-2.5 text-xs font-bold font-mono uppercase tracking-wider text-white shadow-sm transition-all cursor-pointer disabled:opacity-60 min-h-[42px]"
-              >
-                {pending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Processing...</span>
-                  </>
-                ) : intent === "published" ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 text-[#FF8A00]" />
-                    <span>{post ? "Update Article" : "Publish Article Now"}</span>
-                  </>
-                ) : intent === "scheduled" ? (
-                  <>
-                    <Calendar className="w-4 h-4 text-[#FF8A00]" />
-                    <span>Schedule Article</span>
-                  </>
-                ) : (
-                  <>
-                    <Check className="w-4 h-4 text-[#FF8A00]" />
-                    <span>Save Draft</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-
+  return <div className={`cms-editor ${focus ? "cms-focus" : ""}`}>
+    <div className="cms-editor-top"><div><p className="cms-eyebrow">Editorial workspace</p><h1>{post ? "Edit article" : "Write an article"}</h1><p>Start with your story. Fine-tune the details when you’re ready.</p></div><button type="button" className="cms-secondary" onClick={() => setFocus(!focus)}>{focus ? <Minimize2 size={16} /> : <Maximize2 size={16} />}{focus ? "Exit focus" : "Focus mode"}</button></div>
+    {recovery && <div className="cms-notice">There’s an unsaved draft from this tab. <button onClick={() => { change(recovery); setTagText(recovery.tags.join(", ")); setTakeawayText(recovery.techTakeaways.join("\n")); editor?.commands.setContent(recovery.content, { emitUpdate: false }); setMarkdown(richTextToMarkdown(recovery.content)); setRecovery(null); }}>Restore my writing</button><button onClick={() => { sessionStorage.removeItem(recoveryKey); setRecovery(null); }}>Dismiss</button></div>}
+    {error && <div className="cms-error" role="alert">{error}{blocked && <><p>Copy any changes you want to keep, then reload to get the latest version.</p><button onClick={() => window.location.reload()}>Reload article</button></>}</div>}
+    {notice && <p className="cms-notice" role="status">{notice}</p>}
+    <div className="cms-editor-grid"><div className="cms-writing">
+      <section className="cms-card cms-story" aria-label="Article writing">
+        <label htmlFor="cms-title">Article title</label><input className="cms-title" id="cms-title" value={doc.title} placeholder="Give your article a clear title…" maxLength={160} onChange={(e) => { const next = e.target.value; change({ title: next, ...(!lockedSlug && (!doc.slug || doc.slug === slugify(doc.title)) ? { slug: slugify(next) } : {}) }); }} aria-invalid={Boolean(fields.title)} />{fields.title && <p className="cms-field-error">{fields.title}</p>}
+        {textarea("excerpt", "Short summary", 320)}<p className="cms-help">A brief introduction shown on article cards. Search engines use this when no separate search description is provided.</p>
+        <div className="cms-body-label"><label id="article-body-label">Article body</label><div className="cms-mode"><button aria-pressed={mode === "visual"} onClick={() => switchMode("visual")}>Write</button><button aria-pressed={mode === "markdown"} onClick={() => switchMode("markdown")}>Markdown</button></div></div>
+        {mode === "visual" && <><div className="cms-toolbar" role="toolbar" aria-label="Text formatting">
+          {[
+            { label: "Heading 2", icon: Heading2, active: editor?.isActive("heading", {level:2}), run: () => editor?.chain().focus().toggleHeading({level:2}).run() },
+            { label: "Heading 3", icon: Heading3, active: editor?.isActive("heading", {level:3}), run: () => editor?.chain().focus().toggleHeading({level:3}).run() },
+            { label: "Bold", icon: Bold, active: editor?.isActive("bold"), run: () => editor?.chain().focus().toggleBold().run() },
+            { label: "Italic", icon: Italic, active: editor?.isActive("italic"), run: () => editor?.chain().focus().toggleItalic().run() },
+            { label: "Bullet list", icon: List, run: () => editor?.chain().focus().toggleBulletList().run() },
+            { label: "Numbered list", icon: ListOrdered, run: () => editor?.chain().focus().toggleOrderedList().run() },
+            { label: "Quote", icon: Quote, run: () => editor?.chain().focus().toggleBlockquote().run() },
+            { label: "Link", icon: Link2, active: editor?.isActive("link"), run: () => { setLinkUrl(String(editor?.getAttributes("link").href || "")); setLinkPanel(!linkPanel); } },
+            { label: "Insert image", icon: ImagePlus, run: () => setMedia(true) },
+            { label: "Insert table", icon: Table2, run: () => editor?.chain().focus().insertTable({rows:3,cols:3,withHeaderRow:true}).run() },
+            { label: "Undo", icon: Undo2, run: () => editor?.chain().focus().undo().run() },
+            { label: "Redo", icon: Redo2, run: () => editor?.chain().focus().redo().run() },
+          ].map(({label,icon: Icon,run,active}) => <button type="button" title={label} aria-label={label} aria-pressed={active} key={label} onClick={run}><Icon size={17} /></button>)}
         </div>
-      </form>
-
-      {/* Media Library Modal */}
-      <MediaLibrary
-        assets={assets}
-        asModal
-        isOpen={isMediaModalOpen}
-        onClose={() => setIsMediaModalOpen(false)}
-        onSetCover={(asset) => {
-          setCoverImage(asset.publicUrl);
-          markDirty();
-        }}
-        onInsert={insertInline}
-      />
-    </>
-  );
+        {linkPanel && <div className="cms-link-panel"><label htmlFor="link-url">Link destination</label><input id="link-url" type="url" value={linkUrl} placeholder="https://example.com" onChange={(e) => setLinkUrl(e.target.value)} /><button className="cms-secondary" onClick={() => { if (!/^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i.test(linkUrl)) { setError("Enter a valid link destination."); return; } editor?.chain().focus().extendMarkRange("link").setLink({href:linkUrl}).run(); setLinkPanel(false); }}>Apply</button><button onClick={() => { editor?.chain().focus().unsetLink().run(); setLinkPanel(false); }}>Remove link</button></div>}
+        {editor?.isActive("table") && <div className="cms-table-actions">{[{label:"Add row",run:()=>editor.chain().focus().addRowAfter().run()},{label:"Add column",run:()=>editor.chain().focus().addColumnAfter().run()},{label:"Delete row",run:()=>editor.chain().focus().deleteRow().run()},{label:"Delete column",run:()=>editor.chain().focus().deleteColumn().run()},{label:"Remove table",run:()=>editor.chain().focus().deleteTable().run()}].map((item)=><button key={item.label} onClick={item.run}>{item.label}</button>)}</div>}
+        <EditorContent editor={editor} className="cms-prosemirror" aria-labelledby="article-body-label" /></>}
+        {mode === "markdown" && <><p className="cms-help">Markdown supports headings, lists, links, images and simple tables. Use Write mode for more complex layouts.</p><textarea className="cms-markdown" value={markdown} aria-label="Article body in Markdown" spellCheck onChange={(e) => { setMarkdown(e.target.value); change({content:markdownToRichText(e.target.value)}); }} /></>}
+        {fields.content && <p className="cms-field-error">{fields.content}</p>}
+        <div className="cms-count">{plainText(doc.content).split(/\s+/).filter(Boolean).length} words <span>·</span> {readingTime(doc.content)} min read</div>
+      </section>
+      <details className="cms-card"><summary>Search appearance <span>Optional</span></summary><div className="cms-details-content">
+        {field("seoTitle", "Search title", {max:160,placeholder:doc.title,help:"Defaults to your article title. Keep it clear and concise."})}{textarea("seoDescription", "Search description", 320)}{field("seoFocusKeyword", "Main topic or phrase", {max:100,help:"An editorial reminder; this does not guarantee rankings."})}
+        <div className="cms-search-preview"><small>{process.env.NEXT_PUBLIC_SITE_URL || "saurengineering.in"} › blog › {doc.slug || "article-url"}</small><h3>{doc.seoTitle || doc.title || "Your article title"}</h3><p>{doc.seoDescription || doc.excerpt || "Your article summary will appear here."}</p></div>
+        <details><summary>Advanced search settings</summary><div className="cms-details-content">{field("seoCanonicalUrl", "Canonical URL", {help:"Leave empty for this article’s own URL. Set only when republishing content from another URL."})}<div className="cms-field"><label htmlFor="schema-type">Article type</label><select id="schema-type" value={doc.seoSchemaType} onChange={(e) => change({seoSchemaType:e.target.value as EditorDocument["seoSchemaType"]})}><option value="BlogPosting">Blog post</option><option value="Article">Article</option><option value="NewsArticle">News article</option></select></div><label className="cms-checkbox"><input type="checkbox" checked={doc.seoNoIndex} onChange={(e)=>change({seoNoIndex:e.target.checked})} />Keep this article out of search results</label></div></details>
+      </div></details>
+      <details className="cms-card"><summary>Social sharing <span>Optional</span></summary><div className="cms-details-content"><p className="cms-help">Defaults to your search title, summary and cover image.</p>{field("seoOgTitle", "Social title", {max:160})}{textarea("seoOgDescription", "Social description", 320)}{field("seoOgImage", "Social image URL")}<details><summary>X / Twitter overrides</summary><div className="cms-details-content">{field("seoTwitterTitle", "X title", {max:160})}{textarea("seoTwitterDescription", "X description", 320)}{field("seoTwitterImage", "X image URL")}</div></details></div></details>
+      <details className="cms-card"><summary>Takeaways and related reading <span>Optional</span></summary><div className="cms-details-content"><div className="cms-field"><label htmlFor="takeaways">Key takeaways — one per line</label><textarea id="takeaways" rows={4} value={takeawayText} onChange={(e)=>{setTakeawayText(e.target.value);change({techTakeaways:lines(e.target.value)});}} /><small>Up to eight takeaways.</small>{fields.techTakeaways && <p className="cms-field-error">{fields.techTakeaways}</p>}</div><fieldset><legend>Related articles — up to six</legend>{allPosts.filter((item)=>item.id!==id && !item.deletedAt && item.status==="published").map((item)=><label className="cms-checkbox" key={item.id}><input type="checkbox" checked={doc.relatedPostIds.includes(item.id)} disabled={!doc.relatedPostIds.includes(item.id) && doc.relatedPostIds.length >= 6} onChange={(e)=>change({relatedPostIds:e.target.checked?[...doc.relatedPostIds,item.id].slice(0,6):doc.relatedPostIds.filter((value)=>value!==item.id)})} />{item.title}</label>)}</fieldset></div></details>
+      <details className="cms-card"><summary>Version history <span>{revisionList.length} saved versions</span></summary><div className="cms-details-content"><button className="cms-secondary" disabled={busy} onClick={async()=>{try{const result=await getRevisions(id);if(result.error)setError(result.error);else setRevisionList(result.revisions);}catch{setError("Unable to refresh version history.");}}}>Refresh versions</button><p className="cms-help">Restore a version into your working draft. Published content stays live until you update it.</p>{!revisionList.length && <p className="cms-help">Previous versions appear here after you save and reopen the article.</p>}{revisionList.map((revision)=><button className="cms-revision" key={revision.id} disabled={busy} onClick={async()=>{if (!window.confirm("Restore this version into your draft? Copy any unsaved writing you want to keep first.")) return;setBusy(true);const result=await restoreRevision(id,revision.id,version.current);setBusy(false);if(result.error){setError(result.error);return;}dirtyRef.current=false;sessionStorage.removeItem(recoveryKey);window.location.reload();}}>{new Date(revision.created_at).toLocaleString()} <span>Restore draft</span></button>)}</div></details>
+    </div>
+    <aside className="cms-sidebar"><section className="cms-card cms-publish"><div className="cms-status-row"><h2>Publishing</h2><span className={`cms-status cms-status-${status}`}>{status}</span></div><p className="cms-save-state" role="status" aria-live="polite">{busy ? "Saving…" : dirty ? "Unsaved changes · autosave every 15 seconds" : savedAt ? `Saved at ${savedAt}` : "Ready to write"}</p>{(status==="published" || status==="scheduled") && <p className="cms-help">Saved edits stay private until you {status==="published"?"update the live article":"reschedule or publish"}.</p>}<button type="button" className="cms-secondary" disabled={busy || blocked} onClick={()=>void persist("save")}><Save size={16} />Save draft</button><button type="button" className="cms-secondary" onClick={()=>setPreview(true)}><Eye size={16} />Preview article</button><button type="button" className="cms-primary" disabled={busy || blocked} onClick={()=>void persist("publish")}><Send size={16} />{status==="published"?"Update live article":"Publish article"}</button>{Object.keys(issues).length>0 && <p className="cms-help">{Object.keys(issues).length} details to complete before publishing. You can save a draft at any time.</p>}
+      {status!=="published" && <details><summary>Schedule publication</summary><div className="cms-details-content"><label htmlFor="schedule-time">Date and time in your device’s time zone</label><input id="schedule-time" type="datetime-local" value={scheduledFor} onChange={(e)=>setScheduledFor(e.target.value)} /><button className="cms-secondary" disabled={busy || blocked || !scheduledFor} onClick={()=>void persist("schedule")}>{status==="scheduled"?"Reschedule article":"Schedule article"}</button>{fields.scheduledFor && <p className="cms-field-error">{fields.scheduledFor}</p>}</div></details>}
+      {status!=="draft" && <button className="cms-danger-link" disabled={busy || blocked} onClick={()=>{if(window.confirm(status==="published"?"Unpublish this article? Its public URL will stop showing the article until you publish again.":"Cancel the scheduled publication and keep this article as a draft?")) void persist("unpublish");}}>{status==="published"?"Unpublish article":"Cancel scheduled publication"}</button>}
+    </section>
+    <section className="cms-card"><h2>Article details</h2><div className="cms-details-content"><div className="cms-field"><label htmlFor="article-slug">Article URL</label><span className="cms-url-prefix">/blog/</span><input id="article-slug" value={doc.slug} disabled={lockedSlug} onChange={(e)=>change({slug:slugify(e.target.value)})} placeholder="generated-from-your-title" /><small>{lockedSlug?"Published URLs are preserved so existing links keep working.":"Generated from the title. You can edit it before first publication."}</small>{fields.slug && <p className="cms-field-error">{fields.slug}</p>}</div>
+      <fieldset className="cms-topics"><legend>Topics</legend>{topics.map((topic)=><label className="cms-checkbox" key={topic}><input type="checkbox" checked={doc.categories.includes(topic)} disabled={!doc.categories.includes(topic) && doc.categories.length >= 8} onChange={(e)=>change({categories:e.target.checked?[...doc.categories,topic].slice(0,8):doc.categories.filter((value)=>value!==topic)})} />{topic}</label>)}</fieldset>{fields.categories && <p className="cms-field-error">{fields.categories}</p>}<div className="cms-add-topic"><label htmlFor="new-topic">Add a topic</label><input id="new-topic" maxLength={100} value={newCategory} onChange={(e)=>setNewCategory(e.target.value)} /><button className="cms-secondary" disabled={doc.categories.length >= 8} onClick={()=>{const value=newCategory.trim();if(!value || !slugify(value))return;setExtraCategories([...extraCategories,value]);change({categories:[...new Set([...doc.categories,value])].slice(0,8)});setNewCategory("");}}>Add topic</button></div>
+      <div className="cms-field"><label htmlFor="article-tags">Tags, separated by commas</label><input id="article-tags" value={tagText} onChange={(e)=>{setTagText(e.target.value);change({tags:names(e.target.value)});}} placeholder="FEED, Project delivery" /><small>Up to eight tags.</small>{fields.tags && <p className="cms-field-error">{fields.tags}</p>}</div>{field("authorName", "Author name", {max:120})}{field("authorRole", "Author role", {max:160,help:"Optional. Use the author’s actual role."})}</div></section>
+    <section className="cms-card"><h2>Cover image</h2><div className="cms-details-content">{doc.coverImage && <div className="cms-cover-preview"><img src={doc.coverImage} alt={doc.coverAlt || "Selected cover"} /></div>}<button className="cms-secondary" onClick={()=>setMedia(true)}><ImagePlus size={16} />{doc.coverImage?"Change cover":"Choose or upload image"}</button>{doc.coverImage && <><button className="cms-danger-link" onClick={()=>change({coverImage:"",coverAlt:"",coverCaption:""})}>Remove cover</button>{field("coverAlt", "Describe the cover image", {help:"Describe what the image shows, rather than repeating the article title."})}{field("coverCaption", "Caption", {help:"Optional visible caption or image credit."})}</>}</div></section>
+    </aside></div>
+    <MediaLibrary assets={assets} asModal isOpen={media} onClose={()=>setMedia(false)} onSetCover={(asset)=>change({coverImage:asset.publicUrl,coverAlt:asset.altText,coverCaption:asset.caption || ""})} onInsert={insertImage} />
+    {preview && <dialog ref={previewRef} className="cms-preview-overlay" aria-label="Article preview" onCancel={()=>setPreview(false)}><div className="cms-preview-bar"><span>Preview · unsaved changes included</span><button onClick={()=>setPreview(false)}><X size={18} />Back to writing</button></div><main className="journal journal-preview"><div className="journal-shell"><ArticleView post={previewPost} preview /></div></main></dialog>}
+  </div>;
 }

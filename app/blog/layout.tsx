@@ -1,3 +1,4 @@
+import "./journal.css";
 import BlogShell from "@/components/blog/BlogShell";
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {

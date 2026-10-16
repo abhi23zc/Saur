@@ -409,7 +409,7 @@ export default function PrecisionDisciplines({
     const delta = isHorizontal ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
     if (Math.abs(delta) < 20) return;
 
-    const now = Date.now();
+    const now = e.timeStamp;
     if (now - lastWheelTimeRef.current < 400) return;
     lastWheelTimeRef.current = now;
 

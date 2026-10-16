@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+const base=process.env.BLOG_TEST_URL || 'http://localhost:3000';
+const get=async(path)=>fetch(new URL(path,base),{headers:{'User-Agent':'Googlebot'},redirect:'manual'});
+const blog=await get('/blog');assert.equal(blog.status,200);const html=await blog.text();assert.match(html,/Engineering insights/);assert.match(html,/rel="canonical"/);
+const search=await get('/blog?q=no-matching-engineering-test-article');assert.equal(search.status,200);const searched=await search.text();assert.match(searched,/No articles found/);assert.match(searched,/noindex, follow/);
+const rss=await get('/api/rss.xml');assert.equal(rss.status,200);assert.match(rss.headers.get('content-type'),/application\/rss\+xml/);assert.match(await rss.text(),/<rss version="2.0">/);
+const admin=await get('/admin/posts/new');assert.ok([303,307,308].includes(admin.status));assert.match(admin.headers.get('location'),/\/admin\/login/);
+const bad=await get('/blog?page=999999');const badHtml=await bad.text();assert.ok(bad.status===404 || /noindex/.test(badHtml));
+const found=html.match(/href="(\/blog\/[^?"#]+)"/);assert.ok(found,'A published article link must be server-rendered');
+const article=await get(found[1]);assert.equal(article.status,200);const articleHtml=await article.text();assert.match(articleHtml,/BlogPosting|"@type":"Article"/);assert.match(articleHtml,/BreadcrumbList/);assert.equal((articleHtml.match(/<h1[ >]/g)||[]).length,1);
+console.log('PASS: public listing, empty search/noindex, RSS, protected admin redirect, invalid pagination and article SEO markup.');

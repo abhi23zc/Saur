@@ -18,6 +18,11 @@ export type BlogPost = {
   excerpt: string;
   content: RichTextNode;
   coverImage: string | null;
+  coverAlt?: string;
+  coverCaption?: string;
+  draftVersion?: number;
+  hasUnpublishedChanges?: boolean;
+  deletedAt?: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
   seoFocusKeyword: string | null;

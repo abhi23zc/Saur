@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { caseStudies, projects } from "@/data/site";
 import { getPublishedPosts } from "@/lib/blog/data";
 
+export const revalidate = 60;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://saurengineering.in";
   const posts = await getPublishedPosts();
@@ -10,6 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...routes.map((route) => ({ url: base + route, lastModified: new Date() })),
     ...projects.map((project) => ({ url: base + "/projects/" + project.slug, lastModified: new Date() })),
     ...caseStudies.map((caseStudy) => ({ url: base + "/case-studies/" + caseStudy.slug, lastModified: new Date() })),
-    ...posts.map((post) => ({ url: base + "/blog/" + post.slug, lastModified: new Date(post.updatedAt) })),
+    ...posts.filter((post) => !post.seoNoIndex && (!post.seoCanonicalUrl || post.seoCanonicalUrl === base + "/blog/" + post.slug)).map((post) => ({ url: base + "/blog/" + post.slug, lastModified: new Date(post.updatedAt) })),
   ];
 }

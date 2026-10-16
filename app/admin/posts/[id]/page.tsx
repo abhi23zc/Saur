@@ -20,7 +20,9 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
       .order("created_at", { ascending: false }),
   ]);
 
-  if (!post) notFound();
+  if (!post || post.deletedAt) notFound();
+
+  const { data: categories } = await client.from("categories").select("name").order("name");
 
   return (
     <AdminFrame email={user.email ?? "Administrator"}>
@@ -61,6 +63,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
 
       {/* Editor Component */}
       <PostEditor
+        categories={(categories || []).map((item) => item.name)}
         post={post}
         assets={assets}
         revisions={revisionsResult.data ?? []}
