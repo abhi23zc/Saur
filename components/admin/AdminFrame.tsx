@@ -16,10 +16,10 @@ export default function AdminFrame({ email, children }: { email: string; childre
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="font-display text-sm sm:text-base font-extrabold tracking-tight text-white flex items-center gap-1 truncate">
-                  SAUR <span className="text-[#FF8A00] font-normal">EDITORIAL</span>
+                  SAUR <span className="text-[#FF8A00] font-normal">ADMIN</span>
                 </span>
                 <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.18em] text-slate-300 truncate">
-                  Insights Hub
+                  Content & Careers
                 </span>
               </div>
             </Link>
@@ -51,6 +51,7 @@ export default function AdminFrame({ email, children }: { email: string; childre
                 <span>Main Site</span>
                 <ExternalLink className="w-3 h-3 opacity-60" />
               </Link>
+              <Link href="/admin/jobs" className="px-3 py-1.5 rounded-lg text-xs text-white/80 hover:bg-white/10">Jobs</Link>
               <Link href="/admin/media" className="px-3 py-1.5 rounded-lg text-xs text-white/80 hover:bg-white/10">Images</Link>
             </nav>
           </div>
@@ -95,6 +96,7 @@ export default function AdminFrame({ email, children }: { email: string; childre
             <FileText className="w-3 h-3 text-slate-400" />
             <span>Public Blog</span>
           </Link>
+          <Link href="/admin/jobs" className="text-slate-300 hover:text-white">Jobs</Link>
           <Link
             href="/admin/media"
             className="flex items-center gap-1 text-slate-300 hover:text-white"
@@ -113,7 +115,7 @@ export default function AdminFrame({ email, children }: { email: string; childre
       {/* Admin Footer */}
       <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs font-mono text-slate-500">
         <div className="mx-auto max-w-[1440px] px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Saur Engineering &amp; Consultancy • Internal Editorial Suite</span>
+          <span>Saur Engineering &amp; Consultancy • Internal Administration</span>
           <span className="text-slate-400">ISO 9001:2015 Verified Delivery Systems</span>
         </div>
       </footer>

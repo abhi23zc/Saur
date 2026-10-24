@@ -166,7 +166,7 @@ export default function TechnicalWhitepapers({
               </span>
             </div>
             <Link
-              href="/training"
+              href="/careers#training-internships"
               className="text-xs font-bold text-[#0b233a] hover:text-[#FF8A00] shrink-0 text-center sm:text-left py-2 sm:py-0"
             >
               All Courses →

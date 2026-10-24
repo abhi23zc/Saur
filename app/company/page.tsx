@@ -1026,7 +1026,7 @@ export default function AboutPage() {
                       <span className="material-symbols-outlined text-sm text-[#0b233a]">call</span>
                       +91 88286 12183
                     </a>
-                    <Link href="/training" className="text-[#FF8A00] hover:underline font-bold flex items-center gap-1">
+                    <Link href="/careers#training-internships" className="text-[#FF8A00] hover:underline font-bold flex items-center gap-1">
                       <span className="material-symbols-outlined text-sm">school</span>
                       Training Programs →
                     </Link>

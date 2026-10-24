@@ -355,7 +355,7 @@ export const services = [
     number: "04",
     title: "Training & Development",
     text: "Empowering professionals, students, and organizations through customized courses that build expertise and drive exceptional results.",
-    href: "/training",
+    href: "/careers#training-internships",
     details: [
       "Piping, Process & Mechanical engineering",
       "Electrical & Instrumentation engineering",
@@ -1660,7 +1660,7 @@ export const courses: Course[] = [
     title: "PDMS, SP3D, E3D & AutoCAD",
     category: "Plant 3D Modeling & Administration",
     tagline: "Mastery of Intergraph Smart 3D, AVEVA E3D/PDMS, and AutoCAD for multidisciplinary EPC modeling.",
-    description: "Hands-on training on industry-standard 3D modelling and design tools used across all engineering disciplines.",
+    description: "Hands-on training on industry-standard 3D modelling and design tools used across engineering fields.",
     icon: "Boxes",
     image: "/media/saur-engineering-coordination.png",
     duration: "6–10 Weeks · 80+ Hours",

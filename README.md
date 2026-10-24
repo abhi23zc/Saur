@@ -53,3 +53,17 @@ Deploy to Vercel with all values from `.env.example` configured for Production, 
 ## Complete editorial workflow
 
 See [the blogging guide](docs/blogging-guide.md) for writing, private autosave, deliberate publication, scheduling, media, SEO controls, recovery and database upgrade/test instructions. The latest migrations are required for the editor.
+
+## Careers and recruitment
+
+- Public page: `/careers`. Administrators manage draft, published, and closed vacancies at `/admin/jobs` using the existing administrator login.
+- Apply `supabase/migrations/20261024000100_careers.sql` to the target Supabase database before using Jobs. Local development: `supabase migration up --local`. This migration does not seed vacancies or create applicant storage. Apply it to a hosted environment separately as part of an authorized release.
+- Published job edits appear immediately; closing a vacancy removes it from public listings. Empty listings and unavailable listings have distinct messages. No sample jobs are shipped.
+- `/api/applications` accepts multipart applications with PDF resumes up to 3 MB. Applications and attachments are sent to the two existing Saur contact inboxes using `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM`; no extra mail credentials are required. Production SMTP must accept attachments and both recipient addresses.
+- Applicants are not stored in Supabase or public media storage. The business inboxes receive and retain submitted email and attachments; deletion requests go to the published contact address.
+- Run `npm test` for validation, application handling, and an isolated SMTP delivery test. Run `npm run test:careers:db` only with local Supabase configured; it verifies RLS and the vacancy lifecycle with rolled-back fixtures.
+- Before releasing, apply the schema migration, publish approved real vacancies in Jobs, and confirm business SMTP attachment delivery. Training, courses, and internships share the `/careers` page. The legacy `/training` URL permanently redirects to its training section.
+
+### Unified training enquiries
+
+The six numbered training cards on `/careers#training-internships` open a compact course dialog. Its enquiry view submits `type: "training"` and the selected course title to the existing `/api/enquiries` endpoint, without a resume. Jobs and internship applications continue using `/api/applications` with a PDF resume. Course dialogs omit unconfirmed schedules, durations, and fees. All internal training links point to the combined page; `/training` is retained only as a permanent redirect for old links.

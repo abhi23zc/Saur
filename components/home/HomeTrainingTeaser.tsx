@@ -11,7 +11,7 @@ export default function HomeTrainingTeaser() {
             software.
           </p>
         </div>
-        <Link href="/training" className="button button-dark">
+        <Link href="/careers#training-internships" className="button button-dark">
           Explore Training <span aria-hidden="true">↗</span>
         </Link>
       </div>

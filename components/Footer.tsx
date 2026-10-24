@@ -13,7 +13,7 @@ export default function Footer() {
 
   const navCol2 = [
     { label: "Case Studies", href: "/case-studies" },
-    { label: "Training", href: "/training" },
+    { label: "Careers & Training", href: "/careers" },
     { label: "Blog", href: "/blog" },
     { label: "Contact Us", href: "/contact" },
     { label: "Privacy Policy", href: "/privacy" },

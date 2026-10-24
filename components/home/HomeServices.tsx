@@ -19,7 +19,7 @@ const services = [
   {
     title: "Training & Development",
     text: "Customized professional courses that build practical engineering capability.",
-    href: "/training",
+    href: "/careers#training-internships",
   },
 ];
 

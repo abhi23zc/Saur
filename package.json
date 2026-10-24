@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test tests/blog.test.ts",
+    "test": "tsx --test tests/blog.test.ts tests/careers.test.ts",
     "test:db": "node tests/blog-db.mjs",
     "db:migrate": "node scripts/migrate-blog.mjs",
     "local:setup": "node scripts/local-setup.mjs",
     "local:stop": "supabase stop",
-    "local:status": "supabase status"
+    "local:status": "supabase status",
+    "test:careers:db": "node tests/careers-db.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
