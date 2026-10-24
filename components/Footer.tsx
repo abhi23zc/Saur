@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SocialLinks from "@/components/SocialLinks";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -41,6 +42,8 @@ export default function Footer() {
           <p className="font-sans text-xs sm:text-sm text-white/60 mb-6 pr-0 lg:pr-8 leading-relaxed font-light">
             Reliable Engineering. Sustainable Design. Proven Results. IMS Certified (ISO 9001 · 14001 · 45001) &amp; DPIIT Recognized engineering delivery partner.
           </p>
+
+          <div className="mb-6"><SocialLinks dark /></div>
 
           <p className="font-sans text-xs text-white/40">
             © {new Date().getFullYear()} Saur Engineering &amp; Consultancy. All rights reserved.
@@ -159,9 +162,6 @@ export default function Footer() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-16 py-4 sm:py-6 flex flex-wrap justify-between items-center gap-3 sm:gap-4">
           <div className="flex flex-wrap gap-4 sm:gap-6">
             <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">Mumbai · Chennai</span>
-            <a href="https://www.linkedin.com/company/saur-engineering-consultancy" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] text-white/30 uppercase tracking-wider hover:text-[#FF8A00] transition-colors">
-              LinkedIn
-            </a>
             <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">www.saurengineering.in</span>
           </div>
           <Link href="/privacy" className="font-mono text-[10px] text-white/30 uppercase tracking-wider hover:text-[#FF8A00] transition-colors">

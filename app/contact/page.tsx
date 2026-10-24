@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SocialLinks from "@/components/SocialLinks";
 import ConsultationModal from "@/components/ConsultationModal";
 import EnquiryForm from "@/components/EnquiryForm";
 import { site, services } from "@/data/site";
@@ -193,6 +194,14 @@ export default function ContactPage() {
                     </span>
                   </div>
                 </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
+                <h2 className="font-display text-lg font-bold text-slate-900">Connect with Saur</h2>
+                <p className="mt-2 mb-4 text-sm leading-relaxed text-slate-600">
+                  Follow our engineering insights, company updates, and career opportunities.
+                </p>
+                <SocialLinks />
               </div>
 
               {/* Company Profile Link */}

@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   keywords: ["Engineering", "Global Infrastructure", "Mechanical Systems", "Subsea Engineering", "Process Engineering", "Saur Engineering"],
 };
 
+import WhatsAppButton from "@/components/WhatsAppButton";
+
 export default function RootLayout({
   children,
 }: {
@@ -39,6 +41,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-on-background selection:bg-[#1FA67A] selection:text-white">
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );

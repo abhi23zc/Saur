@@ -135,7 +135,9 @@ export const site = {
   phones: ["+91 99671 12295", "+91 88286 12183"],
   emails: ["contact@saurengineering.in", "saurengineeringconsultancy@gmail.com"],
   website: "www.saurengineering.in",
-  linkedin: "https://www.linkedin.com/company/saur-engineering-consultancy",
+  linkedin: "https://www.linkedin.com/company/saur-engineering-and-consultancy/",
+  instagram: "https://www.instagram.com/saurengineering/",
+  facebook: "https://www.facebook.com/saurengineering/",
   offices: [
     {
       city: "Mumbai",

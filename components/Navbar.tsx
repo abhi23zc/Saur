@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import SocialLinks from "@/components/SocialLinks";
 import { usePathname } from "next/navigation";
 
 interface NavbarProps {
@@ -23,14 +24,10 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
   });
 
   const navLinks = [
-    { name: "Home", href: "/" },
     { name: "About", href: "/company" },
     { name: "Services", href: "/services" },
-    { name: "Expertise", href: "/expertise" },
     { name: "Projects", href: "/projects" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "Training", href: "/training" },
-    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const isActive = (href: string) => {
@@ -68,11 +65,12 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-3 xl:gap-6">
+          <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
                   "font-sans text-[10px] xl:text-xs uppercase tracking-[0.1em] font-bold transition-colors duration-200 relative py-1",
                   isActive(link.href)
@@ -148,6 +146,7 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
                 <Link
                   key={link.name}
                   href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
                     "block font-sans text-sm font-bold uppercase tracking-wider py-2 border-b border-slate-100",
@@ -157,6 +156,8 @@ export default function Navbar({ onOpenConsultation }: NavbarProps) {
                   {link.name}
                 </Link>
               ))}
+
+              <div className="pt-2"><SocialLinks /></div>
 
               <div className="pt-2">
                 <button

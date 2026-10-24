@@ -34,7 +34,7 @@ export default function HeroSection({ onExplore, onOpenConsultation }: HeroSecti
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/media/page-company-hero.png')",
+          backgroundImage: "url('/media/saur-industrial-hero.png')",
           backgroundPosition: "center right",
         }}
       />
